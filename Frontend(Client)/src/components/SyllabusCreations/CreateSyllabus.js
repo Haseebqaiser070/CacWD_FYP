@@ -9,12 +9,28 @@ import {
   Modal,
   Switch,
   Card,
+  Tooltip,
+  Box,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "../css/styles.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import CloseIcon from "@mui/icons-material/Close";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "#fff",
+  boxShadow: 24,
+  p: 4,
+  boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+};
 
 export default function CreateSyllabus() {
   const navigate = useNavigate();
@@ -35,15 +51,20 @@ export default function CreateSyllabus() {
 
   const [Authors, setAuthors] = useState([]);
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const Add = () => {
     var Lec = Rows.length + 1;
     var b = "";
     if (refmat == true) {
       b = Bookfinal + "-Ref. Material";
       setrefmat(false);
-    }
-    else if (refmat == false){
-      b = Bookfinal
+    } else if (refmat == false) {
+      b = Bookfinal;
     }
     setRows([
       ...Rows,
@@ -57,13 +78,15 @@ export default function CreateSyllabus() {
   };
   useEffect(() => {
     getstuff();
-    getAuths()
+    getAuths();
   }, []);
-  console.log("Authors",Authors)
+  console.log("Authors", Authors);
   const getAuths = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/Course/Authors/${row.Code}`);
-      setAuthors(response.data)
+      const response = await axios.get(
+        `http://localhost:4000/Course/Authors/${row.Code}`
+      );
+      setAuthors(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -97,7 +120,7 @@ export default function CreateSyllabus() {
     {
       field: "lecture",
       headerName: "Lecture#",
-      width: "100",
+      width: "80",
     },
     {
       field: "CDFUnit",
@@ -107,41 +130,235 @@ export default function CreateSyllabus() {
     {
       field: "topics",
       headerName: "Topics Covered",
-      width: "450",
+      width: "500",
     },
     {
       field: "material",
       headerName: "Reference Material",
-      width: "250",
+      width: "300",
     },
 
     {
       field: "action",
       headerName: "Action",
-      width: "150",
+      width: "200",
       renderCell: ({ row }) => {
         return (
           <>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              style={{ backgroundColor: "#4b2980" }}
-              onClick={() => {
-                var Lec = Rows.length + 1;
-                const clone = Rows.filter((obj) => {
-                  if (row != obj) return obj;
-                });
-                var count = 0;
-                clone.forEach((i) => {
-                  count = count + 1;
-                  i.lecture = count;
-                });
-                setRows([...clone]);
-              }}
+            <Tooltip title="Edit" placement="top-start">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{
+                  backgroundColor: "#4b2980",
+                  marginLeft: 10,
+                  padding: 10,
+                }}
+                onClick={handleOpen}
+              >
+                <AiFillEdit />
+              </Button>
+            </Tooltip>
+
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
             >
-              Remove
-            </Button>
+              <Box sx={style}>
+                <Box mb={3} style={{ display: "flex", justifyContent: "end" }}>
+                  <CloseIcon
+                    onClick={handleClose}
+                    style={{ cursor: "pointer", color: "gray" }}
+                  />
+                </Box>
+                <h4 className="mb-4">EDIT WEEK WISE PLAN</h4>
+                <form onSubmit={onSubmit}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-simple-select-label">
+                      Select CDF Unit
+                    </InputLabel>
+                    <Select
+                      style={{ backgroundColor: "#fff" }}
+                      className="mb-4"
+                      id="outlined-basic"
+                      label="Select CDF Unit"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      value={unit}
+                      onChange={(e) => {
+                        setunit(e.target.value);
+                      }}
+                    >
+                      {CDFtops.map((i) => {
+                        return <MenuItem value={i}>{i}</MenuItem>;
+                      })}
+                    </Select>
+                  </FormControl>
+                  <FormControl fullWidth size="large">
+                    <TextField
+                      style={{ backgroundColor: "#fff" }}
+                      className="mb-4"
+                      id="outlined-basic"
+                      label="Add Topics Covered"
+                      variant="outlined"
+                      size="large"
+                      fullWidth
+                      value={topicsCovered}
+                      onChange={(e) => {
+                        setTopicsCovered(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  <div className="row">
+                    <div className="col">
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="demo-simple-select-label">
+                          Select Book
+                        </InputLabel>
+                        <Select
+                          style={{ backgroundColor: "#fff" }}
+                          className="mb-4"
+                          id="outlined-basic"
+                          label="Add Book Name"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={bookName}
+                          onChange={(e) => {
+                            setBookName(e.target.value);
+                          }}
+                        >
+                          {Authors.map((a) => {
+                            return <MenuItem value={a}>{a}</MenuItem>;
+                          })}
+                        </Select>
+                      </FormControl>
+                    </div>
+                    <div className="col">
+                      <FormControl fullWidth size="small">
+                        <TextField
+                          style={{ backgroundColor: "#fff" }}
+                          className="mb-4"
+                          id="outlined-basic"
+                          label="Add Chapter"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={chapter}
+                          onChange={(e) => {
+                            setChapter(e.target.value);
+                          }}
+                        />
+                      </FormControl>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-8">
+                      <FormControl className="mb-4">
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={refmat}
+                              onChange={() => {
+                                setrefmat(!refmat);
+                              }}
+                            />
+                          }
+                          label="ref material"
+                          labelPlacement="start"
+                        />
+                      </FormControl>
+                    </div>
+                    <div className="col-4">
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        size="medium"
+                        style={{ backgroundColor: "#4b2980" }}
+                        onClick={() => {
+                          if (Bookfinal == "") {
+                            var ab = bookName + ": " + chapter;
+                            setBookfinal(ab);
+                            setBookName("");
+                            setChapter("");
+                          } else {
+                            var ab =
+                              Bookfinal + "-" + bookName + ": " + chapter;
+                            setBookfinal(ab);
+                            setBookName("");
+                            setChapter("");
+                          }
+                        }}
+                      >
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+                  <FormControl fullWidth size="small">
+                    <TextField
+                      style={{
+                        marginBottom: 20,
+                        backgroundColor: "#fff",
+                      }}
+                      id="outlined-basic"
+                      label="Books"
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      value={Bookfinal}
+                      onChange={(e) => {
+                        setBookfinal(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                  <Button
+                    className="mt-3"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    size="medium"
+                    style={{ backgroundColor: "#4b2980" }}
+                    onClick={() => {
+                      Add();
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </form>
+              </Box>
+            </Modal>
+
+            <Tooltip title="Delete" placement="top-start">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{
+                  backgroundColor: "#4b2980",
+                  marginLeft: 16,
+                  padding: 10,
+                }}
+                onClick={() => {
+                  var Lec = Rows.length + 1;
+                  const clone = Rows.filter((obj) => {
+                    if (row != obj) return obj;
+                  });
+                  var count = 0;
+                  clone.forEach((i) => {
+                    count = count + 1;
+                    i.lecture = count;
+                  });
+                  setRows([...clone]);
+                }}
+              >
+                <AiFillDelete />
+              </Button>
+            </Tooltip>
           </>
         );
       },
@@ -215,28 +432,27 @@ export default function CreateSyllabus() {
           <div className="row">
             <div className="col">
               <FormControl fullWidth size="small">
-                  <InputLabel id="demo-simple-select-label">
-                    Select Book
-                  </InputLabel>
-                  <Select
-                    style={{ backgroundColor: "#fff" }}
-                    className="mb-4"
-                    id="outlined-basic"
-                    label="Add Book Name"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    value={bookName}
-                    onChange={(e) => {
-                      setBookName(e.target.value);
-                    }}
-                  >
-                    {Authors.map((a) => {
-                      return <MenuItem value={a}>{a}</MenuItem>;
-                    })}
-                  </Select>
-              </FormControl>              
-
+                <InputLabel id="demo-simple-select-label">
+                  Select Book
+                </InputLabel>
+                <Select
+                  style={{ backgroundColor: "#fff" }}
+                  className="mb-4"
+                  id="outlined-basic"
+                  label="Add Book Name"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  value={bookName}
+                  onChange={(e) => {
+                    setBookName(e.target.value);
+                  }}
+                >
+                  {Authors.map((a) => {
+                    return <MenuItem value={a}>{a}</MenuItem>;
+                  })}
+                </Select>
+              </FormControl>
             </div>
             <div className="col">
               <FormControl fullWidth size="small">
@@ -279,12 +495,12 @@ export default function CreateSyllabus() {
                 style={{ backgroundColor: "#4b2980" }}
                 onClick={() => {
                   if (Bookfinal == "") {
-                    var ab = bookName + ": " + chapter
+                    var ab = bookName + ": " + chapter;
                     setBookfinal(ab);
                     setBookName("");
                     setChapter("");
                   } else {
-                    var ab =Bookfinal + "-" + bookName + ": " + chapter
+                    var ab = Bookfinal + "-" + bookName + ": " + chapter;
                     setBookfinal(ab);
                     setBookName("");
                     setChapter("");

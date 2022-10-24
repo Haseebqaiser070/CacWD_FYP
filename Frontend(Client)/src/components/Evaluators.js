@@ -8,6 +8,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import {
   Box,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   FormControl,
   InputLabel,
   MenuItem,
@@ -138,22 +142,33 @@ export default function Evaluators() {
       alert("Empty Field");
     }
   };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const columns = [
     {
       field: "Name",
       headerName: "Name",
-      flex: 1,
+      width: "280",
     },
     {
       field: "Email",
       headerName: "Email",
-      flex: 1,
+      width: "400",
     },
 
     {
       field: "actions",
       headerName: "Actions",
-      flex: 2,
+      width: "350",
       editable: false,
       renderCell: ({ row }) => (
         <>
@@ -186,189 +201,234 @@ export default function Evaluators() {
               Edit Course
             </Button>
           )}
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={muiAbtn}
+            onClick={handleClickOpen}
+          >
+            <AiFillDelete style={{ marginRight: "6px" }} />
+            Cancel
+          </Button>
         </>
       ),
     },
   ];
   return (
     <div
-      className="container"
-      style={{ height: 700, width: "100%", padding: 20 }}
+      style={{
+        width: "100%",
+        padding: 40,
+        backgroundColor: "#f5f5f5",
+      }}
     >
-      <h1 className="py-4">
-        <b>Evaluators</b>
-      </h1>
-      <div>
-        <DataGrid
-          style={{ height: 400, width: "100%" }}
-          columns={columns}
-          getRowId={(Rows) => Rows._id}
-          rows={Rows}
-          pageSize={10}
-          rowsPerPageOptions={[5]}
-          disableSelectionOnClick
-        />
-      </div>
+      <Card style={{ padding: 30, borderRadius: 10 }}>
+        <h1>
+          <b>EVALUATORS</b>
+        </h1>
+        <div className="d-flex justify-content-end mb-4">
+          <Button
+            variant="contained"
+            className="mb-2 muibtn"
+            color="primary"
+            size="small"
+            style={muibtn}
+            onClick={handleClickOpen}
+          >
+            <AiFillDelete style={{ marginRight: "6px" }} />
+            Cancel all folders Assignment
+          </Button>
+          <Dialog
+            open={openDialog}
+            onClose={handleCloseDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure to cancel all courses assigned to evaluators?"}
+            </DialogTitle>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box component="form" sx={style} onSubmit={Submitform}>
-          {obj.map((e, index) => {
-            return (
-              <>
-                <h4 className="mb-4">ASSIGN COURSE FOLDER {index + 1}</h4>
-                {obj.length > 1 && (
-                  <FormControl>
-                    <Button
-                      className="mb-3"
-                      variant="contained"
-                      color="primary"
-                      size="medium"
-                      style={muibtn}
-                      onClick={() => {
-                        {
-                          () => {
-                            var clone = [...obj];
-                            if (clone.length == index + 1) {
-                              console.log("last rm");
-                              clone[index] = {
-                                Faculty: "",
-                                Folders: "",
-                              };
-                            } else if (clone.length != index + 1) {
-                              clone[index] = clone[index + 1];
-                            }
-                            const a = clone.splice(index, 1);
-                            setobj([...clone]);
-                            var clone2 = [...UserFolders];
-                            if (clone2.length == index + 1) {
-                              console.log("last rm");
-                              clone2[index] = [];
-                            } else if (clone2.length != index + 1) {
-                              clone2[index] = clone2[index + 1];
-                            }
-                            const b = clone2.splice(index, 1);
-                            setUserFolders([...clone2]);
-                          };
-                        }
-                      }}
-                    >
-                      remove
-                    </Button>
-                  </FormControl>
-                )}
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Yes</Button>
+              <Button onClick={handleCloseDialog} autoFocus>
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+        <div>
+          <DataGrid
+            style={{ height: 400, width: "100%" }}
+            columns={columns}
+            getRowId={(Rows) => Rows._id}
+            rows={Rows}
+            pageSize={10}
+            rowsPerPageOptions={[5]}
+            disableSelectionOnClick
+          />
+        </div>
 
-                <div className="form-floating ">
-                  <select
-                    class="form-select mb-4"
-                    label="Assign Program"
-                    onChange={(e) => {
-                      const clone = [...obj];
-                      clone[index].Faculty = e.target.value;
-                      setobj([...clone]);
-                      getUserFolds(index, e.target.value);
-                    }}
-                  >
-                    <option
-                      value={obj[index].Faculty._id}
-                      selected
-                      disabled
-                      hidden
-                    >
-                      {obj[index].Faculty != "" && obj[index].Faculty.Name}
-                    </option>
-                    {FacUsers.map((p) => {
-                      return <option value={p._id}>{p.Name}</option>;
-                    })}
-                  </select>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box component="form" sx={style} onSubmit={Submitform}>
+            {obj.map((e, index) => {
+              return (
+                <>
+                  <h4 className="mb-4">ASSIGN COURSE FOLDER {index + 1}</h4>
+                  {obj.length > 1 && (
+                    <FormControl>
+                      <Button
+                        className="mb-3"
+                        variant="contained"
+                        color="primary"
+                        size="medium"
+                        style={muibtn}
+                        onClick={() => {
+                          {
+                            () => {
+                              var clone = [...obj];
+                              if (clone.length == index + 1) {
+                                console.log("last rm");
+                                clone[index] = {
+                                  Faculty: "",
+                                  Folders: "",
+                                };
+                              } else if (clone.length != index + 1) {
+                                clone[index] = clone[index + 1];
+                              }
+                              const a = clone.splice(index, 1);
+                              setobj([...clone]);
+                              var clone2 = [...UserFolders];
+                              if (clone2.length == index + 1) {
+                                console.log("last rm");
+                                clone2[index] = [];
+                              } else if (clone2.length != index + 1) {
+                                clone2[index] = clone2[index + 1];
+                              }
+                              const b = clone2.splice(index, 1);
+                              setUserFolders([...clone2]);
+                            };
+                          }
+                        }}
+                      >
+                        remove
+                      </Button>
+                    </FormControl>
+                  )}
 
-                  <FormControl classname="mt-4" fullWidth size="small">
-                    <InputLabel id="taskType">Assign Folder</InputLabel>
-                    <Select
-                      className="mb-4"
-                      labelId="taskType"
-                      id="taskType"
-                      value={obj[index].Folders}
-                      label="Assign Course"
+                  <div className="form-floating ">
+                    <select
+                      class="form-select mb-4"
+                      label="Assign Program"
                       onChange={(e) => {
                         const clone = [...obj];
-                        clone[index].Folders = e.target.value;
+                        clone[index].Faculty = e.target.value;
                         setobj([...clone]);
+                        getUserFolds(index, e.target.value);
                       }}
-                      autoWidth
                     >
-                      <MenuItem
-                        value={obj[index]?.Folders}
+                      <option
+                        value={obj[index].Faculty._id}
                         selected
                         disabled
                         hidden
                       >
-                        {obj[index]?.Folders != "" &&
-                          obj[index]?.Folders?.Course?.Code +
-                            " " +
-                            obj[index]?.Folders?.Course.Name +
-                            " " +
-                            obj[index]?.Folders?.LabTheory ==
-                            "Lab" &&
-                          "(" + obj[index]?.Folders?.LabTheory + ")"}
-                      </MenuItem>
-                      {UserFolders.length > 0 &&
-                        UserFolders[index].map((a) => {
-                          return (
-                            <MenuItem value={a}>
-                              {a?.Course?.Code} {a?.Course?.Name}{" "}
-                              {a?.LabTheory == "Lab" &&
-                                "(" + a?.LabTheory + ")"}
-                            </MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </FormControl>
-                </div>
-              </>
-            );
-          })}
-          <div className="d-flex justify-content-center">
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              width="100"
-              style={{
-                backgroundColor: "#4b2980",
-                marginTop: 10,
-                marginRight: 20,
-              }}
-              onClick={() => {
-                setobj([
-                  ...obj,
-                  {
-                    Faculty: "",
-                    Folders: "",
-                  },
-                ]);
-                setUserFolders([...Courses, []]);
-              }}
-            >
-              Add another Course
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              width="100"
-              type="submit"
-              style={{ backgroundColor: "#4b2980", marginTop: 10 }}
-            >
-              Assign Course
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+                        {obj[index].Faculty != "" && obj[index].Faculty.Name}
+                      </option>
+                      {FacUsers.map((p) => {
+                        return <option value={p._id}>{p.Name}</option>;
+                      })}
+                    </select>
+
+                    <FormControl classname="mt-4" fullWidth size="small">
+                      <InputLabel id="taskType">Assign Folder</InputLabel>
+                      <Select
+                        className="mb-4"
+                        labelId="taskType"
+                        id="taskType"
+                        value={obj[index].Folders}
+                        label="Assign Course"
+                        onChange={(e) => {
+                          const clone = [...obj];
+                          clone[index].Folders = e.target.value;
+                          setobj([...clone]);
+                        }}
+                        autoWidth
+                      >
+                        <MenuItem
+                          value={obj[index]?.Folders}
+                          selected
+                          disabled
+                          hidden
+                        >
+                          {obj[index]?.Folders != "" &&
+                            obj[index]?.Folders?.Course?.Code +
+                              " " +
+                              obj[index]?.Folders?.Course.Name +
+                              " " +
+                              obj[index]?.Folders?.LabTheory ==
+                              "Lab" &&
+                            "(" + obj[index]?.Folders?.LabTheory + ")"}
+                        </MenuItem>
+                        {UserFolders.length > 0 &&
+                          UserFolders[index].map((a) => {
+                            return (
+                              <MenuItem value={a}>
+                                {a?.Course?.Code} {a?.Course?.Name}{" "}
+                                {a?.LabTheory == "Lab" &&
+                                  "(" + a?.LabTheory + ")"}
+                              </MenuItem>
+                            );
+                          })}
+                      </Select>
+                    </FormControl>
+                  </div>
+                </>
+              );
+            })}
+            <div className="d-flex justify-content-center">
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                width="100"
+                style={{
+                  backgroundColor: "#4b2980",
+                  marginTop: 10,
+                  marginRight: 20,
+                }}
+                onClick={() => {
+                  setobj([
+                    ...obj,
+                    {
+                      Faculty: "",
+                      Folders: "",
+                    },
+                  ]);
+                  setUserFolders([...Courses, []]);
+                }}
+              >
+                Add another Course
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                width="100"
+                type="submit"
+                style={{ backgroundColor: "#4b2980", marginTop: 10 }}
+              >
+                Assign Course
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+      </Card>
     </div>
   );
 }

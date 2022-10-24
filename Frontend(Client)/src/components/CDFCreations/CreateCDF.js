@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import "../css/styles.css";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CloseIcon from "@mui/icons-material/Close";
+
 import {
   Autocomplete,
   Box,
@@ -25,7 +27,7 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { useLocation, useNavigate } from "react-router-dom";
 import { muiAbtn } from "../style";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 
 const style = {
   position: "absolute",
@@ -123,6 +125,18 @@ export default function CreateCDF() {
   const [SORow, setSORow] = useState([]);
   const [BTLRow, setBTLRow] = useState([]);
 
+  const [openTopic, setOpenTopic] = useState(false);
+  const handleOpenTopic = () => setOpenTopic(true);
+  const handleCloseTopic = () => {
+    setOpenTopic(false);
+  };
+
+  const [openClo, setOpenClo] = useState(false);
+  const handleOpenClo = () => setOpenClo(true);
+  const handleCloseClo = () => {
+    setOpenClo(false);
+  };
+
   const getSORows = async () => {
     const ress = await axios.get("http://localhost:4000/SOBTL/showSO");
     const dataa = await ress.data;
@@ -166,7 +180,7 @@ export default function CreateCDF() {
     {
       field: "Topic",
       headerName: "Topic",
-      width: "700",
+      width: "650",
     },
     {
       field: "TeachingHours",
@@ -176,10 +190,167 @@ export default function CreateCDF() {
     {
       field: "action",
       headerName: "Action",
-      width: "150",
+      width: "200",
       renderCell: ({ row }) => {
         return (
           <>
+            <Tooltip title="Edit" placement="top-start">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{
+                  backgroundColor: "#4b2980",
+                  marginLeft: 10,
+                  padding: 10,
+                }}
+                onClick={handleOpenTopic}
+              >
+                <AiFillEdit />
+              </Button>
+            </Tooltip>
+
+            <Modal
+              open={openTopic}
+              onClose={handleCloseTopic}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Box mb={3} style={{ display: "flex", justifyContent: "end" }}>
+                  <CloseIcon
+                    onClick={handleCloseTopic}
+                    style={{ cursor: "pointer", color: "gray" }}
+                  />
+                </Box>
+                <h4 className="mb-4">EDIT UNIT WISE MAIN TOPICS</h4>
+                <form>
+                  <div>
+                    <div className="row">
+                      <div className="col">
+                        <FormControl fullWidth size="small">
+                          <TextField
+                            className="mb-4"
+                            id="outlined-basic"
+                            label="Add Main Topic"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            value={mainTopic}
+                            onChange={(e) => {
+                              setmainTopic(e.target.value);
+                            }}
+                          />
+                        </FormControl>
+                      </div>
+                      <div className="col-3">
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          style={{ backgroundColor: "#4b2980" }}
+                          onClick={() => {
+                            const s = Topicsfinal + mainTopic + ": ";
+                            setTopicsfinal(s);
+                            setmainTopic("");
+                          }}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-9">
+                        <FormControl fullWidth size="small">
+                          <TextField
+                            className="mb-4"
+                            id="outlined-basic"
+                            label="Add Sub Topics"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            value={subTopic}
+                            onChange={(e) => {
+                              setsubTopic(e.target.value);
+                            }}
+                          />
+                        </FormControl>
+                      </div>
+                      <div className="col-3">
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          style={{ backgroundColor: "#4b2980" }}
+                          onClick={() => {
+                            let clone = Topicsfinal;
+                            if (Topicsfinal[Topicsfinal.length - 2] == ":") {
+                              clone = clone + subTopic + ". ";
+                            } else {
+                              clone = Topicsfinal.slice(0, -2);
+                              clone = clone + "; " + subTopic + ". ";
+                            }
+                            setTopicsfinal(clone);
+                            setsubTopic("");
+                          }}
+                        >
+                          Add
+                        </Button>
+                      </div>
+                    </div>
+                    <FormControl fullWidth size="small">
+                      <TextField
+                        multiline
+                        rows={3}
+                        className="mb-4"
+                        id="outlined-basic"
+                        label="Topics"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        value={Topicsfinal}
+                        onChange={(e) => {
+                          setTopicsfinal(e.target.value);
+                        }}
+                      />
+                    </FormControl>
+                    <div className="row">
+                      <div className="col">
+                        <FormControl fullWidth size="small">
+                          <TextField
+                            className="mb-4"
+                            id="outlined-basic"
+                            label="Add Teaching Hours"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                            value={teachingHours}
+                            onChange={(e) => {
+                              setteachingHours(e.target.value);
+                            }}
+                          />
+                        </FormControl>
+                      </div>
+                    </div>
+                    <div>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        size="medium"
+                        style={{ backgroundColor: "#4b2980" }}
+                        onClick={() => Topics()}
+                      >
+                        Submit
+                      </Button>
+                    </div>
+                  </div>
+                </form>
+              </Box>
+            </Modal>
+
             <Tooltip title="Delete" placement="top-start">
               <Button
                 variant="contained"
@@ -214,22 +385,22 @@ export default function CreateCDF() {
     {
       field: "sr",
       headerName: "Sr.#",
-      flex: 1,
+      width: "80",
     },
     {
       field: "Unit",
       headerName: "Unit#",
-      flex: 1,
+      width: "80",
     },
     {
       field: "CLO",
       headerName: "Course Learning Outcomes",
-      flex: 3,
+      width: "400",
     },
     {
       field: "BTL",
       headerName: "Bloom Taxonomy Learning Level",
-      flex: 1,
+      width: "200",
       valueGetter: (params) => {
         return params?.row?.BTL?.BTL;
       },
@@ -237,7 +408,7 @@ export default function CreateCDF() {
     {
       field: "So",
       headerName: "SO",
-      flex: 1,
+      width: "100",
       valueGetter: (params) => {
         var val = "";
         params?.row?.So?.forEach((e) => {
@@ -250,50 +421,249 @@ export default function CreateCDF() {
     {
       field: "action",
       headerName: "Action",
-      flex: 1,
+      width: "200",
       renderCell: ({ row }) => {
         return (
           <>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              size="medium"
-              style={muiAbtn}
-              onClick={() => {
-                var count = 0;
-                const clone = CLORows.filter((obj) => {
-                  if (row != obj) return obj;
-                });
-                const clone2 = TheoryCLORows.filter((obj) => {
-                  if (row != obj) return obj;
-                });
-                const clone3 = LabCLORows.filter((obj) => {
-                  if (row != obj) return obj;
-                });
+            <Tooltip title="Edit" placement="top-start">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{
+                  backgroundColor: "#4b2980",
+                  marginLeft: 10,
+                  padding: 10,
+                }}
+                onClick={handleOpenClo}
+              >
+                <AiFillEdit />
+              </Button>
+            </Tooltip>
 
-                clone.forEach((i) => {
-                  count = count + 1;
-                  var abc = i.sr;
-                  i.sr = "CLO-" + count;
-                  clone2.forEach((e) => {
-                    if (e.sr == abc) {
-                      e.sr = i.sr;
-                    }
-                  });
-                  clone3.forEach((e) => {
-                    if (e.sr == abc) {
-                      e.sr = i.sr;
-                    }
-                  });
-                });
-                setCLORows([...clone]);
-                setTheoryCLORows([...clone2]);
-                setLabCLORows([...clone3]);
-              }}
+            <Modal
+              open={openClo}
+              onClose={handleCloseClo}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
             >
-              Remove
-            </Button>
+              <Box sx={style}>
+                <Box mb={3} style={{ display: "flex", justifyContent: "end" }}>
+                  <CloseIcon
+                    onClick={handleCloseClo}
+                    style={{ cursor: "pointer", color: "gray" }}
+                  />
+                </Box>
+                <h4 className="mb-4">EDIT CLO MAPPING</h4>
+                <form>
+                  <div className="row">
+                    <div className="col-5">
+                      {/* ------------------------------------------------------------------------ */}
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="taskType">Select Domain</InputLabel>
+                        <Select
+                          fullWidth
+                          className="mb-4"
+                          labelId="selectdegree"
+                          id="selectdegree"
+                          value={domain}
+                          label="Select Domain"
+                          onChange={(e) => {
+                            setdomain(e.target.value);
+                          }}
+                        >
+                          {DomainRow.map((i) => {
+                            return (
+                              <MenuItem value={i.Domain}>{i.Domain}</MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </div>
+
+                    {/* ------------------------------------------------------------------------ */}
+                    <div className="col-7">
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="demo-simple-select-label">
+                          Select BTL Level
+                        </InputLabel>
+                        <Select
+                          className="mb-4"
+                          id="outlined-basic"
+                          label="Add BTL Level"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={btl}
+                          onChange={(e) => {
+                            setbtl(e.target.value);
+                          }}
+                        >
+                          {BTLRow.map((a) => {
+                            return <MenuItem value={a}>{a.BTL}</MenuItem>;
+                          })}
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    {/* ------------------------------------------------------------------------ */}
+                    <div className="col-4">
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="taskType">Select Verb</InputLabel>
+                        <Select
+                          fullWidth
+                          className="mb-4"
+                          value={Verb}
+                          label="Select Verb"
+                          onChange={(e) => setVerb(e.target.value)}
+                        >
+                          {Verbs.map((i) => {
+                            return <MenuItem value={i}>{i}</MenuItem>;
+                          })}
+                        </Select>
+                      </FormControl>
+                    </div>
+                    <div className="col-8">
+                      <FormControl fullWidth size="small">
+                        <TextField
+                          className="mb-4"
+                          id="outlined-basic"
+                          label="Add CLO"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={clo}
+                          onChange={(e) => {
+                            setclo(e.target.value);
+                          }}
+                        />
+                      </FormControl>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <FormControl fullWidth size="small">
+                        <Autocomplete
+                          multiple
+                          fullWidth
+                          variant="outlined"
+                          id="tags-standard"
+                          className="mb-4"
+                          value={unit}
+                          options={TopicRows}
+                          size="small"
+                          getOptionLabel={(option) => option.Unit}
+                          defaultValue={null}
+                          onChange={(e, val) => {
+                            setunit(val);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              variant="outlined"
+                              label="Select Unit"
+                              placeholder="Select Unit"
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col">
+                      <FormControl fullWidth size="small">
+                        <Autocomplete
+                          multiple
+                          fullWidth
+                          variant="outlined"
+                          id="tags-standard"
+                          className="mb-4"
+                          options={SORow}
+                          size="small"
+                          value={so}
+                          getOptionLabel={(option) =>
+                            option.Number + " " + option.SO
+                          }
+                          defaultValue={null}
+                          onChange={(e, val) => {
+                            setso(val);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              variant="outlined"
+                              label="Add SO"
+                              placeholder="Add SO"
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </div>
+                  </div>
+                  <div>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      size="medium"
+                      style={{ backgroundColor: "#4b2980" }}
+                      onClick={() => CLOS("Lab")}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </form>
+              </Box>
+            </Modal>
+
+            <Tooltip title="Delete" placement="top-start">
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={{
+                  backgroundColor: "#4b2980",
+                  marginLeft: 16,
+                  padding: 10,
+                }}
+                onClick={() => {
+                  var count = 0;
+                  const clone = CLORows.filter((obj) => {
+                    if (row != obj) return obj;
+                  });
+                  const clone2 = TheoryCLORows.filter((obj) => {
+                    if (row != obj) return obj;
+                  });
+                  const clone3 = LabCLORows.filter((obj) => {
+                    if (row != obj) return obj;
+                  });
+
+                  clone.forEach((i) => {
+                    count = count + 1;
+                    var abc = i.sr;
+                    i.sr = "CLO-" + count;
+                    clone2.forEach((e) => {
+                      if (e.sr == abc) {
+                        e.sr = i.sr;
+                      }
+                    });
+                    clone3.forEach((e) => {
+                      if (e.sr == abc) {
+                        e.sr = i.sr;
+                      }
+                    });
+                  });
+                  setCLORows([...clone]);
+                  setTheoryCLORows([...clone2]);
+                  setLabCLORows([...clone3]);
+                }}
+              >
+                <AiFillDelete />
+              </Button>
+            </Tooltip>
           </>
         );
       },

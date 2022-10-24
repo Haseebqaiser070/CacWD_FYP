@@ -3,10 +3,10 @@ import "../css/styles.css";
 import logo from "./comsats_logo.png";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
-import { Card } from "@mui/material";
+import { Button, Card } from "@mui/material";
 export default function CACDashboard() {
   const [Rows, setRows] = useState([]);
-  const [rr,setrr]=useState('')
+  const [rr, setrr] = useState("");
 
   useEffect(() => {
     getUser();
@@ -16,7 +16,7 @@ export default function CACDashboard() {
       withCredentials: true,
     });
     setRows(res.data);
-    setrr("rr")
+    setrr("rr");
   };
   const columns = [
     {
@@ -54,49 +54,92 @@ export default function CACDashboard() {
     },
   ];
 
-  const [date,setdate]=useState(new Date(Date.now()))
-  
-  useEffect(()=>{
-    deadlines()
-  },[rr])
-  
-  const deadlines= ()=>{
-    var clone = Rows.map((i)=>{
-      var dd = new Date(i.Deadline)
-      if(date<=dd){
-        i.Deadline = dd.getDate()+"/"+(dd.getMonth()+1)+"/"+dd.getFullYear()+"("+dd.getHours()+":"+dd.getMinutes()+")"
-        return i
+  const [date, setdate] = useState(new Date(Date.now()));
+
+  useEffect(() => {
+    deadlines();
+  }, [rr]);
+
+  const deadlines = () => {
+    var clone = Rows.map((i) => {
+      var dd = new Date(i.Deadline);
+      if (date <= dd) {
+        i.Deadline =
+          dd.getDate() +
+          "/" +
+          (dd.getMonth() + 1) +
+          "/" +
+          dd.getFullYear() +
+          "(" +
+          dd.getHours() +
+          ":" +
+          dd.getMinutes() +
+          ")";
+        return i;
+      } else if (date > dd) {
+        i.Deadline = "Deadline Passed";
+        return i;
       }
-      else if(date>dd){
-        i.Deadline = "Deadline Passed"
-        return i
-      }  
-    })
-    setRows(clone)  
-  }
+    });
+    setRows(clone);
+  };
 
   return (
     <div style={{ width: "100%", padding: 30, backgroundColor: "#f5f5f5" }}>
       <h1 className="pb-4 my-2">
         <b>DASHBOARD</b>
       </h1>
+
       <div style={{ padding: 20 }}>
-        <Card style={{ padding: 25 }}>
-          <h4 style={{ fontSize: "18px" }} className="mb-4">
-            All Ongoing Tasks
-          </h4>
-          <div>
-            <DataGrid
-              style={{ height: 400, width: "100%" }}
-              columns={columns}
-              getRowId={(Rows) => Rows._id}
-              rows={Rows}
-              pageSize={10}
-              rowsPerPageOptions={[5]}
-              disableSelectionOnClick
-            />
-          </div>
-        </Card>
+        <div>
+          <Card style={{ padding: 25, marginBottom: 15 }}>
+            <h4 style={{ fontSize: "18px" }} className="mb-4">
+              Upcoming Meetings
+            </h4>
+            <div className="table-responsive my-4">
+              <table className="table table-hover">
+                <thead style={{ backgroundColor: "#00447f", color: "#fff" }}>
+                  <th className="col-8 ">Meeting Subject</th>
+                  <th className="col-4">Date</th>
+                </thead>
+                <tbody style={{ backgroundColor: "#f5f5f5" }}>
+                  <tr>
+                    <td>Task Title</td>
+                    <td>Time</td>
+                  </tr>
+                </tbody>
+              </table>
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                // onClick={() => {
+                //   navigate(`/Admin/CreateNewMeeting`, { replace: true });
+                // }}
+              >
+                View All
+              </Button>
+            </div>
+          </Card>
+        </div>
+        <div>
+          <Card style={{ padding: 25 }}>
+            <h4 style={{ fontSize: "18px" }} className="mb-4">
+              All Ongoing Tasks
+            </h4>
+            <div>
+              <DataGrid
+                style={{ height: 400, width: "100%" }}
+                columns={columns}
+                getRowId={(Rows) => Rows._id}
+                rows={Rows}
+                pageSize={10}
+                rowsPerPageOptions={[5]}
+                disableSelectionOnClick
+              />
+            </div>
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -62,7 +62,7 @@ export default function UserCards(props) {
           <Grid item xs={4}>
             <Item style={style}>
               <h1>{Evaluator}</h1>
-              <h5>Total EVALUATORS</h5>
+              <h5>TOTAL EVALUATORS</h5>
             </Item>
           </Grid>
         </Grid>

@@ -235,9 +235,8 @@ export default function FolderTemplete() {
     <div
       className="container-fluid"
       style={{
-        height: 700,
+        height: "700",
         width: "100%",
-
         overflow: "hidden",
       }}
     >
@@ -272,7 +271,7 @@ export default function FolderTemplete() {
       {Folder.files.length == 0 ? (
         <div>No Files Uploaded</div>
       ) : (
-        <div style={{ padding: 30, overflowY: "scroll", maxHeight: "100vh" }}>
+        <div style={{ padding: 30, overflowY: "scroll", maxHeight: "90vh" }}>
           <div id="lecture">
             <h1
               className="mb-4 pb-4"
@@ -1506,16 +1505,33 @@ export default function FolderTemplete() {
                 </Card>
               )}
               <p>{}</p>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                size="large"
-                type="submit"
-                onClick={() => addEvaluationstatus()}
-              >
-                Evaluate
-              </Button>
+
+              <div className="row">
+                <div className="col-6">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    size="medium"
+                    type="submit"
+                    onClick={() => addEvaluationstatus()}
+                  >
+                    Evaluate
+                  </Button>
+                </div>
+                <div className="col-6">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    size="medium"
+                    type="submit"
+                    // onClick={() => addEvaluationstatus()}
+                  >
+                    Send Folder For Revision
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@ module.exports.signupMail = (email, password) => {
     subject: "Signup Successful",
     text:
       "Your account has been created. Below are your login credentials. \n\nLogin Credentials " +
-      "\nEmail: " +
+      "\nUserID: " +
       email +
       "\nPassword: " +
       password,
@@ -36,18 +36,19 @@ module.exports.signupMail = (email, password) => {
   });
 };
 
-module.exports.TaskAssigned = (e,email) => {
+module.exports.TaskAssigned = (e, email) => {
   console.log("sfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Task Assignment",
     text:
+      "You have been assigned to a new task. Please login to your dashboard to check the details\n\n" +
       "Assigned Task Type :" +
       e.taskType +
-      " Assigned Course : " +
+      "\n Assigned Course : " +
       e.Course?.Name +
-      " Deadline: " +
+      "\n Deadline: " +
       e.Deadline,
   };
 
@@ -60,18 +61,13 @@ module.exports.TaskAssigned = (e,email) => {
   });
 };
 
-
-module.exports.TaskReturned = (e,email) => {
+module.exports.TaskReturned = (e, email) => {
   console.log("sfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Task Returned",
-    text:
-      "Returned Task : " +
-      e.taskType +
-      " Status : " +
-      e.Status 
+    text: "Returned Task : " + e.taskType + " Status : " + e.Status,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -83,17 +79,13 @@ module.exports.TaskReturned = (e,email) => {
   });
 };
 
-module.exports.TaskLock= (e,email) => {
+module.exports.TaskLock = (e, email) => {
   console.log("sfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Task Lock",
-    text:
-      "Task : " +
-      e.taskType +
-      " Status : " +
-      e.Status 
+    text: "Task : " + e.taskType + " Status : " + e.Status,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -105,7 +97,7 @@ module.exports.TaskLock= (e,email) => {
   });
 };
 
-module.exports.CourseAssign= (e,email) => {
+module.exports.CourseAssign = (e, email) => {
   console.log("sfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
@@ -117,7 +109,7 @@ module.exports.CourseAssign= (e,email) => {
       " Program : " +
       e.Program +
       " Section : " +
-      e.Section
+      e.Section,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -129,12 +121,12 @@ module.exports.CourseAssign= (e,email) => {
   });
 };
 
-module.exports.ResetAvailability= (email) => {
+module.exports.ResetAvailability = (email) => {
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Reset Availability",
-    text:"New Semester has Started. Please Set Your Availabilities"
+    text: "New Semester has Started. Please Set Your Availabilities",
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -146,18 +138,14 @@ module.exports.ResetAvailability= (email) => {
   });
 };
 
-
-module.exports.TaskLock= (e,email) => {
+module.exports.TaskLock = (e, email) => {
   console.log("sfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Task Revision",
     text:
-      "Returned Task For Revision : " +
-      e.taskType +
-      " Status : " +
-      e.Status 
+      "Returned Task For Revision : " + e.taskType + " Status : " + e.Status,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -169,16 +157,12 @@ module.exports.TaskLock= (e,email) => {
   });
 };
 
-module.exports.MeetingDetails = (email,time,title) => {
+module.exports.MeetingDetails = (email, time, title) => {
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Meeting Scheduled",
-    text:
-      "Meeting Title :" +
-      title +
-      ", Meeting Time : " +
-      time
+    text: "Meeting Title :" + title + ", Meeting Time : " + time,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

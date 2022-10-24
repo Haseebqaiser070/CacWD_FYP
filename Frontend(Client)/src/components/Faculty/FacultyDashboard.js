@@ -39,7 +39,7 @@ export default function FacultyDashboard() {
     },
   ];
   return (
-    <div style={{ height: 760, width: "100%", padding: 30 }}>
+    <div style={{ width: "100%", padding: 30 }}>
       <div className="row mt-4 mb-4">
         <div className="row mb-4 py-4">
           <div className="col">
@@ -128,7 +128,7 @@ export default function FacultyDashboard() {
           </Card>
         </div>
         <div>
-          <Card style={{ padding: 25 }}>
+          <Card style={{ padding: 25, marginBottom: 25 }}>
             <h4 style={{ fontSize: "18px" }} className="mb-4">
               Syllabus of Courses
             </h4>
@@ -146,6 +146,41 @@ export default function FacultyDashboard() {
                   <tr>
                     <td>BS Computer Science</td>
                     <td>Introduction to ICT</td>
+                    <td>
+                      {" "}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+
+                        // onClick={handleOpen1}
+                      >
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+        <div>
+          <Card style={{ padding: 25 }}>
+            <h4 style={{ fontSize: "18px" }} className="mb-4">
+              OBE Guide Book
+            </h4>
+            <div className="table-responsive my-4">
+              <table
+                className="table table-hover"
+                style={{ textAlign: "center" }}
+              >
+                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                  <th className="col-8">OBE Guide Book</th>
+                  <th className="col-4">Action</th>
+                </thead>
+                <tbody style={{ backgroundColor: "#f5f5f5" }}>
+                  <tr>
+                    <td>OBE Guide Book</td>
                     <td>
                       {" "}
                       <Button

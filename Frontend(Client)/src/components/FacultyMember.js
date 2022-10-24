@@ -8,6 +8,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import {
   Box,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   FormControl,
   InputLabel,
   MenuItem,
@@ -34,7 +38,7 @@ export default function FacultyMembers() {
   axios.defaults.withCredentials = true;
   const [open, setOpen] = useState(false);
   const handleClose = () => {
-    setOpen(false);    
+    setOpen(false);
     setUser("");
     setobj([
       {
@@ -86,25 +90,27 @@ export default function FacultyMembers() {
     const response = await axios.get(
       `http://localhost:4000/UserAssigedFolders/showAllbyid/${id}`
     );
-    console.log("response.obj",response.data)
-    const col =response.data.filter((i) => {
-        if (i.LabTheory != "Lab") {
-          return {
-            Program: i.Program,
-            Course: i.Course,
-            Section: i.Section,
-          };
-        }
-      })
-    
-    const col2 = await Promise.all(col.map(async (i) => {
+    console.log("response.obj", response.data);
+    const col = response.data.filter((i) => {
+      if (i.LabTheory != "Lab") {
+        return {
+          Program: i.Program,
+          Course: i.Course,
+          Section: i.Section,
+        };
+      }
+    });
+
+    const col2 = await Promise.all(
+      col.map(async (i) => {
         if (i.LabTheory != "Lab") {
           const res = await axios.get(
             `http://localhost:4000/ProgramCourses/show/${i.Program}`
           );
           return [...res.data];
         }
-      }))
+      })
+    );
     setCourse([...col2]);
     setobj([...col]);
     setup(true);
@@ -138,22 +144,33 @@ export default function FacultyMembers() {
       alert("Empty Field");
     }
   };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   const columns = [
     {
       field: "Name",
       headerName: "Name",
-      flex: 2,
+      width: "250",
     },
     {
       field: "Email",
       headerName: "Email",
-      flex: 3,
+      width: "400",
     },
 
     {
       field: "actions",
       headerName: "Actions",
-      flex: 2,
+      width: "350",
       editable: false,
       renderCell: ({ row }) => (
         <>
@@ -186,105 +203,155 @@ export default function FacultyMembers() {
               Edit Course
             </Button>
           )}
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={muiAbtn}
+            onClick={handleClickOpen}
+          >
+            <AiFillDelete style={{ marginRight: "6px" }} />
+            Cancel
+          </Button>
         </>
       ),
     },
   ];
   return (
     <div
-      className="container"
-      style={{ height: 700, width: "100%", padding: 20 }}
+      style={{
+        width: "100%",
+        padding: 40,
+        backgroundColor: "#f5f5f5",
+      }}
     >
-      <h1 className="py-4">
-        <b>Faculty Members</b>
-      </h1>
-      <div>
-        <DataGrid
-          style={{ height: 400, width: "100%" }}
-          columns={columns}
-          getRowId={(Rows) => Rows._id}
-          rows={Rows}
-          pageSize={10}
-          rowsPerPageOptions={[5]}
-          disableSelectionOnClick
-        />
-      </div>
+      <Card style={{ padding: 30, borderRadius: 10 }}>
+        <h1>
+          <b>FACULTY MEMBERS</b>
+        </h1>
+        <div className="d-flex justify-content-end mb-4">
+          <Button
+            variant="contained"
+            className="mb-2 muibtn"
+            color="primary"
+            size="small"
+            style={muibtn}
+            onClick={handleClickOpen}
+          >
+            <AiFillDelete style={{ marginRight: "6px" }} />
+            Cancel all folders Assignment
+          </Button>
+          <Dialog
+            open={openDialog}
+            onClose={handleCloseDialog}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure to cancel all courses assigned to faculty?"}
+            </DialogTitle>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box component="form" sx={style} onSubmit={Submitform}>
-          {obj.map((o, index) => {
-            return (
-              <>
-                <h4 className="mb-4">ASSIGN COURSE {index + 1}</h4>
-                {obj.length > 1 && (
-                  <FormControl>
-                    <Button
-                      className="mb-3"
-                      variant="contained"
-                      color="primary"
-                      size="medium"
-                      style={muibtn}
-                      onClick={() => {
-                        const clone = [...obj];
-                        console.log("ondex", index);
-                        if (clone.length == index + 1) {
-                          console.log("last rm");
-                          clone[index] = {
+            <DialogActions>
+              <Button onClick={handleCloseDialog}>Yes</Button>
+              <Button onClick={handleCloseDialog} autoFocus>
+                No
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+        <div>
+          <DataGrid
+            style={{ height: 400, width: "100%" }}
+            columns={columns}
+            getRowId={(Rows) => Rows._id}
+            rows={Rows}
+            pageSize={10}
+            rowsPerPageOptions={[5]}
+            disableSelectionOnClick
+          />
+        </div>
+
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box component="form" sx={style} onSubmit={Submitform}>
+            {obj.map((o, index) => {
+              return (
+                <>
+                  <h4 className="mb-4">ASSIGN COURSE {index + 1}</h4>
+                  {obj.length > 1 && (
+                    <FormControl>
+                      <Button
+                        className="mb-3"
+                        variant="contained"
+                        color="primary"
+                        size="medium"
+                        style={muibtn}
+                        onClick={() => {
+                          const clone = [...obj];
+                          console.log("ondex", index);
+                          if (clone.length == index + 1) {
+                            console.log("last rm");
+                            clone[index] = {
                               Program: "",
                               Course: "",
-                              Section: "",                            
-                          };
-                        } else if (clone.length != index + 1) {
-                          console.log("not last rm");
-                          clone[index] = clone[index + 1];
-                        }                        
-                        const a = clone.splice(index, 1);
-                        setobj([...clone]);
-                        var clone2 = [...Courses];
-                        if (clone2.length == index + 1) {
-                          console.log("last rm");
-                          clone2[index] = [];
-                        } else if (clone2.length != index + 1) {
-                          clone2[index] = clone2[index + 1];
-                        }
-                        const b = clone2.splice(index, 1);
-                        setCourse([...clone2]);
-                      }}                      
-                    >
-                      remove
-                    </Button>
-                  </FormControl>
-                )}
+                              Section: "",
+                            };
+                          } else if (clone.length != index + 1) {
+                            console.log("not last rm");
+                            clone[index] = clone[index + 1];
+                          }
+                          const a = clone.splice(index, 1);
+                          setobj([...clone]);
+                          var clone2 = [...Courses];
+                          if (clone2.length == index + 1) {
+                            console.log("last rm");
+                            clone2[index] = [];
+                          } else if (clone2.length != index + 1) {
+                            clone2[index] = clone2[index + 1];
+                          }
+                          const b = clone2.splice(index, 1);
+                          setCourse([...clone2]);
+                        }}
+                      >
+                        remove
+                      </Button>
+                    </FormControl>
+                  )}
 
-                <div className=" mb-4">
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="taskType">Select Program</InputLabel>
-                    <Select
-                      fullWidth
-                      label="Select Program"
-                      value={obj[index].Program}
-                      onChange={(e) => {
-                        var clone = [...obj];
-                        clone[index].Program = e.target.value;
-                        setobj([...clone]);
-                        getProgramCourses(index, e.target.value);
-                      }}
-                    >
-                      {
-                    up&&(<MenuItem value={obj[index].Program} disabled selected>{obj[index].Program}</MenuItem>)}
-                    {
-                      Programdb.map((p) => {
-                        return <MenuItem value={p}>{p}</MenuItem>;
-                      })}
-                    </Select>
-                  </FormControl>
+                  <div className=" mb-4">
+                    <FormControl fullWidth size="small">
+                      <InputLabel id="taskType">Select Program</InputLabel>
+                      <Select
+                        fullWidth
+                        label="Select Program"
+                        value={obj[index].Program}
+                        onChange={(e) => {
+                          var clone = [...obj];
+                          clone[index].Program = e.target.value;
+                          setobj([...clone]);
+                          getProgramCourses(index, e.target.value);
+                        }}
+                      >
+                        {up && (
+                          <MenuItem
+                            value={obj[index].Program}
+                            disabled
+                            selected
+                          >
+                            {obj[index].Program}
+                          </MenuItem>
+                        )}
+                        {Programdb.map((p) => {
+                          return <MenuItem value={p}>{p}</MenuItem>;
+                        })}
+                      </Select>
+                    </FormControl>
 
-                  {/* <select
+                    {/* <select
                     class="form-select"
                     placeholder="Select Program"
                     label="Assign Program"
@@ -302,10 +369,10 @@ export default function FacultyMembers() {
                       return <option value={p}>{p}</option>;
                     })}
                   </select> */}
-                </div>
-                <div className="row">
-                  <div className="col">
-                    {/* <Autocomplete
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      {/* <Autocomplete
                       multiple
                       id="tags-standard"
                       className="mb-4"
@@ -332,98 +399,98 @@ export default function FacultyMembers() {
                       )}
                     /> */}
 
-                    <FormControl fullWidth size="small">
-                      <InputLabel id="taskType">Assign Cources</InputLabel>
-                      <Select
-                        className="mb-4"
-                        labelId="taskType"
-                        id="taskType"
-                        value={obj[index].Course}
-                        label="Assign Course"
-                        onChange={(e) => {
-                          const clone = [...obj];
-                          clone[index].Course = e.target.value;
-                          setobj([...clone]);
-                        }}
-                        autoWidth
-                      >  {
-                        up&&(
-                          <option
-                          value={obj[index]?.Course}
-                          selected
-                          disabled
-                          hidden
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="taskType">Assign Cources</InputLabel>
+                        <Select
+                          className="mb-4"
+                          labelId="taskType"
+                          id="taskType"
+                          value={obj[index].Course}
+                          label="Assign Course"
+                          onChange={(e) => {
+                            const clone = [...obj];
+                            clone[index].Course = e.target.value;
+                            setobj([...clone]);
+                          }}
+                          autoWidth
                         >
-                          {obj[index]?.Course?.Name}
-                        </option>
-                        )}
-                        
-                        
-                        {Courses[index].map((a) => {
-                          return <MenuItem value={a}>{a.Name}</MenuItem>;
-                        })}
-                      </Select>
-                    </FormControl>
+                          {" "}
+                          {up && (
+                            <option
+                              value={obj[index]?.Course}
+                              selected
+                              disabled
+                              hidden
+                            >
+                              {obj[index]?.Course?.Name}
+                            </option>
+                          )}
+                          {Courses[index].map((a) => {
+                            return <MenuItem value={a}>{a.Name}</MenuItem>;
+                          })}
+                        </Select>
+                      </FormControl>
+                    </div>
+                    <div className="col">
+                      <FormControl fullWidth size="small">
+                        <TextField
+                          className="mb-4"
+                          label="Section"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={obj[index].Section}
+                          onChange={(e) => {
+                            const clone = [...obj];
+                            clone[index].Section = e.target.value;
+                            setobj([...clone]);
+                          }}
+                        />
+                      </FormControl>
+                    </div>
                   </div>
-                  <div className="col">
-                    <FormControl fullWidth size="small">
-                      <TextField
-                        className="mb-4"
-                        label="Section"
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        value={obj[index].Section}
-                        onChange={(e) => {
-                          const clone = [...obj];
-                          clone[index].Section = e.target.value;
-                          setobj([...clone]);
-                        }}
-                      />
-                    </FormControl>
-                  </div>
-                </div>
-              </>
-            );
-          })}
-          <div className="d-flex justify-content-center">
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              width="100"
-              style={{
-                backgroundColor: "#4b2980",
-                marginTop: 10,
-                marginRight: 20,
-              }}
-              onClick={() => {
-                setobj([
-                  ...obj,
-                  {
-                    Program: "",
-                    Course: "",
-                    Section: "",
-                  },
-                ]);
-                setCourse([...Courses, []]);
-              }}
-            >
-              Add another Course
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              width="100"
-              type="submit"
-              style={{ backgroundColor: "#4b2980", marginTop: 10 }}
-            >
-              Assign Course
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+                </>
+              );
+            })}
+            <div className="d-flex justify-content-center">
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                width="100"
+                style={{
+                  backgroundColor: "#4b2980",
+                  marginTop: 10,
+                  marginRight: 20,
+                }}
+                onClick={() => {
+                  setobj([
+                    ...obj,
+                    {
+                      Program: "",
+                      Course: "",
+                      Section: "",
+                    },
+                  ]);
+                  setCourse([...Courses, []]);
+                }}
+              >
+                Add another Course
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                width="100"
+                type="submit"
+                style={{ backgroundColor: "#4b2980", marginTop: 10 }}
+              >
+                Assign Course
+              </Button>
+            </div>
+          </Box>
+        </Modal>
+      </Card>
     </div>
   );
 }
