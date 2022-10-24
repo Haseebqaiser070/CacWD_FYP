@@ -58,39 +58,23 @@ module.exports.Add2 = async (req, res) => {
     const userF = await Userdoc.findById(req.body.User._id).populate("CourseFolders").
         populate({path:"CourseFolders",populate:{path:"Course",model:"ProgramCourses"}});
         
-    var Folders =  []
     await Promise.all(userF.CourseFolders.map(async(i)=>{
-        try{
-         var check=false 
-        req.body.obj.forEach((e)=>{
-          if(i.Course._id==e.Course._id&&e.Section==i.Section){
-            check = true
-          }
-        })
-        if(check){
-          Folders.push(i)      
-        }
-        else{
-          await Folderdoc.deleteOne({_id:i._id}) 
-        }
-      }  
+        try{         
+          await Folderdoc.deleteOne({_id:i._id})         
+        }  
     
       catch(er){
           console.error(er);
       }
     }))
     console.log("\nFoldersffoldersffoldersffolders",Folders)
-
+    
+    var Folders =  []
+    
     await Promise.all(await req.body.obj.map(async(e)=>{
      try{
       
-      var check=true 
-      Folders.forEach(async(i)=>{
-         if(i.Course._id==e.Course._id&&e.Section==i.Section){
-           check = false
-         }
-       })
-     if(check){
+
       const fold = await Folderdoc.create({Program:e.Program,
         Course:e.Course,
         Section:e.Section,
@@ -108,9 +92,7 @@ module.exports.Add2 = async (req, res) => {
         LabTheory:"Lab",
       })
       Folders.push(foldlab)
-      }}
-                        
-    }    
+      }}                                
      catch(er){
          console.error(er);
      }}

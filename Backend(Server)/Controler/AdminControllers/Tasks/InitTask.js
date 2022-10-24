@@ -737,10 +737,10 @@ module.exports.Showall = async (req, res) => {
           var check = false;
           await Promise.all(
             i.Task.map(async (e) => {
-              if (e.status != "Finished") {
+              if (e.Status != "Finished") {
                 const date = new Date(Date.now());
                 const date2 = new Date(e.Deadline);
-                if (e.status != "Returned" && date2 < date) {
+                if (e.Status != "Returned" && date2 < date) {
                   const task = await Task.findOne({ _id: e._id });
                   task.Status = "Late";
                   const newtask = await Task.findByIdAndUpdate(task._id, task);
@@ -771,7 +771,7 @@ module.exports.ShowallDone = async (req, res) => {
     const retn = InitTasks.filter((i) => {
       var check = true;
       i.Task.forEach((e) => {
-        if (e.status != "Finished") {
+        if (e.Status != "Finished") {
           check = false;
         }
       });

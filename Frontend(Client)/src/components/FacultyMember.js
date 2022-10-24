@@ -34,7 +34,8 @@ export default function FacultyMembers() {
   axios.defaults.withCredentials = true;
   const [open, setOpen] = useState(false);
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false);    
+    setUser("");
     setobj([
       {
         Program: "",
@@ -42,7 +43,6 @@ export default function FacultyMembers() {
         Section: "",
       },
     ]);
-    setUser("");
     setCourse([[]]);
     setup(false);
   };
@@ -86,8 +86,8 @@ export default function FacultyMembers() {
     const response = await axios.get(
       `http://localhost:4000/UserAssigedFolders/showAllbyid/${id}`
     );
-    const col = await Promise.all(
-      response.data.filter((i) => {
+    console.log("response.obj",response.data)
+    const col =response.data.filter((i) => {
         if (i.LabTheory != "Lab") {
           return {
             Program: i.Program,
@@ -96,17 +96,15 @@ export default function FacultyMembers() {
           };
         }
       })
-    );
-    const col2 = await Promise.all(
-      await col.map(async (i) => {
+    
+    const col2 = await Promise.all(col.map(async (i) => {
         if (i.LabTheory != "Lab") {
           const res = await axios.get(
             `http://localhost:4000/ProgramCourses/show/${i.Program}`
           );
           return [...res.data];
         }
-      })
-    );
+      }))
     setCourse([...col2]);
     setobj([...col]);
     setup(true);
@@ -232,17 +230,19 @@ export default function FacultyMembers() {
                       size="medium"
                       style={muibtn}
                       onClick={() => {
-                        var clone = [...obj];
+                        const clone = [...obj];
+                        console.log("ondex", index);
                         if (clone.length == index + 1) {
                           console.log("last rm");
                           clone[index] = {
-                            Program: "",
-                            Course: "",
-                            Section: "",
+                              Program: "",
+                              Course: "",
+                              Section: "",                            
                           };
                         } else if (clone.length != index + 1) {
+                          console.log("not last rm");
                           clone[index] = clone[index + 1];
-                        }
+                        }                        
                         const a = clone.splice(index, 1);
                         setobj([...clone]);
                         var clone2 = [...Courses];
@@ -254,7 +254,7 @@ export default function FacultyMembers() {
                         }
                         const b = clone2.splice(index, 1);
                         setCourse([...clone2]);
-                      }}
+                      }}                      
                     >
                       remove
                     </Button>
@@ -267,14 +267,18 @@ export default function FacultyMembers() {
                     <Select
                       fullWidth
                       label="Select Program"
+                      value={obj[index].Program}
                       onChange={(e) => {
-                        const clone = [...obj];
+                        var clone = [...obj];
                         clone[index].Program = e.target.value;
                         setobj([...clone]);
                         getProgramCourses(index, e.target.value);
                       }}
                     >
-                      {Programdb.map((p) => {
+                      {
+                    up&&(<MenuItem value={obj[index].Program} disabled selected>{obj[index].Program}</MenuItem>)}
+                    {
+                      Programdb.map((p) => {
                         return <MenuItem value={p}>{p}</MenuItem>;
                       })}
                     </Select>
@@ -342,15 +346,19 @@ export default function FacultyMembers() {
                           setobj([...clone]);
                         }}
                         autoWidth
-                      >
-                        <option
+                      >  {
+                        up&&(
+                          <option
                           value={obj[index]?.Course}
                           selected
                           disabled
                           hidden
                         >
-                          {obj[index]?.Course != "" && obj[index]?.Course?.Name}
+                          {obj[index]?.Course?.Name}
                         </option>
+                        )}
+                        
+                        
                         {Courses[index].map((a) => {
                           return <MenuItem value={a}>{a.Name}</MenuItem>;
                         })}

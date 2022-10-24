@@ -280,3 +280,16 @@ module.exports.showUsers= async (req, res) => {
     console.log(err);
   }
 };
+
+// module.exports.ExtensionRequest= async (req, res) => {
+//   try {
+//     if (!req.user) return await res.status(401).json("Timed Out");
+//     const task = await Task.findById(req.params.id).populate("User").populate("Course");
+//     task.Status="Extension Request"
+//     const newtask  = await Task.findByIdAndUpdate(task._id,task)
+//     console.log("all Tasks", task);
+//     await res.json(task);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
