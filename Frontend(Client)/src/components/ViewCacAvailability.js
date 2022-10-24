@@ -13,54 +13,16 @@ import axios from "axios";
 import { Box, Card, Modal } from "@mui/material";
 import { muibtn } from "./style";
 
-const columns = [
-  {
-    field: "cacMember",
-    headerName: "CAC Member",
-    flex: 1,
-  },
-  {
-    field: "mon",
-    headerName: "Monday",
-    flex: 1,
-  },
-  {
-    field: "tue",
-    headerName: "Tuesday",
-    flex: 1,
-  },
-  {
-    field: "wed",
-    headerName: "Wednesday",
-    flex: 1,
-  },
-  {
-    field: "thur",
-    headerName: "Thusday",
-    flex: 1,
-  },
-  {
-    field: "fri",
-    headerName: "Friday",
-    flex: 1,
-  },
-  {
-    field: "sat",
-    headerName: "Saturday",
-    flex: 1,
-  },
-];
-
 const columns1 = [
   {
     field: "day",
-    headerName: "Day",
-    flex: 1,
+    headerName: "Days",
+    width: "200",
   },
   {
     field: "slot",
-    headerName: "Time",
-    flex: 1,
+    headerName: "Free Time of Members",
+    width: "700",
   },
 ];
 
@@ -69,7 +31,7 @@ export default function ViewCacAvailability() {
   const [loading, setLoading] = useState(true);
   const [data, setdata] = useState();
   const [ideal, setideal] = useState();
-  const [flag,setflag]=useState()
+  const [flag, setflag] = useState();
   const [Arr, setArry] = useState([
     ["", "", "", "", "", ""],
     ["", "", "", "", "", ""],
@@ -333,7 +295,7 @@ export default function ViewCacAvailability() {
       });
       setArry(a);
       setLoading(false);
-      setflag(true)
+      setflag(true);
     };
     const getavailability = async () => {
       var array = [
@@ -381,65 +343,64 @@ export default function ViewCacAvailability() {
       });
 
       var maxm = Math.max(...countm);
-      var s=[]
-      countm.map((item,index)=>{
-        if(item==maxm){
-          s.push(array[index])
+      var s = [];
+      countm.map((item, index) => {
+        if (item == maxm) {
+          s.push(array[index]);
         }
-      })
-     console.log("ada",s)
+      });
+      console.log("ada", s);
 
       var idealtime = [];
-      idealtime.push({ id: 1, day: "Monday", slot: s});
+      idealtime.push({ id: 1, day: "Monday", slot: s });
       maxm = Math.max(...countt);
-      var s=[]
-      countt.map((item,index)=>{
-        if(item==maxm){
-          s.push(array[index])
+      var s = [];
+      countt.map((item, index) => {
+        if (item == maxm) {
+          s.push(array[index]);
         }
-      })
-      console.log("ad1a",s)
-
+      });
+      console.log("ad1a", s);
 
       idealtime.push({ id: 2, day: "Tuesday", slot: s });
       maxm = Math.max(...countw);
-      var s=[]
-      countw.map((item,index)=>{
-        if(item==maxm){
-          s.push(array[index])
+      var s = [];
+      countw.map((item, index) => {
+        if (item == maxm) {
+          s.push(array[index]);
         }
-      })
-      console.log("ada2",s)
+      });
+      console.log("ada2", s);
 
       idealtime.push({ id: 3, day: "Wednesday", slot: s });
       maxm = Math.max(...countth);
-      var s=[]
-      countth.map((item,index)=>{
-        if(item==maxm){
-          s.push(array[index])
+      var s = [];
+      countth.map((item, index) => {
+        if (item == maxm) {
+          s.push(array[index]);
         }
-      })
-      console.log("ada3",s)
+      });
+      console.log("ada3", s);
 
-      idealtime.push({ id: 4, day: "Thursday", slot: s});
+      idealtime.push({ id: 4, day: "Thursday", slot: s });
       maxm = Math.max(...countf);
-      var s=[]
-      countf.map((item,index)=>{
-        if(item==maxm){
-          s.push(array[index])
+      var s = [];
+      countf.map((item, index) => {
+        if (item == maxm) {
+          s.push(array[index]);
         }
-      })
-      console.log("ada4",s)
+      });
+      console.log("ada4", s);
 
       idealtime.push({ id: 5, day: "Friday", slot: s });
       maxm = Math.max(...counts);
-      var s=[]
-      counts.map((item,index)=>{
-        if(item==maxm){
-          s.push(array[index])
+      var s = [];
+      counts.map((item, index) => {
+        if (item == maxm) {
+          s.push(array[index]);
         }
-      })
-      console.log("ada5",s)
+      });
+      console.log("ada5", s);
 
       idealtime.push({ id: 6, day: "Saturday", slot: s });
       console.log("countm", idealtime);
@@ -452,11 +413,10 @@ export default function ViewCacAvailability() {
     };
     getavailability();
     getAll();
-    
   }, [flag]);
   const submit = () => {
     axios.delete(`http://localhost:4000/Meeting/delete-availability`);
-    alert("Notification Sent!!")
+    alert("Notification Sent!!");
   };
 
   const [rows, setRows] = React.useState([]);
@@ -506,63 +466,171 @@ export default function ViewCacAvailability() {
               >
                 <tr>
                   <th style={{ padding: 15 }}>08:30-10:00</th>
-                  {Arr[0]?.map((item) => (
-                    (item==""?
-                      <td style={{ padding: 25,backgroundColor:'grey',color:'white',borderWidth:2 }}>------</td>
-                      :
-                    <td style={{ padding: 15,backgroundColor:'darkgreen',color:'white',borderWidth:2}}>{item}</td>
+                  {Arr[0]?.map((item) =>
+                    item == "" ? (
+                      <td
+                        style={{
+                          padding: 25,
+                          backgroundColor: "grey",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        ------
+                      </td>
+                    ) : (
+                      <td
+                        style={{
+                          padding: 15,
+                          backgroundColor: "darkgreen",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        {item}
+                      </td>
                     )
-                  ))}
+                  )}
                 </tr>
                 <tr>
                   <th style={{ padding: 15 }}>10:00-11:30</th>
-                  {Arr[1]?.map((item) => (
-                    (item==""?
-                    <td style={{ padding: 25,backgroundColor:'grey',color:'white' ,borderWidth:2}}>------</td>
-                    :
-                  <td style={{ padding: 15,backgroundColor:'darkgreen',color:'white',borderWidth:2}}>{item}</td>
-                  )
-                  ))}
+                  {Arr[1]?.map((item) =>
+                    item == "" ? (
+                      <td
+                        style={{
+                          padding: 25,
+                          backgroundColor: "grey",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        ------
+                      </td>
+                    ) : (
+                      <td
+                        style={{
+                          padding: 15,
+                          backgroundColor: "darkgreen",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        {item}
+                      </td>
+                    )
+                  )}
                 </tr>
                 <tr style={{ padding: 15 }}>
                   <th style={{ padding: 15 }}>11:30-01:00</th>
-                  {Arr[2]?.map((item) => (
-                    (item==""?
-                    <td style={{ padding: 25,backgroundColor:'grey',color:'white' ,borderWidth:2}}>------</td>
-                    :
-                  <td style={{ padding: 15,backgroundColor:'darkgreen',color:'white',borderWidth:2}}>{item}</td>
-                  )
-                  ))}
+                  {Arr[2]?.map((item) =>
+                    item == "" ? (
+                      <td
+                        style={{
+                          padding: 25,
+                          backgroundColor: "grey",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        ------
+                      </td>
+                    ) : (
+                      <td
+                        style={{
+                          padding: 15,
+                          backgroundColor: "darkgreen",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        {item}
+                      </td>
+                    )
+                  )}
                 </tr>
                 <tr>
                   <th style={{ padding: 15 }}>01:00-02:30</th>
-                  {Arr[3]?.map((item) => (
-                    (item==""?
-                    <td style={{ padding: 25,backgroundColor:'grey',color:'white',borderWidth:2 }}>------</td>
-                    :
-                  <td style={{ padding: 15,backgroundColor:'darkgreen',color:'white',borderWidth:2}}>{item}</td>
-                  )
-                  ))}
+                  {Arr[3]?.map((item) =>
+                    item == "" ? (
+                      <td
+                        style={{
+                          padding: 25,
+                          backgroundColor: "grey",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        ------
+                      </td>
+                    ) : (
+                      <td
+                        style={{
+                          padding: 15,
+                          backgroundColor: "darkgreen",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        {item}
+                      </td>
+                    )
+                  )}
                 </tr>
                 <tr>
                   <th style={{ padding: 15 }}>02:30-04:00</th>
-                  {Arr[4]?.map((item) => (
-                    (item==""?
-                    <td style={{ padding: 25,backgroundColor:'grey',color:'white',borderWidth:2 }}>------</td>
-                    :
-                  <td style={{ padding: 15,backgroundColor:'darkgreen',color:'white',borderWidth:2}}>{item}</td>
-                  )
-                  ))}
+                  {Arr[4]?.map((item) =>
+                    item == "" ? (
+                      <td
+                        style={{
+                          padding: 25,
+                          backgroundColor: "grey",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        ------
+                      </td>
+                    ) : (
+                      <td
+                        style={{
+                          padding: 15,
+                          backgroundColor: "darkgreen",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        {item}
+                      </td>
+                    )
+                  )}
                 </tr>
                 <tr>
                   <th style={{ padding: 15 }}>04:00-05:30</th>
-                  {Arr[5]?.map((item) => (
-                    (item==""?
-                    <td style={{ padding: 25,backgroundColor:'grey',color:'white',borderWidth:2 }}>------</td>
-                    :
-                  <td style={{ padding: 15,backgroundColor:'darkgreen',color:'white',borderWidth:2}}>{item}</td>
-                  )
-                  ))}
+                  {Arr[5]?.map((item) =>
+                    item == "" ? (
+                      <td
+                        style={{
+                          padding: 25,
+                          backgroundColor: "grey",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        ------
+                      </td>
+                    ) : (
+                      <td
+                        style={{
+                          padding: 15,
+                          backgroundColor: "darkgreen",
+                          color: "white",
+                          borderWidth: 2,
+                        }}
+                      >
+                        {item}
+                      </td>
+                    )
+                  )}
                 </tr>
               </tbody>
             </table>
@@ -577,7 +645,6 @@ export default function ViewCacAvailability() {
             rows={ideal}
             pageSize={10}
             rowsPerPageOptions={[5]}
-            checkboxSelection
             disableSelectionOnClick
           />
         </div>

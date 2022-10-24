@@ -83,7 +83,7 @@ function Login() {
           alert("User with this email does not exist");
         } else if (err.response?.data === "Deactivated") {
           alert("Account Deactivated by Admin");
-        } else if (err.response?.data === "wrong password") {
+        } else if (err.response?.data === "Incorrect password") {
           alert("Incorrect Password");
         } else {
           alert("Login Failed");

@@ -6,6 +6,7 @@ import Register from "./AuxillaryComponents/Register";
 import axios from "axios";
 import Avatar from "@mui/material/Avatar";
 import AvatarMenu from "./AuxillaryComponents/AvatarMenu";
+import CloseIcon from "@mui/icons-material/Close";
 
 import {
   BsFillPersonPlusFill,
@@ -123,6 +124,12 @@ export default function Navigation() {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
+                  <Box style={{ display: "flex", justifyContent: "end" }}>
+                    <CloseIcon
+                      onClick={handleClose}
+                      style={{ cursor: "pointer", color: "gray" }}
+                    />
+                  </Box>
                   <Register />
                 </Box>
               </Modal>

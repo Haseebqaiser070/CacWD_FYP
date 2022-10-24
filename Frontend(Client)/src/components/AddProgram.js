@@ -133,17 +133,17 @@ export default function AddProgram() {
     {
       field: "Degree",
       headerName: "Degree Level",
-      flex: 1,
+      width: "200",
     },
     {
       field: "Program",
       headerName: "Program Name",
-      flex: 1,
+      width: "500",
     },
     {
       field: "Action",
       headerName: "Action",
-      flex: 1,
+      width: "300",
 
       editable: false,
       renderCell: ActionButton,

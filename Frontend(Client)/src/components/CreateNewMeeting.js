@@ -58,7 +58,7 @@ export default function CreateNewMeeting() {
         val.teacher_id.map((i) => {
           members.push(i.Name);
         });
-        console.log("yasks",tasks)
+        console.log("yasks", tasks);
 
         row[id] = {
           _id: val._id,
@@ -71,7 +71,7 @@ export default function CreateNewMeeting() {
 
         (tasks = []), (members = []);
       });
-      console.log("eqe",row)
+      console.log("eqe", row);
       setmeetings(row);
     };
 
@@ -85,7 +85,7 @@ export default function CreateNewMeeting() {
       });
       var array = arr;
       var variable;
-     /* arr.map((item) => {
+      /* arr.map((item) => {
         console.log("item",rows)
         rows?.map((i)=>{
           variable = i.AssignMember?.find((it) => it?._id == item?._id);
@@ -111,13 +111,13 @@ export default function CreateNewMeeting() {
     const getideal = async () => {
       const res = await axios.get("http://localhost:4000/Meeting/get-ideal");
       console.log("res in get ideal", res);
-      var a=[]
-      res?.data[0]?.idealtime?.map((item)=>{
-        item.slot.map((i)=>{
-          a.push({day:item.day,slot:i})
-        })
-      })
-      console.log("asd",a)
+      var a = [];
+      res?.data[0]?.idealtime?.map((item) => {
+        item.slot.map((i) => {
+          a.push({ day: item.day, slot: i });
+        });
+      });
+      console.log("asd", a);
       setideal(a);
     };
 
@@ -229,7 +229,6 @@ export default function CreateNewMeeting() {
                   getOptionLabel={(option) => option.taskType}
                   onChange={(value, newValue) => {
                     settaske(newValue);
-
                   }}
                   renderInput={(params) => (
                     <TextField
@@ -353,7 +352,7 @@ export default function CreateNewMeeting() {
       console.log("mn", members);
 
       var obj = { dateTime: date, taskType: task, teacher_id: mem };
-      console.log("objs",obj)
+      console.log("objs", obj);
       const res = await axios.post("http://localhost:4000/Meeting/create", obj);
       alert("meeting created");
       setchangem(true);
@@ -513,7 +512,6 @@ export default function CreateNewMeeting() {
             getRowId={(Rows) => Rows._id}
             pageSize={10}
             rowsPerPageOptions={[5]}
-            checkboxSelection
             disableSelectionOnClick
           />
         </div>

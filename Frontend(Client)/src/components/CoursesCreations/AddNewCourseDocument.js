@@ -8,12 +8,36 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import { DataGrid } from "@mui/x-data-grid";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import { padding } from "@mui/system";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Card, FormControl, InputLabel } from "@mui/material";
+import {
+  Box,
+  Card,
+  FormControl,
+  gridClasses,
+  IconButton,
+  InputLabel,
+  Modal,
+  Tooltip,
+} from "@mui/material";
 import { muiAbtn } from "../style";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from "@mui/icons-material/Close";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 500,
+  bgcolor: "#fff",
+  boxShadow: 24,
+  p: 4,
+  boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+};
 
 export default function AddNewCourseDocument() {
   axios.defaults.withCredentials = true;
@@ -45,12 +69,23 @@ export default function AddNewCourseDocument() {
   const [Books, setBooks] = useState(Content.Books);
   const navigate = useNavigate();
   console.log(Courses);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [openBook, setOpenBook] = useState(false);
+  const handleOpenBook = () => setOpenBook(true);
+  const handleCloseBook = () => {
+    setOpenBook(false);
+  };
 
   const recommended_books = [
     {
       field: "BookName",
       headerName: "Book Names",
-      flex: 2,
+      flex: 3,
     },
     {
       field: "BookWriter",
@@ -60,27 +95,112 @@ export default function AddNewCourseDocument() {
     {
       field: "BookYear",
       headerName: "Year",
-      flex: 2,
+      flex: 1,
     },
     {
       field: "Action",
       headerName: "Action",
-      flex: 1,
+      flex: 2,
       renderCell: (props) => (
-        <Button
-          type="button"
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ backgroundColor: "#4b2980" }}
-          onClick={() => {
-            var data = Books.filter((obj) => obj.id !== props.row.id);
-            setBooks(data);
-          }}
-        >
-          <AiFillDelete style={{ marginRight: 10 }} />
-          Remove
-        </Button>
+        <>
+          <Tooltip title="Edit" placement="top-start">
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              style={{
+                backgroundColor: "#4b2980",
+                marginLeft: 10,
+                padding: 10,
+              }}
+              onClick={handleOpenBook}
+            >
+              <AiFillEdit />
+            </Button>
+          </Tooltip>
+
+          <Modal
+            open={openBook}
+            onClose={handleCloseBook}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Box mb={3} style={{ display: "flex", justifyContent: "end" }}>
+                <CloseIcon
+                  onClick={handleCloseBook}
+                  style={{ cursor: "pointer", color: "gray" }}
+                />
+              </Box>
+              <h4 className="mb-4">EDIT OBJECTIVE</h4>
+              <form>
+                <div>
+                  <TextField
+                    className="mb-3"
+                    label="Book Name"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    value={BookName}
+                    onChange={(e) => setBookName(e.target.value)}
+                  ></TextField>
+                </div>
+                <div>
+                  <TextField
+                    className="mb-3"
+                    label="Author"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    value={BookWriter}
+                    onChange={(e) => setBookWriter(e.target.value)}
+                  ></TextField>
+                </div>
+                <div>
+                  <TextField
+                    className="mb-3"
+                    label="Year"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    value={BookYear}
+                    onChange={(e) => setBookYear(e.target.value)}
+                  ></TextField>
+                </div>
+                <div>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    className="mt-4"
+                    // onClick={handleBook}
+                    style={{ backgroundColor: "#4b2980" }}
+                  >
+                    EDIT BOOKS
+                  </Button>
+                </div>
+              </form>
+            </Box>
+          </Modal>
+
+          <Tooltip title="Delete" placement="top-start">
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              style={{
+                backgroundColor: "#4b2980",
+                marginLeft: 16,
+                padding: 10,
+              }}
+              onClick={() => {
+                var data = Books.filter((obj) => obj.id !== props.row.id);
+                setBooks(data);
+              }}
+            >
+              <AiFillDelete />
+            </Button>
+          </Tooltip>
+        </>
       ),
     },
   ];
@@ -88,27 +208,95 @@ export default function AddNewCourseDocument() {
     {
       field: "title",
       headerName: "Title",
-      flex: 4,
+      flex: 5,
     },
     {
       field: "Action",
       headerName: "Action",
       flex: 1,
+
       renderCell: (props) => (
-        <Button
-          type="button"
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ backgroundColor: "#4b2980" }}
-          onClick={() => {
-            var data = objectiveList.filter((obj) => obj.id !== props.row.id);
-            setObjectiveList(data);
-          }}
-        >
-          <AiFillDelete style={{ marginRight: 10 }} />
-          Remove
-        </Button>
+        <>
+          <Tooltip title="Edit" placement="top-start">
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              style={{
+                backgroundColor: "#4b2980",
+                marginLeft: 10,
+                padding: 10,
+              }}
+              onClick={handleOpen}
+            >
+              <AiFillEdit />
+            </Button>
+          </Tooltip>
+
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Box mb={3} style={{ display: "flex", justifyContent: "end" }}>
+                <CloseIcon
+                  onClick={handleClose}
+                  style={{ cursor: "pointer", color: "gray" }}
+                />
+              </Box>
+              <h4 className="mb-4">EDIT OBJECTIVE</h4>
+              <form>
+                <div>
+                  <TextField
+                    multiline
+                    rows={2}
+                    style={{ backgroundColor: "#fff" }}
+                    label="Set Objective"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    value={objective}
+                    onChange={(e) => setobjective(e.target.value)}
+                  ></TextField>
+                </div>
+                <div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="mt-4"
+                    // onClick={handleObjective}
+                    style={{ backgroundColor: "#4b2980" }}
+                  >
+                    Edit
+                  </Button>
+                </div>
+              </form>
+            </Box>
+          </Modal>
+
+          <Tooltip title="Delete" placement="top-start">
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              style={{
+                backgroundColor: "#4b2980",
+                marginLeft: 16,
+                padding: 10,
+              }}
+              onClick={() => {
+                var data = objectiveList.filter(
+                  (obj) => obj.id !== props.row.id
+                );
+                setObjectiveList(data);
+              }}
+            >
+              <AiFillDelete />
+            </Button>
+          </Tooltip>
+        </>
       ),
     },
   ];
@@ -301,7 +489,7 @@ export default function AddNewCourseDocument() {
                 variant="outlined"
                 size="small"
                 fullWidth
-                onChange={(e)=>setCatalogue(e.target.value)}
+                onChange={(e) => setCatalogue(e.target.value)}
                 value={catalogue}
               />
             </FormControl>
@@ -344,7 +532,7 @@ export default function AddNewCourseDocument() {
             </form>
           </div>
 
-          <div style={{ height: 200, width: "100%" }}>
+          <div style={{ height: 300, width: "100%" }}>
             <DataGrid
               rows={objectiveList}
               columns={columns}
@@ -411,7 +599,7 @@ export default function AddNewCourseDocument() {
               </div>
             </form>
           </div>
-          <div style={{ height: 200, width: "100%" }}>
+          <div style={{ height: 300, width: "100%" }}>
             <DataGrid
               rows={Books}
               columns={recommended_books}

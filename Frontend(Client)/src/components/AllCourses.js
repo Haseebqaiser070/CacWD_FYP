@@ -6,7 +6,7 @@ import Popup from "./AuxillaryComponents/PopupFunction";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Card, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { muiAbtn } from "./style";
