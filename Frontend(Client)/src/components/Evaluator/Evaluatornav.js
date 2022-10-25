@@ -33,7 +33,7 @@ export default function FacultyNavigation() {
   //console.log("folders in evaluator nav",Folders);
   const getData = async () => {
     const res = await axios.get("http://localhost:4000/EvalFolders/showAll");
-    console.log("Folders",res.data);
+    console.log("Folders", res.data);
 
     setFolders([...res.data]);
   };
@@ -68,12 +68,12 @@ export default function FacultyNavigation() {
             >
               <div class="nav">
                 <div class="sb-sidenav-menu-heading"></div>
-                {/* <Link class="nav-link sidenavtext " to="Dashboard">
+                <Link class="nav-link sidenavtext " to="Dashboard">
                   <div class="sb-nav-link-icon">
                     <BsBuilding color="#fff" />
                   </div>
                   Dashboard
-                </Link> */}
+                </Link>
 
                 <div
                   onClick={() => {
@@ -110,7 +110,7 @@ export default function FacultyNavigation() {
                             if (i.Folder.LabTheory == "Theory") {
                               navigate(
                                 `/Evaluator/FolderTemplete/${i._id}`,
-                                { state: { i} },
+                                { state: { i } },
                                 {
                                   replace: true,
                                 }
@@ -119,7 +119,7 @@ export default function FacultyNavigation() {
                             if (i.Folder.LabTheory == "Lab") {
                               navigate(
                                 `/Evaluator/FolderTemplete/${i._id}`,
-                                { state: { i} },
+                                { state: { i } },
                                 {
                                   replace: true,
                                 }
@@ -137,6 +137,13 @@ export default function FacultyNavigation() {
                       </>
                     );
                   })}
+
+                <Link class="nav-link sidenavtext " to="FoldersInRevision">
+                  <div class="sb-nav-link-icon">
+                    <BsBuilding color="#fff" />
+                  </div>
+                  Folders In Revision
+                </Link>
 
                 <Link class="nav-link sidenavtext " to="EvaluatedFolders">
                   <div class="sb-nav-link-icon">

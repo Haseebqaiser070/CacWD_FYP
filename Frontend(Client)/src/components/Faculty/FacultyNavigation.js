@@ -134,17 +134,18 @@ export default function FacultyNavigation() {
                     );
                   })}
 
+                <Link class="nav-link sidenavtext" to="FolderInRevision">
+                  <div class="sb-nav-link-icon">
+                    <BsFillFilePdfFill color="#fff" />
+                  </div>
+                  Folder In Revision
+                </Link>
+
                 <Link class="nav-link sidenavtext" to="ReturnedFolders">
                   <div class="sb-nav-link-icon">
                     <BsFillFilePdfFill color="#fff" />
                   </div>
                   Returned Folders
-                </Link>
-                <Link class="nav-link sidenavtext" to="AllSchemeofStudiesCFE">
-                  <div class="sb-nav-link-icon">
-                    <BsFillFilePdfFill color="#fff" />
-                  </div>
-                  All Scheme of Studies
                 </Link>
               </div>
               <div

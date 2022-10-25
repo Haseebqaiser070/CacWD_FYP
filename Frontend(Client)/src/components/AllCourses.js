@@ -7,9 +7,17 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Card, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Card,
+  FormControl,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { muiAbtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function AllCourses() {
   const [Course, setCourse] = useState([]);
@@ -192,6 +200,10 @@ export default function AllCourses() {
           </div>
         </div>
         <DataGrid
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            LoadingOverlay: LinearProgress,
+          }}
           style={{ height: "60vh", width: "100%" }}
           columns={columns}
           rows={Course}

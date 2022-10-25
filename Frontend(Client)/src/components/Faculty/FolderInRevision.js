@@ -5,8 +5,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { muiAbtn } from "../style";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@mui/material";
-import { AiFillEye } from "react-icons/ai";
+import { Card, Tooltip } from "@mui/material";
+import { AiFillEdit, AiFillEye } from "react-icons/ai";
 const columns = [
   {
     field: "Program",
@@ -32,6 +32,7 @@ const columns = [
     renderCell: HandleButton,
   },
 ];
+
 function HandleButton(row) {
   const navigate = useNavigate();
   const senddata = (roww) => {
@@ -40,50 +41,43 @@ function HandleButton(row) {
   };
   return (
     <>
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        style={muiAbtn}
-        onClick={() => {
-          senddata(row);
-          //navigate('/Faculty/Returned',{state:{row:row}})
-        }}
-      >
-        <AiFillEye style={{ marginRight: 10 }} />
-        View Evaluation
-      </Button>
+      <Tooltip title="View Revision" placement="top-start">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          style={{
+            backgroundColor: "#4b2980",
+            marginLeft: 10,
+            padding: 10,
+          }}
+          // onClick={handleOpenClo}
+        >
+          <AiFillEye />
+        </Button>
+      </Tooltip>
+
+      <Tooltip title="Edit" placement="top-start">
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          style={{
+            backgroundColor: "#4b2980",
+            marginLeft: 10,
+            padding: 10,
+          }}
+          //   onClick={handleOpenClo}
+        >
+          <AiFillEdit />
+        </Button>
+      </Tooltip>
     </>
   );
 }
-export default function ReturnedFolders() {
+export default function FolderInRevision() {
   const [Rows, setRows] = useState([]);
   const navigate = useNavigate();
-  const [Posts, setPosts] = useState([]);
-  const userid = JSON.parse(localStorage.getItem("user"));
-
-  React.useEffect(() => {
-    getData();
-  }, []);
-  const getData = async () => {
-    const res = await axios.get(`http://localhost:4000/EvalFolders/showfolder`);
-    setPosts(res.data);
-    var row = [];
-    var index = 0;
-    res.data.map((val, id) => {
-      if (val.Evaluated == true && val.User._id == userid) {
-        row[id] = {
-          _id: val._id,
-          id: id,
-          Program: val.Program,
-          Course: val.Course.Name + "-" + val.LabTheory,
-          Evaluator: val.Evaluator.Name,
-          data: val,
-        };
-      }
-    });
-    setRows(row);
-  };
 
   return (
     <div
@@ -95,7 +89,7 @@ export default function ReturnedFolders() {
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
         <h1>
-          <b>RETURNED FOLDERS</b>
+          <b>FOLDER IN REVISION</b>
         </h1>
         <div>
           <DataGrid

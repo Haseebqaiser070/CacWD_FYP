@@ -58,10 +58,6 @@ export default function CourseFinal() {
 
       {
         <div ref={componentRef} className="main">
-          <h5 style={{ paddingBottom: 30 }}>
-            <u>Course Category</u>
-          </h5>
-
           <div>
             <div style={{ paddingBottom: 20 }} className="row">
               <div className="col">

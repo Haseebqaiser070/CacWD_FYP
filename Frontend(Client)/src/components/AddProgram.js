@@ -12,6 +12,7 @@ import {
   DialogActions,
   DialogTitle,
   FormControlLabel,
+  LinearProgress,
   MenuItem,
   Modal,
   Switch,
@@ -26,6 +27,7 @@ import { Box } from "@mui/system";
 import PositionedSnackbar from "./AuxillaryComponents/DeleteSnack";
 import { muiAbtn, muibtn } from "./style";
 import FolderNavigation from "./Evaluator/Navigation";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function AddProgram() {
   const [rows, setRows] = useState([]);
@@ -344,7 +346,11 @@ export default function AddProgram() {
 
           <div>
             <DataGrid
-              style={{ height: "60vh", width: "100%" }}
+              components={{
+                NoRowsOverlay: CustomNoRowsOverlay,
+                LoadingOverlay: LinearProgress,
+              }}
+              style={{ height: "70vh", width: "100%" }}
               columns={columns}
               rows={rows}
               getRowId={(Rows) => Rows._id}

@@ -95,17 +95,6 @@ export default function ReturnedTasks() {
             <AiFillEye />
           </Button>
         </Tooltip>
-        <Tooltip title="Edit" placement="top-start">
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            style={{ backgroundColor: "#4b2980", marginLeft: 16, padding: 10 }}
-            // onClick={}
-          >
-            <AiFillEdit />
-          </Button>
-        </Tooltip>
 
         <Button
           variant="contained"
@@ -125,8 +114,10 @@ export default function ReturnedTasks() {
           color="primary"
           size="small"
           style={{ backgroundColor: "#4b2980", marginLeft: 16 }}
-          onClick={async() =>{await axios.post(`http://localhost:4000/Task/revision/${row._id}`);
-          getData();}}
+          onClick={async () => {
+            await axios.post(`http://localhost:4000/Task/revision/${row._id}`);
+            getData();
+          }}
         >
           <AiFillEdit style={{ marginRight: 10 }} />
           Send Revision
@@ -145,15 +136,15 @@ export default function ReturnedTasks() {
                 label="Revisions"
                 placeholder="Input changes"
                 multiline
-                rows={4}
+                rows={5}
               />
             </div>
 
             <Button
+              fullWidth
               variant="contained"
               color="primary"
-              size="large"
-              width="100"
+              size="medium"
               style={{ marginTop: 10 }}
             >
               Send Revision

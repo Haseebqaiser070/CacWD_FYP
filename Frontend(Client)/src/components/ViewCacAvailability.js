@@ -10,7 +10,14 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { Box, Card, Modal } from "@mui/material";
+import {
+  Box,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Modal,
+} from "@mui/material";
 import { muibtn } from "./style";
 
 const columns1 = [
@@ -414,9 +421,19 @@ export default function ViewCacAvailability() {
     getavailability();
     getAll();
   }, [flag]);
+
   const submit = () => {
     axios.delete(`http://localhost:4000/Meeting/delete-availability`);
-    alert("Notification Sent!!");
+  };
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   const [rows, setRows] = React.useState([]);
@@ -439,11 +456,37 @@ export default function ViewCacAvailability() {
               color="primary"
               size="small"
               style={muibtn}
-              onClick={submit}
+              onClick={handleClickOpen}
             >
               <AiOutlineClockCircle style={{ marginRight: 10 }} />
               Send Time Change Notification
             </Button>
+
+            <Dialog
+              open={openDialog}
+              onClose={handleCloseDialog}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Are you sure to reset availbilties of all users?"}
+              </DialogTitle>
+
+              <DialogActions>
+                <Button
+                  onClick={async () => {
+                    submit();
+                    handleCloseDialog();
+                  }}
+                >
+                  Yes
+                </Button>
+
+                <Button onClick={handleCloseDialog} autoFocus>
+                  No
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
 
           <div className="table-responsive">
