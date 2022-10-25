@@ -4,5 +4,7 @@ var AssignFolder = require("../../Controler/AdminControllers/Folders/AssignFolde
 
 router.route("/add").post(AssignFolder.Add);
 router.route("/add2").post(AssignFolder.Add2);
+router.route("/finishAll").post(AssignFolder.FinishAll);
+router.route("/finish/:id").post(AssignFolder.FinishOne);
 
 module.exports = router;

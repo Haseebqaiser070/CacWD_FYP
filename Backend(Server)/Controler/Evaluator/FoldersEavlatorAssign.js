@@ -2,6 +2,32 @@ var Evaldoc = require("../../Models/EvalFolder");
 var Userdoc = require("../../Models/User");
 const Mail = require("../../helpers/mailing");
 
+module.exports.FinishOne = async (req, res) => {
+  if (!req.user) return await res.status(401).json("Timed Out");
+  if (!req.user.Roles.includes("Admin"))
+    return await res.status(401).json("UnAutherized");
+  const up = await Userdoc.findByIdAndUpdate(req.params.id, {
+    EvaluateFolders: [],
+  });
+  await res.status(201).json(up);
+};
+
+module.exports.FinishAll = async (req, res) => {
+  if (!req.user) return await res.status(401).json("Timed Out");
+  if (!req.user.Roles.includes("Admin"))
+    return await res.status(401).json("UnAutherized");
+  var all = await Userdoc.find({});
+  await Promise.all(
+    all.map(async (e) => {
+      const up = await Userdoc.updateOne(e._id, {
+        EvaluateFolders: [],
+      });
+      console.log(up);
+    })
+  );
+  await res.status(201).json("Anulled all");
+};
+
 module.exports.Add = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");
@@ -55,7 +81,9 @@ module.exports.Add2 = async (req, res) => {
     await Promise.all(
       userF.EvaluateFolders.map(async (i) => {
         try {
-          var check = req.body.obj.some((e) => i.Folder._id.equals(e.Folders._id));
+          var check = req.body.obj.some((e) =>
+            i.Folder._id.equals(e.Folders._id)
+          );
           console.log("Check", check);
           if (!check) {
             console.log("!Check");

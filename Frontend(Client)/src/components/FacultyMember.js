@@ -154,7 +154,11 @@ export default function FacultyMembers() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-
+  const handleCloseDialog2 = async() => {             
+    await axios.post("http://localhost:4000/AssginFolders/finishAll")
+    getData()
+    setOpenDialog(false);
+  }
   const columns = [
     {
       field: "Name",
@@ -208,7 +212,9 @@ export default function FacultyMembers() {
             color="primary"
             size="small"
             style={muiAbtn}
-            onClick={handleClickOpen}
+            onClick={async()=>{        
+              await axios.post(`http://localhost:4000/AssginFolders/finish/${row._id}`)
+              getData()}}
           >
             <AiFillDelete style={{ marginRight: "6px" }} />
             Cancel
@@ -235,7 +241,7 @@ export default function FacultyMembers() {
             className="mb-2 muibtn"
             color="primary"
             size="small"
-            style={muibtn}
+            style={muibtn}            
             onClick={handleClickOpen}
           >
             <AiFillDelete style={{ marginRight: "6px" }} />
@@ -252,7 +258,7 @@ export default function FacultyMembers() {
             </DialogTitle>
 
             <DialogActions>
-              <Button onClick={handleCloseDialog}>Yes</Button>
+              <Button onClick={handleCloseDialog2}>Yes</Button>
               <Button onClick={handleCloseDialog} autoFocus>
                 No
               </Button>

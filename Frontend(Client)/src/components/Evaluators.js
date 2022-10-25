@@ -151,7 +151,11 @@ export default function Evaluators() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-
+  const handleCloseDialog2 = async() => {          
+    await axios.post("http://localhost:4000/EvalFolders/finishAll")
+    getData()
+    setOpenDialog(false);
+  }
   const columns = [
     {
       field: "Name",
@@ -205,7 +209,9 @@ export default function Evaluators() {
             color="primary"
             size="small"
             style={muiAbtn}
-            onClick={handleClickOpen}
+            onClick={async()=>{        
+            await axios.post(`http://localhost:4000/EvalFolders/finish/${row._id}`)
+            getData()}}
           >
             <AiFillDelete style={{ marginRight: "6px" }} />
             Cancel
@@ -249,7 +255,7 @@ export default function Evaluators() {
             </DialogTitle>
 
             <DialogActions>
-              <Button onClick={handleCloseDialog}>Yes</Button>
+              <Button onClick={handleCloseDialog2}>Yes</Button>
               <Button onClick={handleCloseDialog} autoFocus>
                 No
               </Button>
