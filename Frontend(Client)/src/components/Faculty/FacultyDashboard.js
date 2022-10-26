@@ -3,6 +3,8 @@ import "../css/styles.css";
 import logo from "./comsats_logo.png";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Card } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function FacultyDashboard() {
   const [Rows, setRows] = useState([]);
@@ -38,55 +40,67 @@ export default function FacultyDashboard() {
       flex: 1,
     },
   ];
+
+  axios.defaults.withCredentials = true;
+  const navigate = useNavigate();
+  const [Courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    getCourses();
+  }, []);
+  const getCourses = async () => {
+    const res = await axios.get(
+      "http://localhost:4000/UserAssigedFolders/showUserCourses"
+    );
+    console.log(res.data);
+    setCourses([...res.data]);
+  };
+
   return (
     <div style={{ width: "100%", padding: 30 }}>
       <div className="row mt-4 mb-4">
-        <div className="row mb-4 py-4">
-          <div className="col">
-            <Card
-              style={{
-                backgroundColor: "#1565C0",
-                color: "#fff",
-                padding: 25,
-                borderRadius: "10px",
-              }}
-            >
-              <p style={{ textAlign: "center", fontSize: "13px" }}>
-                BS COMPUTER SCIENCE
-              </p>
-              <h3>INTRODUCTION TO ICT</h3>
-            </Card>
-          </div>
-          <div className="col">
-            <Card
-              style={{
-                backgroundColor: "#1565C0",
-                color: "#fff",
-                padding: 25,
-                borderRadius: "10px",
-              }}
-            >
-              <p style={{ textAlign: "center", fontSize: "13px" }}>
-                BS COMPUTER SCIENCE
-              </p>
-              <h3>INTRODUCTION TO ICT</h3>
-            </Card>
-          </div>
-          <div className="col">
-            <Card
-              style={{
-                backgroundColor: "#1565C0",
-                color: "#fff",
-                padding: 25,
-                borderRadius: "10px",
-              }}
-            >
-              <p style={{ textAlign: "center", fontSize: "13px" }}>
-                BS COMPUTER SCIENCE
-              </p>
-              <h3>INTRODUCTION TO ICT</h3>
-            </Card>
-          </div>
+      <div>
+          <Card style={{ padding: 25, marginBottom: 25 }}>
+            <h4 style={{ fontSize: "18px" }} className="mb-4">
+              Courses assigned
+            </h4>
+            <div className="table-responsive my-4">
+              <table
+                className="table table-hover"
+                style={{ textAlign: "center" }}
+              >
+                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                  <th className="col-4">Program</th>
+                  <th className="col-3">Course</th>
+                  <th className="col-4">Action</th>
+                </thead>
+                <tbody style={{ backgroundColor: "#f5f5f5" }}>                 
+                {Courses.map((i)=>{
+                  return(
+                    <tr>
+                    <td>{i.Program}</td>
+                    <td>{i.Name}</td>
+                    <td>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => {
+                          navigate(`/Faculty/Courses/${i.Program}/${i.Code}`, {
+                            replace: true,
+                          });
+                        }}
+                      >
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                  )
+                })}   
+                </tbody>
+              </table>
+            </div>
+          </Card>
         </div>
       </div>
 
@@ -107,21 +121,28 @@ export default function FacultyDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  <tr>
-                    <td>BS Computer Science</td>
-                    <td>Introduction to ICT</td>
+                {Courses.map((i)=>{
+                  return(
+                    <tr>
+                    <td>{i.Program}</td>
+                    <td>{i.Name}</td>
                     <td>
                       <Button
                         variant="contained"
                         color="primary"
                         size="small"
-
-                        // onClick={handleOpen1}
+                        onClick={() => {
+                          navigate(`/Faculty/CDF/${i.Program}/${i.Code}`, {
+                            replace: true,
+                          });
+                        }}
                       >
                         View
                       </Button>
                     </td>
                   </tr>
+                  )
+                })}   
                 </tbody>
               </table>
             </div>
@@ -143,22 +164,28 @@ export default function FacultyDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  <tr>
-                    <td>BS Computer Science</td>
-                    <td>Introduction to ICT</td>
+                {Courses.map((i)=>{
+                  return(
+                    <tr>
+                    <td>{i.Program}</td>
+                    <td>{i.Name}</td>
                     <td>
-                      {" "}
                       <Button
                         variant="contained"
                         color="primary"
                         size="small"
-
-                        // onClick={handleOpen1}
+                        onClick={() => {
+                          navigate(`/Faculty/Syllabus/${i.Program}/${i.Code}`, {
+                            replace: true,
+                          });
+                        }}
                       >
                         View
                       </Button>
                     </td>
                   </tr>
+                  )
+                })}   
                 </tbody>
               </table>
             </div>

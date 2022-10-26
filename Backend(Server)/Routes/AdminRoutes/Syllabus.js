@@ -7,5 +7,6 @@ router.route("/show").get(Syllabus.Showall);
 router.route("/ReturnedCourse/:Code").get(returnedsyllabus.ViewOne);
 router.route("/:id").delete(Syllabus.Delete).get(Syllabus.ShowOne);
 router.route("/shower/:Code").get(Syllabus.Shower);
+router.route("/showcodeandprogram/:Program/:Code").get(Syllabus.ShowbyProgramandCode);
 
 module.exports = router;

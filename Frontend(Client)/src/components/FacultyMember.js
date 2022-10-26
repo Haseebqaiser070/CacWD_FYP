@@ -68,7 +68,7 @@ export default function FacultyMembers() {
   };
   const getProgramCourses = async (index, Program) => {
     const res = await axios.get(
-      `http://localhost:4000/ProgramCourses/show/${Program}`
+      `http://localhost:4000/ProgramCourses/showwithCDF/${Program}`
     );
     const clone = [...Courses];
     clone[index] = res.data;
@@ -105,7 +105,7 @@ export default function FacultyMembers() {
       col.map(async (i) => {
         if (i.LabTheory != "Lab") {
           const res = await axios.get(
-            `http://localhost:4000/ProgramCourses/show/${i.Program}`
+            `http://localhost:4000/ProgramCourses/showwithCDF/${i.Program}`
           );
           return [...res.data];
         }
@@ -127,6 +127,7 @@ export default function FacultyMembers() {
       }
     });
     if (verify) {
+      try {
       if (!up) {
         await axios.post("http://localhost:4000/AssginFolders/add", {
           obj,
@@ -140,6 +141,11 @@ export default function FacultyMembers() {
       }
       getData();
       handleClose();
+    }catch (err) {
+      if (err.response?.data === "Already Assigned") {
+        alert("Already Assigned a Teacher to this Section, Course and Program");
+      }
+      }
     } else {
       alert("Empty Field");
     }

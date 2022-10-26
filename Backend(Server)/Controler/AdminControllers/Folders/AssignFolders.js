@@ -35,6 +35,22 @@ module.exports.Add = async (req, res) => {
       return await res.status(401).json("UnAutherized");
     var Folders = [];
     console.log("\nobj", req.body.obj);
+    var already = false;
+    await Promise.all(
+      req.body.obj.map(async (e) => {
+        try {
+          var fold = await Folderdoc.findOne({
+            Program: e.Program,
+            Course: e.Course,
+            Section: e.Section,
+          });
+          if (fold) already = true;
+        } catch (er) {
+          console.error(er);
+        }
+      })
+    );
+    if (already) return await res.status(401).json("Already Assigned");
     await Promise.all(
       req.body.obj.map(async (e) => {
         try {
@@ -87,7 +103,22 @@ module.exports.Add2 = async (req, res) => {
     if (!req.user) return await res.status(401).json("Timed Out");
     if (!req.user.Roles.includes("Admin"))
       return await res.status(401).json("UnAutherized");
-
+    var already = false;
+    await Promise.all(
+      req.body.obj.map(async (e) => {
+        try {
+          var fold = await Folderdoc.findOne({
+            Program: e.Program,
+            Course: e.Course,
+            Section: e.Section,
+          });
+          if (fold) already = true;
+        } catch (er) {
+          console.error(er);
+        }
+      })
+    );
+    if (already) return await res.status(401).json("Already Assigned");
     const userF = await Userdoc.findById(req.body.User._id)
       .populate("CourseFolders")
       .populate({

@@ -3,6 +3,8 @@ import "../css/styles.css";
 import logo from "./comsats_logo.png";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Card } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function EvaluatorDashboard() {
   const [Rows, setRows] = useState([]);
@@ -38,55 +40,65 @@ export default function EvaluatorDashboard() {
       flex: 1,
     },
   ];
+
+  const [Courses, setCourses] = useState([]);
+  axios.defaults.withCredentials = true;
+  const navigate = useNavigate();
+  useEffect(() => {
+    getData();
+  }, []);
+  const getData = async () => {
+    const res = await axios.get("http://localhost:4000/EvalFolders/showUserCourses");
+    console.log("Folders", res.data);
+
+    setCourses([...res.data]);
+  };
+
   return (
     <div style={{ height: 760, width: "100%", padding: 30 }}>
       <div className="row mt-4 mb-4">
-        <div className="row mb-4 py-4">
-          <div className="col">
-            <Card
-              style={{
-                backgroundColor: "#1565C0",
-                color: "#fff",
-                padding: 25,
-                borderRadius: "10px",
-              }}
-            >
-              <p style={{ textAlign: "center", fontSize: "13px" }}>
-                BS COMPUTER SCIENCE
-              </p>
-              <h3>INTRODUCTION TO ICT</h3>
-            </Card>
-          </div>
-          <div className="col">
-            <Card
-              style={{
-                backgroundColor: "#1565C0",
-                color: "#fff",
-                padding: 25,
-                borderRadius: "10px",
-              }}
-            >
-              <p style={{ textAlign: "center", fontSize: "13px" }}>
-                BS COMPUTER SCIENCE
-              </p>
-              <h3>INTRODUCTION TO ICT</h3>
-            </Card>
-          </div>
-          <div className="col">
-            <Card
-              style={{
-                backgroundColor: "#1565C0",
-                color: "#fff",
-                padding: 25,
-                borderRadius: "10px",
-              }}
-            >
-              <p style={{ textAlign: "center", fontSize: "13px" }}>
-                BS COMPUTER SCIENCE
-              </p>
-              <h3>INTRODUCTION TO ICT</h3>
-            </Card>
-          </div>
+      <div>
+          <Card style={{ padding: 25, marginBottom: 25 }}>
+            <h4 style={{ fontSize: "18px" }} className="mb-4">
+              Courses assigned
+            </h4>
+            <div className="table-responsive my-4">
+              <table
+                className="table table-hover"
+                style={{ textAlign: "center" }}
+              >
+                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                  <th className="col-4">Program</th>
+                  <th className="col-3">Course</th>
+                  <th className="col-4">Action</th>
+                </thead>
+                <tbody style={{ backgroundColor: "#f5f5f5" }}>                 
+                {Courses.map((i)=>{
+                  return(
+                    <tr>
+                    <td>{i.Program}</td>
+                    <td>{i.Name}</td>
+                    <td>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => {
+                          navigate(`/Evaluator/Courses/${i.Program}/${i.Code}`, {
+                            replace: true,
+                          });
+                        }}
+                      >
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                  )
+                })}   
+                </tbody>
+              </table>
+            </div>
+          </Card>
         </div>
       </div>
 
@@ -107,28 +119,35 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  <tr>
-                    <td>BS Computer Science</td>
-                    <td>Introduction to ICT</td>
+                {Courses.map((i)=>{
+                  return(
+                    <tr>
+                    <td>{i.Program}</td>
+                    <td>{i.Name}</td>
                     <td>
                       <Button
                         variant="contained"
                         color="primary"
                         size="small"
-
-                        // onClick={handleOpen1}
+                        onClick={() => {
+                          navigate(`/Evaluator/CDF/${i.Program}/${i.Code}`, {
+                            replace: true,
+                          });
+                        }}
                       >
                         View
                       </Button>
                     </td>
                   </tr>
+                  )
+                })}   
                 </tbody>
               </table>
             </div>
           </Card>
         </div>
         <div>
-          <Card style={{ padding: 25 }}>
+          <Card style={{ padding: 25, marginBottom: 25 }}>
             <h4 style={{ fontSize: "18px" }} className="mb-4">
               Syllabus of Courses
             </h4>
@@ -143,9 +162,50 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
+                {Courses.map((i)=>{
+                  return(
+                    <tr>
+                    <td>{i.Program}</td>
+                    <td>{i.Name}</td>
+                    <td>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => {
+                          navigate(`/Evaluator/Syllabus/${i.Program}/${i.Code}`, {
+                            replace: true,
+                          });
+                        }}
+                      >
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                  )
+                })}   
+                </tbody>
+              </table>
+            </div>
+          </Card>
+        </div>
+        <div>
+          <Card style={{ padding: 25 }}>
+            <h4 style={{ fontSize: "18px" }} className="mb-4">
+              OBE Guide Book
+            </h4>
+            <div className="table-responsive my-4">
+              <table
+                className="table table-hover"
+                style={{ textAlign: "center" }}
+              >
+                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                  <th className="col-8">OBE Guide Book</th>
+                  <th className="col-4">Action</th>
+                </thead>
+                <tbody style={{ backgroundColor: "#f5f5f5" }}>
                   <tr>
-                    <td>BS Computer Science</td>
-                    <td>Introduction to ICT</td>
+                    <td>OBE Guide Book</td>
                     <td>
                       {" "}
                       <Button

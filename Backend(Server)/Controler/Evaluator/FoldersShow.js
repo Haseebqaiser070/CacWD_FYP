@@ -2,6 +2,36 @@ var Userdoc = require("../../Models/User");
 var Folder = require("../../Models/Folders");
 var Evaldoc = require("../../Models/EvalFolder");
 
+module.exports.ShowCourses = async (req, res) => {
+  try {
+    console.log(req.user);
+    if (!req.user) return await res.json("Timed Out");
+    try {
+      const user = await Userdoc.findById({_id:req.user._id}).
+      populate({path:"EvaluateFolders",model:"Eval",populate:{path:"Folder",model:"Folder",
+      populate:{path:"Course",model:"ProgramCourses"}}})
+      var rets = user.EvaluateFolders.map((i) => {
+        return i.Folder.Course;
+      });
+      var already =[]
+      var rets2=rets.filter((e)=>{
+        var un =already.includes(e._id)
+        if(!un){
+          already.push(e._id)
+          return e
+        }        
+      })
+      console.log("EvaluateFolders", rets2);
+      await res.json(rets2);
+    } catch (err) {
+      console.log(err);
+      await res.status(400).json("error");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports.Showall = async (req, res) => {
     try {
       console.log(req.user)

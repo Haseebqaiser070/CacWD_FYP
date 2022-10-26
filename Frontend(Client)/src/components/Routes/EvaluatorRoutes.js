@@ -10,6 +10,9 @@ import EvaluatedFolders from "../Evaluator/EvaluatedFolders";
 import Returned from "../ReturnedPage";
 import FolderTempleteEdit from "../Evaluator/FolderTempleteEdit";
 import EvaluatorFolderInRevision from "../Evaluator/EvaluatorFolderInRevision";
+import Courses from "../DocumentsEvaluatorandFaculty/CourseFinal"
+import CDF from "../DocumentsEvaluatorandFaculty/CDFfinal"
+import Syllabus from "../DocumentsEvaluatorandFaculty/Syllabusfinal"
 function EvaluatorRoutes() {
   return (
     <Routes>
@@ -23,7 +26,11 @@ function EvaluatorRoutes() {
         />
 
         <Route path="/Edit" element={<FolderTempleteEdit />} />
-
+        
+        <Route path="/Courses/:Program/:Code" element={<Courses />} />
+        <Route path="/CDF/:Program/:Code" element={<CDF />} />
+        <Route path="/Syllabus/:Program/:Code" element={<Syllabus />} />
+        
         <Route path="/FolderTemplete/:id" element={<FolderTemplete />} />
         <Route path="/sos" element={<Sos />} />
       </Route>

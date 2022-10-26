@@ -44,6 +44,17 @@ module.exports.Shower = async (req, res) => {
   }
 };
 
+module.exports.ShowbyProgramandCode = async (req, res) => {
+  try {
+    console.log(req.user)
+    if (!req.user) return await res.json("Timed Out");
+    const Syllabus = await Syllabusgendoc.findOne({Program:req.params.Program,Code:req.params.Code})
+    console.log("gen Syllabuss",Syllabus);
+    await res.json(Syllabus);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 module.exports.ShowOne = async (req, res) => {
   try {
