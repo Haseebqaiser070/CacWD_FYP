@@ -10,7 +10,8 @@ import {
   AiOutlineUnorderedList,
   AiFillLock,
 } from "react-icons/ai";
-import { Box, Card, Tooltip } from "@mui/material";
+import { Box, Card, LinearProgress, Tooltip } from "@mui/material";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -31,11 +32,12 @@ export default function CompletedTasks() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   useEffect(() => {
- 
     getRows();
   }, []);
   const getRows = async () => {
-    const res = await axios.get("http://localhost:4000/Task/showFinInit",{withCredentials:true});
+    const res = await axios.get("http://localhost:4000/Task/showFinInit", {
+      withCredentials: true,
+    });
     console.log(res.data);
     setRows(res.data);
   };
@@ -108,6 +110,10 @@ export default function CompletedTasks() {
         </h1>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}

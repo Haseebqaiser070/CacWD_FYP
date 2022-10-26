@@ -16,6 +16,7 @@ import {
 import {
   Autocomplete,
   Card,
+  LinearProgress,
   MenuItem,
   Modal,
   TextField,
@@ -30,6 +31,7 @@ import EditTasks from "./EditTasks";
 import CloseIcon from "@mui/icons-material/Close";
 import { muiAbtn, muibtn } from "./style";
 import { useLocation, useNavigate } from "react-router-dom";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -73,7 +75,6 @@ export default function InitializeTask() {
   const [Program, setProgram] = useState([]);
 
   const navigate = useNavigate();
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -141,7 +142,7 @@ export default function InitializeTask() {
     const obj = res.data;
     setupid(id);
     setTaskType(obj.taskType);
-    setTasks(obj.Task)
+    setTasks(obj.Task);
     setAssignMember(obj.AssignMember);
     setProgram(obj.Program);
     setOpen3(true);
@@ -230,13 +231,12 @@ export default function InitializeTask() {
           style={{ backgroundColor: "#4b2980", marginLeft: 16, padding: 5 }}
           onClick={() => {
             ups(row._id);
-           
           }}
         >
           <AiFillEdit />
           Edit Group
         </Button>
-{/* ----------------------------------------------------------- */}
+        {/* ----------------------------------------------------------- */}
         {row.Task?.length > 0 && row.Task != null && (
           <Tooltip title="View task Progress" placement="top-start">
             <Button
@@ -248,8 +248,8 @@ export default function InitializeTask() {
                 marginLeft: 16,
                 padding: 10,
               }}
-              onClick={() => {                
-                navigate(`/Admin/IndiviualTask/${row._id}` );
+              onClick={() => {
+                navigate(`/Admin/IndiviualTask/${row._id}`);
                 // Getss(row._id);
                 // setOpen1(true);
               }}
@@ -258,7 +258,7 @@ export default function InitializeTask() {
             </Button>
           </Tooltip>
         )}
-    {/* --------------------------------------------------------- */}
+        {/* --------------------------------------------------------- */}
         <Tooltip title="Delete" placement="top-start">
           <Button
             variant="contained"
@@ -267,29 +267,28 @@ export default function InitializeTask() {
             style={{ backgroundColor: "#4b2980", marginLeft: 16, padding: 10 }}
             onClick={async () => {
               await axios.delete(
-              `http://localhost:4000/Task/deleteInit/${row._id}`
+                `http://localhost:4000/Task/deleteInit/${row._id}`
               );
               const res = await axios.get("http://localhost:4000/Meeting/all");
-              console.log("res",res)
-              var a=[]
-              res.data.map((item)=>{
-                var b=item.taskType.find((it)=>it.taskType==row.taskType)
-                console.log("dse",b)
+              console.log("res", res);
+              var a = [];
+              res.data.map((item) => {
+                var b = item.taskType.find((it) => it.taskType == row.taskType);
+                console.log("dse", b);
 
-                if(b!=undefined){
-                  console.log("dse",a)
-                  a.push(item._id)
+                if (b != undefined) {
+                  console.log("dse", a);
+                  a.push(item._id);
                 }
-              })
-              console.log("asa",a)
-              a?.map((value)=>{
-                 axios.delete(
-                  `http://localhost:4000/Meeting/delete/${value}`
-                ).then((res)=>{
-                  console.log("res",res)
-
-                })
-              })
+              });
+              console.log("asa", a);
+              a?.map((value) => {
+                axios
+                  .delete(`http://localhost:4000/Meeting/delete/${value}`)
+                  .then((res) => {
+                    console.log("res", res);
+                  });
+              });
               getRows();
             }}
           >
@@ -359,8 +358,8 @@ export default function InitializeTask() {
             variant="contained"
             color="primary"
             size="small"
-            onClick={()=>{    
-              navigate("/Admin/OngoingTasks");              
+            onClick={() => {
+              navigate("/Admin/OngoingTasks");
             }}
           >
             <AiFillFilePdf style={{ marginRight: 10 }} />
@@ -591,7 +590,9 @@ export default function InitializeTask() {
                     label={taskType}
                     autoWidth
                   >
-                    <MenuItem value={taskType} selected disabled>{taskType}</MenuItem>
+                    <MenuItem value={taskType} selected disabled>
+                      {taskType}
+                    </MenuItem>
                     <MenuItem value={"Create Course"}>Create Course</MenuItem>
                     <MenuItem value={"Update Course"}>Update Course</MenuItem>
                     <MenuItem value={"Create SOS"}>Create SOS</MenuItem>
@@ -666,6 +667,10 @@ export default function InitializeTask() {
 
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: "60vh", width: "100%" }}
             columns={columns}
             rows={rows}

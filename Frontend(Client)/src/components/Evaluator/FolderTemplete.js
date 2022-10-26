@@ -237,7 +237,6 @@ export default function FolderTemplete() {
       style={{
         height: "700",
         width: "100%",
-        overflow: "hidden",
       }}
     >
       <div style={{ marginBottom: "5%" }}>

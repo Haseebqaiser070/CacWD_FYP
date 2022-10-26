@@ -7,6 +7,7 @@ import { muiAbtn } from "../style";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Card } from "@mui/material";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 const columns = [
   {
     field: "Program",
@@ -102,6 +103,10 @@ export default function AllCourseFolder() {
         </h1>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}

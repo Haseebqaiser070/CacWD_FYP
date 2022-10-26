@@ -14,6 +14,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import background from "../css/comsats.jpg";
+import comsatslogo from "../CACMember/comsats_logo.png";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -40,9 +41,21 @@ export default function Home() {
     <div>
       <div>
         <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static" style={{ backgroundColor: "#00447f" }}>
-            <Toolbar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <AppBar
+            position="fixed"
+            style={{
+              backgroundColor: "#00447f",
+              paddingTop: 3,
+              paddingBottom: 3,
+            }}
+          >
+            <Toolbar variant="dense">
+              <img src={comsatslogo} width="60px" height="60px"></img>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, paddingLeft: 2 }}
+              >
                 COMSATS University Islamabad
               </Typography>
               <button

@@ -7,7 +7,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckSquare, AiFillEdit } from "react-icons/ai";
 import { muiAbtn } from "../style";
-import { Card } from "@mui/material";
+import { Card, LinearProgress } from "@mui/material";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function CacSyllabus() {
   const [Rows, setRows] = useState([]);
@@ -72,18 +73,18 @@ export default function CacSyllabus() {
           size="small"
           style={muiAbtn}
           onClick={async () => {
-            try{
+            try {
               var response = await axios.post(
-              `http://localhost:4000/SyllabusCreate/Submit/${row.Code}`,
-              { withCredentials: true }
-            );
-            getRepoCourse();
-            }catch (err) {
+                `http://localhost:4000/SyllabusCreate/Submit/${row.Code}`,
+                { withCredentials: true }
+              );
+              getRepoCourse();
+            } catch (err) {
               if (err.response?.data == "Deadline Passed") {
                 alert("Cannot Submit Deadline has Passed");
               } else if (err.response?.data == "No Versions") {
                 alert("Cannot Submit Nothing added");
-              } 
+              }
             }
           }}
         >
@@ -108,12 +109,14 @@ export default function CacSyllabus() {
         </h1>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}
-            pageSize={10}
-            rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />
         </div>

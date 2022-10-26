@@ -19,6 +19,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -200,6 +201,10 @@ export default function ReturnedTasks() {
         </h1>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}

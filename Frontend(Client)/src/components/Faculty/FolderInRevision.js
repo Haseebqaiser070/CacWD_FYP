@@ -5,8 +5,9 @@ import { DataGrid } from "@mui/x-data-grid";
 import { muiAbtn } from "../style";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, Tooltip } from "@mui/material";
+import { Card, LinearProgress, Tooltip } from "@mui/material";
 import { AiFillEdit, AiFillEye } from "react-icons/ai";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 const columns = [
   {
     field: "Program",
@@ -93,6 +94,10 @@ export default function FolderInRevision() {
         </h1>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}

@@ -11,10 +11,11 @@ import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 
 import axios from "axios";
-import { Card } from "@mui/material";
+import { Card, LinearProgress } from "@mui/material";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { muiAbtn, muibtn } from "./style";
 import PositionedSnackbar from "./AuxillaryComponents/DeleteSnack";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -269,6 +270,10 @@ export default function AllCategories() {
         </div>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: "50vh", width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}

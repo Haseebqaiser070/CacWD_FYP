@@ -6,7 +6,8 @@ import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import { AiOutlineCheckSquare, AiFillEdit } from "react-icons/ai";
 import { muiAbtn } from "../style";
-import { Card } from "@mui/material";
+import { Card, LinearProgress } from "@mui/material";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function CacCourseTask() {
   const [Rows, setRows] = useState([]);
@@ -39,18 +40,17 @@ export default function CacCourseTask() {
           size="small"
           style={muiAbtn}
           onClick={async () => {
-            try{
-            const response = await axios.post(
-              `http://localhost:4000/CoursesCreate/Submit/${row.Code}`
-            );
-            getRepoCourse();
-            }
-            catch (err) {
+            try {
+              const response = await axios.post(
+                `http://localhost:4000/CoursesCreate/Submit/${row.Code}`
+              );
+              getRepoCourse();
+            } catch (err) {
               if (err.response?.data == "Deadline Passed") {
                 alert("Cannot Submit Deadline has Passed");
               } else if (err.response?.data == "No Versions") {
                 alert("Cannot Submit Nothing added");
-              } 
+              }
             }
           }}
         >
@@ -110,12 +110,14 @@ export default function CacCourseTask() {
         </h1>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}
-            pageSize={10}
-            rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />
         </div>

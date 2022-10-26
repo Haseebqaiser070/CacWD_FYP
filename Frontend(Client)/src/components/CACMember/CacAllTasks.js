@@ -4,6 +4,8 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
+import { LinearProgress } from "@mui/material";
 
 function ActionButtons(props) {
   const navigate = useNavigate();
@@ -64,12 +66,14 @@ export default function CacAllTasks() {
       </div>
       <div>
         <DataGrid
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            LoadingOverlay: LinearProgress,
+          }}
           style={{ height: 400, width: "100%" }}
           columns={columns}
           getRowId={(Rows) => Rows._id}
           rows={Rows}
-          pageSize={10}
-          rowsPerPageOptions={[5]}
           disableSelectionOnClick
         />
       </div>

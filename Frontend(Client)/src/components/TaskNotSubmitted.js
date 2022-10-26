@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
+import { LinearProgress } from "@mui/material";
 
 export default function TaskNotSubmitted() {
   const [Rows, setRows] = useState({});
@@ -36,12 +38,14 @@ export default function TaskNotSubmitted() {
         <b>Task Extenstion Request</b>
       </h1>
       <DataGrid
+        components={{
+          NoRowsOverlay: CustomNoRowsOverlay,
+          LoadingOverlay: LinearProgress,
+        }}
         style={{ height: 400, width: "100%" }}
         columns={columns}
         getRowId={(Rows) => Rows.id}
         rows={Rows}
-        pageSize={10}
-        rowsPerPageOptions={[5]}
         disableSelectionOnClick
       />
     </div>

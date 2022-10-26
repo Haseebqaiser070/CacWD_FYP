@@ -3,6 +3,8 @@ import "./css/styles.css";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import { muiAbtn, muibtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
+import { LinearProgress } from "@mui/material";
 
 export default function AllCourseFolder() {
   const [Rows, setRows] = useState([]);
@@ -60,6 +62,10 @@ export default function AllCourseFolder() {
       </h1>
       <div>
         <DataGrid
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            LoadingOverlay: LinearProgress,
+          }}
           style={{ height: 400, width: "100%" }}
           columns={columns}
           getRowId={(Rows) => Rows._id}

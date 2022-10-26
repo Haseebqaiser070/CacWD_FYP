@@ -14,12 +14,14 @@ import {
   DialogTitle,
   FormControl,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Modal,
   Select,
   TextField,
 } from "@mui/material";
 import { muiAbtn, muibtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -94,23 +96,25 @@ export default function Evaluators() {
       `http://localhost:4000/EvalFolders/showAllbyid/${id}`
     );
     const col = response.data.map((i) => {
-        return {
-          Faculty: i.Folder.User,
-          Folders: i.Folder,
-        };
-      })   
+      return {
+        Faculty: i.Folder.User,
+        Folders: i.Folder,
+      };
+    });
     setobj([...col]);
-    console.log("col",col)
-    const col2 = await Promise.all(col.map(async(i) => {
-
-      console.log("i",i)
-        const res = await axios.get(`http://localhost:4000/UserAssigedFolders/showAllbyid/${i.Faculty._id}`);
+    console.log("col", col);
+    const col2 = await Promise.all(
+      col.map(async (i) => {
+        console.log("i", i);
+        const res = await axios.get(
+          `http://localhost:4000/UserAssigedFolders/showAllbyid/${i.Faculty._id}`
+        );
         return [...res.data];
       })
     );
     console.log("col2", col2);
     setUserFolders([...col2]);
-    setup(true)
+    setup(true);
     setOpen(true);
   };
   const Submitform = async (e) => {
@@ -158,11 +162,11 @@ export default function Evaluators() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-  const handleCloseDialog2 = async() => {          
-    await axios.post("http://localhost:4000/EvalFolders/finishAll")
-    getData()
+  const handleCloseDialog2 = async () => {
+    await axios.post("http://localhost:4000/EvalFolders/finishAll");
+    getData();
     setOpenDialog(false);
-  }
+  };
   const columns = [
     {
       field: "Name",
@@ -196,7 +200,7 @@ export default function Evaluators() {
               <AiFillEdit style={{ marginRight: 10 }} />
               Assign Course
             </Button>
-          ): (
+          ) : (
             <Button
               variant="contained"
               color="primary"
@@ -204,7 +208,7 @@ export default function Evaluators() {
               style={muiAbtn}
               onClick={() => {
                 setUser(row);
-                getobjs(row._id);                
+                getobjs(row._id);
               }}
             >
               <AiFillEdit style={{ marginRight: 10 }} />
@@ -216,9 +220,12 @@ export default function Evaluators() {
             color="primary"
             size="small"
             style={muiAbtn}
-            onClick={async()=>{        
-            await axios.post(`http://localhost:4000/EvalFolders/finish/${row._id}`)
-            getData()}}
+            onClick={async () => {
+              await axios.post(
+                `http://localhost:4000/EvalFolders/finish/${row._id}`
+              );
+              getData();
+            }}
           >
             <AiFillDelete style={{ marginRight: "6px" }} />
             Cancel
@@ -271,12 +278,14 @@ export default function Evaluators() {
         </div>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}
-            pageSize={10}
-            rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />
         </div>
@@ -333,8 +342,7 @@ export default function Evaluators() {
                   )}
 
                   <div className="form-floating ">
-                    
-                  <FormControl classname="mt-4" fullWidth size="small">
+                    <FormControl classname="mt-4" fullWidth size="small">
                       <InputLabel id="taskType">Assign Folder</InputLabel>
                       <Select
                         className="mb-4"
@@ -349,22 +357,22 @@ export default function Evaluators() {
                           getUserFolds(index, e.target.value);
                         }}
                         autoWidth
-                      >                        
-                        {up&&(
-                        <MenuItem
-                        value={obj[index]?.Faculty}
-                        selected
-                        disabled
                       >
-                          {obj[index]?.Faculty?.Name}
-                        </MenuItem>)}
-                      {FacUsers.map((p) => {
-                        return <MenuItem value={p}>{p.Name}</MenuItem>;
-                      })}                      
+                        {up && (
+                          <MenuItem
+                            value={obj[index]?.Faculty}
+                            selected
+                            disabled
+                          >
+                            {obj[index]?.Faculty?.Name}
+                          </MenuItem>
+                        )}
+                        {FacUsers.map((p) => {
+                          return <MenuItem value={p}>{p.Name}</MenuItem>;
+                        })}
                       </Select>
                     </FormControl>
-                    
-                    
+
                     <FormControl classname="mt-4" fullWidth size="small">
                       <InputLabel id="taskType">Assign Folder</InputLabel>
                       <Select
@@ -379,16 +387,19 @@ export default function Evaluators() {
                           setobj([...clone]);
                         }}
                         autoWidth
-                      >{up&&(
-                        <MenuItem
-                          value={obj[index]?.Folders}
-                          selected
-                          disabled
-                        >
-                         {obj[index]?.Folders?.Course?.Code} {obj[index]?.Folders?.Course?.Name}{" "}
-                          {obj[index]?.Folders?.LabTheory == "Lab"&&"(" + obj[index]?.Folders?.LabTheory + ")"}
-                        
-                        </MenuItem>)}
+                      >
+                        {up && (
+                          <MenuItem
+                            value={obj[index]?.Folders}
+                            selected
+                            disabled
+                          >
+                            {obj[index]?.Folders?.Course?.Code}{" "}
+                            {obj[index]?.Folders?.Course?.Name}{" "}
+                            {obj[index]?.Folders?.LabTheory == "Lab" &&
+                              "(" + obj[index]?.Folders?.LabTheory + ")"}
+                          </MenuItem>
+                        )}
                         {UserFolders.length > 0 &&
                           UserFolders[index]?.map((a) => {
                             return (
@@ -416,7 +427,6 @@ export default function Evaluators() {
                   marginTop: 10,
                   marginRight: 20,
                 }}
-
                 onClick={() => {
                   setobj([
                     ...obj,

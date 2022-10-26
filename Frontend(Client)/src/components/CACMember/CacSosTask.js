@@ -4,9 +4,10 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import { muiAbtn } from "../style";
-import { Card } from "@mui/material";
+import { Card, LinearProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckSquare, AiFillEdit } from "react-icons/ai";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function CacSosTask() {
   const [RepoProgram, setRepoProgram] = useState([]);
@@ -43,19 +44,20 @@ export default function CacSosTask() {
           size="small"
           style={muiAbtn}
           onClick={async () => {
-           try{ var response = await axios.post(
-              `http://localhost:4000/SOSCreate/Submit/${row.Program}`,
-              {
-                withCredentials: true,
-              }
-            );
-            getRepoProgram();
-            }catch (err) {
+            try {
+              var response = await axios.post(
+                `http://localhost:4000/SOSCreate/Submit/${row.Program}`,
+                {
+                  withCredentials: true,
+                }
+              );
+              getRepoProgram();
+            } catch (err) {
               if (err.response?.data == "Deadline Passed") {
                 alert("Cannot Submit Deadline has Passed");
               } else if (err.response?.data == "No Versions") {
                 alert("Cannot Submit Nothing added");
-              } 
+              }
             }
           }}
         >
@@ -102,12 +104,14 @@ export default function CacSosTask() {
         </h1>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(RepoProgram) => RepoProgram._id}
             rows={RepoProgram}
-            pageSize={10}
-            rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />
         </div>

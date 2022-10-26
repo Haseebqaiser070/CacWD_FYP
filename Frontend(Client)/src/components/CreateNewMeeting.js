@@ -4,10 +4,18 @@ import axios from "axios";
 
 import Button from "@mui/material/Button";
 import { DataGrid, getGridDefaultColumnTypes } from "@mui/x-data-grid";
-import { Autocomplete, Box, Card, Modal, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Card,
+  LinearProgress,
+  Modal,
+  TextField,
+} from "@mui/material";
 import { AiFillDelete, AiFillEdit, AiOutlineFieldTime } from "react-icons/ai";
 import { TaskOutlined } from "@mui/icons-material";
 import { muiAbtn, muibtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const modalstyle = {
   position: "absolute",
@@ -506,12 +514,16 @@ export default function CreateNewMeeting() {
         </div>
         <div>
           <DataGrid
-            style={{ height: 400, width: "100%" }}
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
+            style={{ height: "70vh", width: "100%" }}
             columns={columns}
             rows={meetings}
             getRowId={(Rows) => Rows._id}
-            pageSize={10}
-            rowsPerPageOptions={[5]}
+            // pageSize={10}
+            // rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />
         </div>

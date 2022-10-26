@@ -8,6 +8,7 @@ import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import {
   Autocomplete,
   Card,
+  LinearProgress,
   MenuItem,
   Modal,
   TextField,
@@ -20,6 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
 import { muibtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -210,6 +212,10 @@ export default function BTLLevel() {
 
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: "60vh", width: "100%" }}
             columns={BTLcolumns}
             rows={BTLRow}

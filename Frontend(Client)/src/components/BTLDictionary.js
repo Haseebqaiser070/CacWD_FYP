@@ -9,6 +9,7 @@ import {
   Autocomplete,
   Card,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Modal,
   Select,
@@ -22,6 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
 import { muiAbtn, muibtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -392,6 +394,10 @@ export default function BtlDictionary() {
 
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: "50vh", width: "100%" }}
             columns={columns}
             rows={BTLDIC}

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "../css/styles.css";
 import Button from "@mui/material/Button";
-import { Box, Card, Modal } from "@mui/material";
+import { Box, Card, LinearProgress, Modal } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { AiFillEdit, AiFillEye } from "react-icons/ai";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function FolderEvaluation() {
   //   const [rows, setRows] = useState([]);
@@ -55,11 +56,13 @@ export default function FolderEvaluation() {
 
       <div style={{ marginTop: 30 }}>
         <DataGrid
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            LoadingOverlay: LinearProgress,
+          }}
           style={{ height: 400, width: "100%" }}
           columns={columns}
           rows={rows}
-          pageSize={10}
-          rowsPerPageOptions={[5]}
           checkboxSelection
           disableSelectionOnClick
         />

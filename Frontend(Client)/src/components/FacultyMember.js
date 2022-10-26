@@ -14,12 +14,14 @@ import {
   DialogTitle,
   FormControl,
   InputLabel,
+  LinearProgress,
   MenuItem,
   Modal,
   TextField,
 } from "@mui/material";
 import Select from "@mui/material/Select";
 import { muiAbtn, muibtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -160,11 +162,11 @@ export default function FacultyMembers() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-  const handleCloseDialog2 = async() => {             
-    await axios.post("http://localhost:4000/AssginFolders/finishAll")
-    getData()
+  const handleCloseDialog2 = async () => {
+    await axios.post("http://localhost:4000/AssginFolders/finishAll");
+    getData();
     setOpenDialog(false);
-  }
+  };
   const columns = [
     {
       field: "Name",
@@ -218,9 +220,12 @@ export default function FacultyMembers() {
             color="primary"
             size="small"
             style={muiAbtn}
-            onClick={async()=>{        
-              await axios.post(`http://localhost:4000/AssginFolders/finish/${row._id}`)
-              getData()}}
+            onClick={async () => {
+              await axios.post(
+                `http://localhost:4000/AssginFolders/finish/${row._id}`
+              );
+              getData();
+            }}
           >
             <AiFillDelete style={{ marginRight: "6px" }} />
             Cancel
@@ -247,7 +252,7 @@ export default function FacultyMembers() {
             className="mb-2 muibtn"
             color="primary"
             size="small"
-            style={muibtn}            
+            style={muibtn}
             onClick={handleClickOpen}
           >
             <AiFillDelete style={{ marginRight: "6px" }} />
@@ -273,12 +278,14 @@ export default function FacultyMembers() {
         </div>
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}
-            pageSize={10}
-            rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />
         </div>

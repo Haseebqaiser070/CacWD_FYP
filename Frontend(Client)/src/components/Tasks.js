@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useNavigate } from "react-router-dom";
 import CreateTasks from "./CreateTasks";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
+import { LinearProgress } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -124,12 +126,14 @@ export default function Tasks() {
 
       <div>
         <DataGrid
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            LoadingOverlay: LinearProgress,
+          }}
           style={{ height: 400, width: "100%" }}
           columns={columns}
           getRowId={(Rows) => Rows._id}
           rows={Rows}
-          pageSize={10}
-          rowsPerPageOptions={[5]}
           disableSelectionOnClick
         />
       </div>

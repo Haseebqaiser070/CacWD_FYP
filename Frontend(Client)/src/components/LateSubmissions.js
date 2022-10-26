@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Modal } from "@mui/material";
+import { Button, LinearProgress, Modal } from "@mui/material";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const modalstyle = {
   position: "absolute",
@@ -20,41 +21,36 @@ const modalstyle = {
   p: 4,
 };
 function incrementDeadline(rowid) {
-  const navigate=useNavigate();
-  console.log("rowid",rowid)
+  const navigate = useNavigate();
+  console.log("rowid", rowid);
   const [open, setOpen] = useState(false);
-  const [date,setdate]=useState(new Date())
-  
-  const [round,setround]=useState("");
-  const [type,settype]=useState("")
-  useEffect(()=>{
+  const [date, setdate] = useState(new Date());
 
-  
-  if(rowid.row.Request.includes("Round1")){
-    setround("Round1")
-  }
-  else{
-    setround("Round2")
-  }
-  if(rowid.row.Request.includes("Lab")){
-    settype("Lab")
-  }
-  else{
-    settype("Theory")
-  }
-},[])
+  const [round, setround] = useState("");
+  const [type, settype] = useState("");
+  useEffect(() => {
+    if (rowid.row.Request.includes("Round1")) {
+      setround("Round1");
+    } else {
+      setround("Round2");
+    }
+    if (rowid.row.Request.includes("Lab")) {
+      settype("Lab");
+    } else {
+      settype("Theory");
+    }
+  }, []);
   const handleClose = () => setOpen(false);
-  const updatedate= async () => {
-    const res = await axios.put(`http://localhost:4000/Content/updatedate`,{
-      date:date,
-      round:round,
-      type:type,
-      _id:rowid.row._id
+  const updatedate = async () => {
+    const res = await axios.put(`http://localhost:4000/Content/updatedate`, {
+      date: date,
+      round: round,
+      type: type,
+      _id: rowid.row._id,
     });
-    console.log("res",res)
-    Navigate(-1)
-    
-  }
+    console.log("res", res);
+    Navigate(-1);
+  };
   return (
     <div>
       <Button
@@ -70,7 +66,7 @@ function incrementDeadline(rowid) {
 
       <Modal
         open={open}
-        onClose={()=>handleClose()}
+        onClose={() => handleClose()}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -81,10 +77,10 @@ function incrementDeadline(rowid) {
             </label>
             <input
               name="time"
-               onChange={(e)=>setdate(e.target.value)}
+              onChange={(e) => setdate(e.target.value)}
               style={{ width: "100%" }}
               type="datetime-local"
-               value={date}
+              value={date}
             ></input>
 
             <Button
@@ -92,7 +88,7 @@ function incrementDeadline(rowid) {
               color="primary"
               size="small"
               style={{ marginTop: 16 }}
-              onClick={()=>updatedate()}
+              onClick={() => updatedate()}
             >
               <AiOutlineFieldTime style={{ marginRight: 10 }} />
               Increase Due Date
@@ -104,28 +100,32 @@ function incrementDeadline(rowid) {
   );
 }
 export default function PendingDeadlineRequests() {
-  const [posts,setPosts]=useState({})
+  const [posts, setPosts] = useState({});
   const [Rows, setRows] = useState({});
-  const getdeadlines= async () => {
+  const getdeadlines = async () => {
     const res = await axios.get(`http://localhost:4000/Content/showLabReq`);
-    console.log("res",res)
+    console.log("res", res);
     setPosts(res.data);
-            var row=[];
-            var index=0
-            var arr=res.data.Lab.concat(res.data.Theory)
-            console.log("hello",arr)
-           arr.map((val, id) => {
-                console.log("idss",id)
-                row[id]={_id:val._id,id: id, FacultyMemberName: val.Request_id.Name, Request: val.Round+" ( "+val.Type+" )", CurrentDeadline:val.Deadline}
-                
-              })
-          console.log("uajh",row)
-          setRows(row);
-  }
-  useEffect(()=>{
-    getdeadlines()
-
-  },[])
+    var row = [];
+    var index = 0;
+    var arr = res.data.Lab.concat(res.data.Theory);
+    console.log("hello", arr);
+    arr.map((val, id) => {
+      console.log("idss", id);
+      row[id] = {
+        _id: val._id,
+        id: id,
+        FacultyMemberName: val.Request_id.Name,
+        Request: val.Round + " ( " + val.Type + " )",
+        CurrentDeadline: val.Deadline,
+      };
+    });
+    console.log("uajh", row);
+    setRows(row);
+  };
+  useEffect(() => {
+    getdeadlines();
+  }, []);
   const columns = [
     {
       field: "FacultyMemberName",
@@ -157,12 +157,14 @@ export default function PendingDeadlineRequests() {
         <b>Late Submission</b>
       </h1>
       <DataGrid
+        components={{
+          NoRowsOverlay: CustomNoRowsOverlay,
+          LoadingOverlay: LinearProgress,
+        }}
         style={{ height: 400, width: "100%" }}
         columns={columns}
         getRowId={(Rows) => Rows.id}
         rows={Rows}
-        pageSize={10}
-        rowsPerPageOptions={[5]}
         disableSelectionOnClick
       />
     </div>

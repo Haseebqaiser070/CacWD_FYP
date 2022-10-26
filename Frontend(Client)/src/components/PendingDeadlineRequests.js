@@ -170,6 +170,7 @@ export default function PendingDeadlineRequests() {
           <DataGrid
             components={{
               NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
             }}
             style={{ height: "70vh", width: "100%" }}
             columns={columns}

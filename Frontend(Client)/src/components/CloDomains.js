@@ -8,6 +8,7 @@ import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import {
   Autocomplete,
   Card,
+  LinearProgress,
   MenuItem,
   Modal,
   TextField,
@@ -20,6 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { Box } from "@mui/system";
 import { muibtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const style = {
   position: "absolute",
@@ -41,7 +43,7 @@ export default function CloDomains() {
   const handleClose = () => {
     setOpen(false);
     setDomain("");
-    setUpid("")
+    setUpid("");
   };
   const [Domain, setDomain] = useState("");
 
@@ -49,13 +51,13 @@ export default function CloDomains() {
 
   const [Upid, setUpid] = useState("");
 
-  const update =async(ii)=>{
+  const update = async (ii) => {
     const res = await axios.get(`http://localhost:4000/SOBTL/Domain/${ii}`);
     setDomain(res.data.Domain);
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
-  function ActionButton({row}) {
+  function ActionButton({ row }) {
     return (
       <>
         <Tooltip title="Edit" placement="top-start">
@@ -64,10 +66,10 @@ export default function CloDomains() {
             color="primary"
             size="small"
             style={{ backgroundColor: "#4b2980", marginLeft: 16, padding: 10 }}
-            onClick={()=>{
-              setUpid(row._id)
-              update(row._id)}
-            }
+            onClick={() => {
+              setUpid(row._id);
+              update(row._id);
+            }}
           >
             <AiFillEdit />
           </Button>
@@ -79,45 +81,56 @@ export default function CloDomains() {
             size="small"
             style={{ backgroundColor: "#4b2980", marginLeft: 16, padding: 10 }}
             onClick={async () => {
-              await axios.delete(`http://localhost:4000/SOBTL/Domain/${row._id}`);
+              await axios.delete(
+                `http://localhost:4000/SOBTL/Domain/${row._id}`
+              );
               getDomainRows();
-            }}          >
+            }}
+          >
             <AiFillDelete />
           </Button>
         </Tooltip>
       </>
     );
   }
-  const sub=async(e)=>{
-    e.preventDefault()
-console.log("hi")
-    if (Domain != "" && Upid == ""&&!DomainRow.some(e=>e.Domain==Domain)) {
-      console.log("hii")
+  const sub = async (e) => {
+    e.preventDefault();
+    console.log("hi");
+    if (
+      Domain != "" &&
+      Upid == "" &&
+      !DomainRow.some((e) => e.Domain == Domain)
+    ) {
+      console.log("hii");
       const res = await axios.post("http://localhost:4000/SOBTL/addDomain", {
         Domain,
       });
-      console.log("hi1")
+      console.log("hi1");
       getDomainRows();
       setDomain("");
-    } else if (Domain != "" && Upid != ""&&!DomainRow.some(e=>e.Domain==Domain)) {
-      console.log("hiiiiii")
-      const res = await axios.put(`http://localhost:4000/SOBTL/Domain/${Upid}`, {
-        Domain,
-      });
-      console.log("hi2")
+    } else if (
+      Domain != "" &&
+      Upid != "" &&
+      !DomainRow.some((e) => e.Domain == Domain)
+    ) {
+      console.log("hiiiiii");
+      const res = await axios.put(
+        `http://localhost:4000/SOBTL/Domain/${Upid}`,
+        {
+          Domain,
+        }
+      );
+      console.log("hi2");
       getDomainRows();
       setDomain("");
       setUpid("");
       setOpen(false);
-    } 
-    else if(DomainRow.some(e=>e.Domain==Domain)){
+    } else if (DomainRow.some((e) => e.Domain == Domain)) {
       alert("Already Added This Domain");
-    }
-    else {
+    } else {
       alert("missing fields");
     }
-
-  }
+  };
 
   useEffect(() => {
     getDomainRows();
@@ -130,7 +143,6 @@ console.log("hi")
   };
 
   const columns = [
-    
     {
       field: "Domain",
       headerName: "CLO Domain",
@@ -217,6 +229,10 @@ console.log("hi")
 
         <div>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
             style={{ height: "50vh", width: "100%" }}
             columns={columns}
             rows={DomainRow}

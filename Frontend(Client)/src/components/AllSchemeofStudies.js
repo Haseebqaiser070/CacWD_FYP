@@ -7,8 +7,14 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import { DataGrid } from "@mui/x-data-grid";
-import { Dialog, DialogActions, DialogTitle } from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  LinearProgress,
+} from "@mui/material";
 import { muiAbtn } from "./style";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function AllSOS() {
   const [SOSs, setSOSs] = useState([]);
@@ -128,6 +134,10 @@ export default function AllSOS() {
     >
       <h1 className="py-4">All Scheme of Studies</h1>
       <DataGrid
+        components={{
+          NoRowsOverlay: CustomNoRowsOverlay,
+          LoadingOverlay: LinearProgress,
+        }}
         style={{ height: 500, width: "100%" }}
         columns={columns}
         rows={SOSs}

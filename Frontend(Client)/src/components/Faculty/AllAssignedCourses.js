@@ -3,6 +3,8 @@ import "../css/styles.css";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
+import { LinearProgress } from "@mui/material";
 
 export default function AllAssignedCourses() {
   const [Rows, setRows] = useState([]);
@@ -63,12 +65,14 @@ export default function AllAssignedCourses() {
       </h1>
       <div>
         <DataGrid
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            LoadingOverlay: LinearProgress,
+          }}
           style={{ height: 400, width: "100%" }}
           columns={columns}
           getRowId={(Rows) => Rows._id}
           rows={Rows}
-          pageSize={10}
-          rowsPerPageOptions={[5]}
           disableSelectionOnClick
         />
       </div>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Modal } from "@mui/material";
+import { Button, LinearProgress, Modal } from "@mui/material";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
 const modalstyle = {
   position: "absolute",
@@ -113,12 +114,14 @@ export default function TaskExtentionRequest() {
         <b>Task Extenstion Request</b>
       </h1>
       <DataGrid
+        components={{
+          NoRowsOverlay: CustomNoRowsOverlay,
+          LoadingOverlay: LinearProgress,
+        }}
         style={{ height: 400, width: "100%" }}
         columns={columns}
         getRowId={(Rows) => Rows.id}
         rows={Rows}
-        pageSize={10}
-        rowsPerPageOptions={[5]}
         disableSelectionOnClick
       />
     </div>
