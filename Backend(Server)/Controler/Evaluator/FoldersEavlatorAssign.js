@@ -34,6 +34,23 @@ module.exports.Add = async (req, res) => {
     if (!req.user.Roles.includes("Admin"))
       return await res.status(401).json("UnAutherized");
     var Folders = [];
+    
+    var already = false;
+    await Promise.all(
+      req.body.obj.map(async (e) => {
+        try {
+          var fold = await Evaldoc.findOne({
+            Folder: e.Folders,
+            User: req.body.User,
+          });
+          if (fold) already = true;
+        } catch (er) {
+          console.error(er);
+        }
+      })
+    );
+    if (already) return await res.status(401).json("Already Assigned");
+    
     console.log("\nobj", req.body.obj);
     await Promise.all(
       req.body.obj.map(async (e) => {
@@ -77,6 +94,22 @@ module.exports.Add2 = async (req, res) => {
       "EvaluateFolders"
     );
 
+    var already = false;
+    await Promise.all(
+      req.body.obj.map(async (e) => {
+        try {
+          var fold = await Evaldoc.findOne({
+            Folder: e.Folders,
+            User: req.body.User,
+          });
+          if (fold) already = true;
+        } catch (er) {
+          console.error(er);
+        }
+      })
+    );
+    if (already) return await res.status(401).json("Already Assigned");
+    
     var Folders = [];
     await Promise.all(
       userF.EvaluateFolders.map(async (i) => {

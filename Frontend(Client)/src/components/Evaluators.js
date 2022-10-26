@@ -124,6 +124,7 @@ export default function Evaluators() {
       }
     });
     if (verify) {
+      try{
       if (!up) {
         await axios.post("http://localhost:4000/EvalFolders/add", {
           obj,
@@ -137,6 +138,12 @@ export default function Evaluators() {
       }
       getData();
       handleClose();
+    }
+      catch (err) {
+        if (err.response?.data === "Already Assigned") {
+          alert("Already Assigned a Teacher to this Section, Course and Program");
+        }
+      }
     } else {
       alert("Empty Field");
     }
