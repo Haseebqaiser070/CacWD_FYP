@@ -41,19 +41,24 @@ export default function CourseRepo() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
+    setPreCode("");
+    setSufCode("");
+    setName("");
+    setCreditHour("");
+    setup("");
     setOpen(false);
-    setup(false);
   };
 
   const togglePopup = () => {
     setIsOpen(!isOpen);
-    setup(false);
+    setup("");
   };
-  const handleCloseX = () => {
+  const handleCloseX = () => { 
     setPreCode("");
     setSufCode("");
     setName("");
-    setup(false);
+    setCreditHour("");
+    setup("");
     togglePopup();
   };
   useEffect(() => {
@@ -67,24 +72,65 @@ export default function CourseRepo() {
 
   const AddRepoCourse = async (e) => {
     e.preventDefault();
-    if ((PreCode != "" && SufCode != "" && Name != "", CreditHour != "")) {
+    var not = ["of","the","and","&","for","in","like"]
+    var dig=Name.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var naam = dig2.join(" ")
+    var check = false;    
+      
+    var alertme=""
+    
+    var Codeforc = PreCode + "-" + SufCode;
+    RepoCourse.forEach((i) => {
+      if (i.Name.toLowerCase() == Name.toLowerCase()) {
+        check = true;
+        alertme = "Conflict with Course Name"
+      }      
+      else if (i.Code == Codeforc) {
+        check = true;
+        alertme = "Conflict with Code"
+      }
+    });
+    if(up!=""){
+      var Code = PreCode + "-" + SufCode;
+      if (Name.toLowerCase() == up.Name.toLowerCase()&&Code == up.Code) {
+        check = false;         
+      }
+    }    
+    if (check) {
+      if(alertme=="Conflict with Course Name"){
+        alert("Conflict with Course Name");
+      }
+      else if(alertme=="Conflict with Code"){
+        alert("Conflict with Code");
+      }
+    }
+
+  else if ((PreCode != "" && SufCode != "" && Name != "", CreditHour != "")) {
       var Code = PreCode + "-" + SufCode;
       const LectureHoursWeek = CreditHour.slice(2, 3);
       const LabHoursWeek = CreditHour.slice(4, 5);
       const Credit = CreditHour.slice(0, 1);
       var reposnse = "";
-      if (!up) {
+      if (up=="") {
         reposnse = await axios.post("http://localhost:4000/RepoCourse/add", {
           Code,
-          Name,
+          Name:naam,
           Credit,
           LectureHoursWeek,
           LabHoursWeek,
         });
-      } else if (up) {
+      } else if (up!="") {
         reposnse = await axios.put(`http://localhost:4000/RepoCourse/${gid}`, {
           Code,
-          Name,
+          Name:naam,
           Credit,
           LectureHoursWeek,
           LabHoursWeek,
@@ -98,9 +144,10 @@ export default function CourseRepo() {
         setPreCode("");
         setSufCode("");
         setName("");
+        setCreditHour("");
         getRepoCourse();
         setOpen(false);
-        setup(false);
+        setup("");
       }
     } else {
       alert("empty values");
@@ -110,11 +157,11 @@ export default function CourseRepo() {
     await axios.delete(`http://localhost:4000/RepoCourse/${id}`);
     getRepoCourse();
   };
-  const [up, setup] = useState(false);
+  const [up, setup] = useState("");
   const [gid, setgid] = useState("");
   const handleUpdate = async (cor) => {
     console.log("Cor", cor);
-    setup(true);
+    setup(cor);
     setgid(cor._id);
     setPreCode(cor.Code.split("-")[0]);
     setName(cor.Name);
@@ -151,7 +198,9 @@ export default function CourseRepo() {
           color="primary"
           size="small"
           style={muiAbtn}
-          onClick={() => handleUpdate(row)}
+          onClick={() => {
+            setup(row);
+            handleUpdate(row)}}
         >
           <AiFillEdit style={{ marginRight: 10 }} />
           Edit

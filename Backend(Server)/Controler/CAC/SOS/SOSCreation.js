@@ -2,6 +2,7 @@ const Userdoc = require("../../../Models/User");
 const Versionodoc=require("../../../Models/SOSModels/SOSVersions")
 const Task = require("../../../Models/Tasks");
 const Returned = require("../../../Models/SOSModels/ReturnSOS");
+const SOS = require("../../../Models/SOSModels/SOS");
 const Mail = require("../../../helpers/mailing");
 
 module.exports.showUsers = async (req, res) => {
@@ -32,7 +33,10 @@ module.exports.showUsers = async (req, res) => {
     if(Version.length<1)return await res.status(404).json("No Versions")
     const obj = Version[Version.length - 1]
     console.log("\n\n\n\n\n\n\n\n obj",obj)
-
+    
+    const already  = await SOS.findOne({Program:obj.Program,Year:obj.Year})
+    if(already)return await res.status(401).json("SOS of this program for this year has already been made")
+    
     
     task.Status = "Returned"
     console.log("\n\n\n\n\n\n\n\n",task,"\n\n\n\n\n\n\n\n")

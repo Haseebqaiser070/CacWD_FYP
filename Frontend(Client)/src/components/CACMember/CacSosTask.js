@@ -57,7 +57,9 @@ export default function CacSosTask() {
                 alert("Cannot Submit Deadline has Passed");
               } else if (err.response?.data == "No Versions") {
                 alert("Cannot Submit Nothing added");
-              }
+              } else if (err.response?.data == "SOS of this program for this year has already been made") {
+                alert("SOS of this program for this year has already been made");
+              }              
             }
           }}
         >

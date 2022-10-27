@@ -13,6 +13,7 @@ import FacultyRoutes from "./components/Routes/FacultyRoutes";
 import EvaluatorRoutes from "./components/Routes/EvaluatorRoutes";
 import Profile from "./components/AuxillaryComponents/UserProfile";
 import ResetPassword from "./components/AuxillaryComponents/ResetPassword";
+import SOSfinal from "./components/DocumentsEvaluatorandFaculty/SOSfinal"
 function App() {
   return (
     <React.Fragment>
@@ -20,6 +21,7 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/ViewSOS/:Program/:Year" element={<SOSfinal />} />
             <Route path="/forgotpassword" element={<Forgot />} />
             <Route path="/ResetPassword/:token" element={<ResetPassword />} />
             <Route element={<PersistLogin />}>

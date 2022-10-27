@@ -4,8 +4,8 @@ module.exports.Add = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");
     if(!req.user.Roles.includes("Admin")) return res.status(401).json("Unautherized");   
-    const pre = await Program.findOne({Degree:req.body.Degree,Program:req.body.Program});
-    if(pre)return await res.json("Already Exists");
+    // const pre = await Program.findOne({Degree:req.body.Degree,Program:req.body.Program});
+    // if(pre)return await res.json("Already Exists");
     const program = await Program.create(req.body);
     console.log("program added", program);
     await res.status(201).json(program);
@@ -52,8 +52,8 @@ module.exports.Update = async (req, res) => {
   try {
     if (!req.user) return await res.json("Timed Out"); 
     if(!req.user.Roles.includes("Admin")) return res.status(401).json("Unautherized");   
-    const pre = await Program.findOne({Degree:req.body.Degree,Program:req.body.Program});
-    if(pre)return await res.json("Already Exists");
+    // const pre = await Program.findOne({Degree:req.body.Degree,Program:req.body.Program});
+    // if(pre)return await res.json("Already Exists");
     
     const program = await Program.findOneAndUpdate(
       { _id: req.params.id },

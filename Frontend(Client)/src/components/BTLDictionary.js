@@ -99,7 +99,7 @@ export default function BtlDictionary() {
         check = true;
       }
     });
-    if (Btl == Upid.BTL && Domain == Upid.Domain) {
+    if (Btl == Upid?.BTL && Domain == Upid?.Domain) {
       check = false;
     }
     if (check) {

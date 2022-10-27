@@ -8,13 +8,13 @@ module.exports.Add = async (req, res) => {
     if (!req.user) return await res.status(401).json("Timed Out");
     if (!req.user.Roles.includes("Admin")) return await res.status(401).json("UnAutherized");
     //Check weather Code already exist 
-    const Repos = await Repo.findOne({Code:req.body.Code});
+    // const Repos = await Repo.findOne({Code:req.body.Code});
     const courses = await coursedoc.findOne({Code:req.body.Code});
-    if(Repos||courses)return await res.json("Already Exists Code");
+    if(courses)return await res.json("Already Exists Code");
     //Check weather Name already exist 
     const course = await coursedoc.findOne({Name:req.body.Name});
-    const Reps = await Repo.findOne({Name:req.body.Name});
-    if(Reps||course)return await res.json("Already Exists Name");
+    // const Reps = await Repo.findOne({Name:req.body.Name});
+    if(course)return await res.json("Already Exists Name");
     
     const repo = await Repo.create(req.body);
     console.log("Repo added", repo);
@@ -210,14 +210,14 @@ module.exports.ShowUpdateSyllabus= async (req, res) => {
       if (!req.user) return await res.json("Timed Out"); 
       if(!req.user.Roles.includes("Admin")) return res.status(401).json("Unautherized");
       
-      const Repos = await Repo.findOne({Code:req.body.Code});
-      const courses = await coursedoc.findOne({Code:req.body.Code});
-      if(Repos||courses)return await res.json("Already Exists Code");
+      // const Repos = await Repo.findOne({Code:req.body.Code});
+      // const courses = await coursedoc.findOne({Code:req.body.Code});
+      // if(Repos||courses)return await res.json("Already Exists Code");
       
       //Check weather Name already exist 
-      const course = await coursedoc.findOne({Name:req.body.Name});
-      const Reps = await Repo.findOne({Name:req.body.Name});
-      if(Reps||course)return await res.json("Already Exists Name");
+      // const course = await coursedoc.findOne({Name:req.body.Name});
+      // const Reps = await Repo.findOne({Name:req.body.Name});
+      // if(Reps||course)return await res.json("Already Exists Name");
       
       const Re = await Repo.findOneAndUpdate(
         { _id: req.params.id },

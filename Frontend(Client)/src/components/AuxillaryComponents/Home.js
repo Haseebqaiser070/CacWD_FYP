@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "../css/styles.css";
 import Popup from "./PopupFunction";
 import Login from "./Login";
@@ -15,13 +15,31 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import background from "../css/comsats.jpg";
 import comsatslogo from "../CACMember/comsats_logo.png";
-
+import axios from 'axios'
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [Programdb, setProgramdb] = useState([]);
+  const [Program, setProgram] = useState("");
+  const [Years, setYears] = useState([]);
+  const [year, setyear] = useState("");
+  const navigate = useNavigate();
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
   };
+  const getPrograms = async () => {
+    const res = await axios.get("http://localhost:4000/SOS/Programs");
+    setProgramdb(res.data);
+  };
+  const getProgramYears = async (Program) => {
+    const res = await axios.get(`http://localhost:4000/SOS/Years/${Program}`);
+
+    setYears(res.data);
+  };
+  useEffect(() => {
+    getPrograms();
+  }, []);
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
@@ -121,31 +139,63 @@ export default function Home() {
           </div>
           <div className="my-4">
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Title</InputLabel>
-              <Select className="mb-4" label="Title" size="medium">
-                <MenuItem>2012-2014</MenuItem>
-                <MenuItem>2016-2020</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Program</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
-                label="Department"
+                label="Program"
                 size="medium"
+                value={Program}
+                onChange={(e) => {
+                  setProgram(e.target.value);
+                  getProgramYears(e.target.value);
+                }}
               >
-                <MenuItem>Computer Science</MenuItem>
+                {Programdb.map((p) => {
+                  return <MenuItem value={p}>{p}</MenuItem>;
+                })}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Year</InputLabel>
+              <Select
+                className="mb-4"
+                label="Year"
+                size="medium"
+                value={year}
+                onChange={(e) => {
+                  setyear(e.target.value);
+                }}
+              >
+                {Years.map((p) => {
+                  return <MenuItem value={p}>{p}</MenuItem>;
+                })}
               </Select>
             </FormControl>
           </div>
         </div>
-        <Button
-          style={{ backgroundColor: "#4b2980" }}
-          variant="contained"
-          size="medium"
-        >
-          VIEW SCHEME OF STUDIES
-        </Button>
+        {Program != "" && year != "" ? (
+          <Button
+            style={{ backgroundColor: "#4b2980" }}
+            variant="contained"
+            size="medium"
+            onClick={() => {
+              navigate(`/ViewSOS/${Program}/${year}`, { replace: true });
+            }}
+          >
+            VIEW SCHEME OF STUDIES
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            size="medium"
+            style={{ backgroundColor: "lightgrey", borderColor: "lightgrey" }}
+            onClick={() => {
+              alert("Please Select");
+            }}
+          >
+            Please Select
+          </Button>
+        )}
       </div>
       <div style={{ backgroundColor: "#00447f" }}>
         <p className="text-white py-3 text-center">

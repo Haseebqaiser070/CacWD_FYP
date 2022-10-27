@@ -32,7 +32,7 @@ import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 export default function AddProgram() {
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
-  const [up, setup] = useState(false);
+  const [up, setup] = useState("");
   useEffect(() => {
     getRows();
   }, []);
@@ -42,7 +42,7 @@ export default function AddProgram() {
   };
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setup(false);
+    setup("");
     setOpen(false);
     setDegree("");
     setProgram("");
@@ -55,7 +55,6 @@ export default function AddProgram() {
   const [Checked, setChecked] = useState(false);
 
   const Update = async (ii) => {
-    setup(true);
     const res = await axios.get(`http://localhost:4000/Program/${ii}`);
     setDegree(res.data.Degree);
     setProgram(res.data.Program);
@@ -81,10 +80,38 @@ export default function AddProgram() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("here");
-    if (!up && Degree != "" && Program != "") {
+    var not = ["of","the","and","&","for","in","like"]
+    var Prog=Program.split(" ")
+    var Prog2 = Prog.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var Progm= Prog2.join(" ")
+    var check = false;
+    rows.forEach((i) => {
+      if (i.Degree.toLowerCase() == Degree.toLowerCase() && Program.toLowerCase() == i.Program.toLowerCase()) {
+        check = true;
+      }
+    });
+    if(up!=""){
+      if (Degree.toLowerCase() == up.Degree.toLowerCase() && Program.toLowerCase()== up.Program.toLowerCase()) {
+        check = false;
+      }
+    }
+    if (check) {
+      alert(
+        "This Program alreadt Exists"
+      );
+    }
+
+    else if (up=="" && Degree != "" && Program != "") {
       const res = await axios.post("http://localhost:4000/Program/add", {
         Degree,
-        Program,
+        Program:Progm,
       });
       if (res.data == "Already Exists") alert("Already Exists");
       else {
@@ -92,16 +119,16 @@ export default function AddProgram() {
         setProgram("");
         getRows();
       }
-    } else if (up && Degree != "" && Program != "") {
+    } else if (up!="" && Degree != "" && Program != "") {
       const res = await axios.put(`http://localhost:4000/Program/${id}`, {
         Degree,
-        Program,
+        Program:Progm,
       });
       if (res.data == "Already Exists") alert("Already Exists");
       else {
         setDegree("");
         setProgram("");
-        setup(false);
+        setup("");
         getRows();
       }
     } else {
@@ -161,6 +188,7 @@ export default function AddProgram() {
           size="small"
           style={muiAbtn}
           onClick={() => {
+            setup(row);
             setid(row._id);
             Update(row._id);
           }}

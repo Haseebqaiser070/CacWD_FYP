@@ -41,7 +41,6 @@ module.exports.Add = async (req, res) => {
         try {
           var fold = await Evaldoc.findOne({
             Folder: e.Folders,
-            User: req.body.User,
           });
           if (fold) already = true;
         } catch (er) {
@@ -100,7 +99,6 @@ module.exports.Add2 = async (req, res) => {
         try {
           var fold = await Evaldoc.findOne({
             Folder: e.Folders,
-            User: req.body.User,
           });
           if (fold) already = true;
         } catch (er) {
