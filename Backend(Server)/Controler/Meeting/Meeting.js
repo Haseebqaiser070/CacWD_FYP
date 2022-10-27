@@ -31,6 +31,16 @@ module.exports.Update = async (req, res) => {
     // if (!req.user) return await res.json("Timed Out");
     const meeting = await taskmeetingdoc.findOneAndUpdate({ _id: body.id }, body);
     console.log("meeting updated", meeting);
+    var array=[]
+    meeting.taskType.map((item)=>{
+      array.push(item.taskType)
+    })
+    meeting.teacher_id.map((item)=>{
+      User.findById({_id:item}).then((re)=>{
+       console.log("ress",re)
+       Mail.MeetingUpdates(re.Email,req.body.dateTime,array)
+      })
+   })
     await res.json(meeting);
   } catch (err) {
     console.log(err);
@@ -42,6 +52,17 @@ module.exports.AddAvailability = async (req, res) => {
     // if (!req.user) return await res.json("Timed Out");
     const meeting = await meetingdoc.create(time);
     console.log("meeting updated", meeting);
+    const resss=await User.find({})
+    console.log("ds",resss)
+    resss.map((item)=>{
+      if(item.Roles[0]=="Admin"){
+        User.findById({_id:meeting.teacher_id}).then((re)=>{
+          console.log("ress",re)
+          Mail.AvailabilityDetails(item.Email,re.Email,meeting.time)
+      })
+      }
+    })
+      
     await res.json(meeting);
   } catch (err) {
     console.log(err);
@@ -108,6 +129,16 @@ module.exports.Delete = async (req, res) => {
     // if (!req.user) return await res.json("Timed Out");
     const meeting = await taskmeetingdoc.findOneAndDelete({ _id: req.params.id });
     console.log("meeting deleted", meeting);
+    var array=[]
+    meeting.taskType.map((item)=>{
+      array.push(item.taskType)
+    })
+    meeting.teacher_id.map((item)=>{
+      User.findById({_id:item}).then((re)=>{
+       console.log("ress",re)
+       Mail.Meetingdeleted(re.Email,req.body.dateTime,array)
+      })
+   })
     await res.json(meeting);
   } catch (err) {
     console.log(err);

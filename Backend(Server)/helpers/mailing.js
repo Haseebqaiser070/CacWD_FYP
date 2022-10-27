@@ -61,7 +61,32 @@ module.exports.TaskAssigned = (e, email) => {
   });
 };
 
-module.exports.TaskReturned = (e, email) => {
+module.exports.TaskEdited = (e,email) => {
+  console.log("sfs", e);
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Task Updates",
+    text:
+      "Updated Task Type :" +
+      e.taskType +
+      " Course : " +
+      e.Course?.Name +
+      " Deadline: " +
+      e.Deadline,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+
+module.exports.TaskReturned = (e,email) => {
   console.log("sfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
@@ -138,7 +163,9 @@ module.exports.ResetAvailability = (email) => {
   });
 };
 
-module.exports.TaskLock = (e, email) => {
+
+
+module.exports.TaskLock= (e,email) => {
   console.log("sfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
@@ -173,6 +200,70 @@ module.exports.MeetingDetails = (email, time, title) => {
     }
   });
 };
+
+module.exports.AvailabilityDetails= (email,uemail,time) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Availability details",
+    text:
+      "CAC member :" +
+      uemail +
+      ", Meeting Time : " +
+      time
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.MeetingUpdates = (email,time,title) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Meeting Updated Scheduled",
+    text:
+      "Meeting Title :" +
+      title +
+      ", Meeting Time : " +
+      time
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.Meetingdeleted = (email,time,title) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Meeting Scheduled Cancelled",
+    text:
+      "Meeting Title :" +
+      title +
+      ", Meeting Time : " +
+      time
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
 
 module.exports.reportMail = (email, path) => {
   var mailOptions = {
@@ -219,6 +310,118 @@ module.exports.resetPasswordMail = (email, token) => {
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.CourseDeadlines= (email,type,round,time) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Deadlines",
+    text:
+      "Folder :" +
+      type +
+      ", Round : " +
+      round+
+      ", Deadline : " +
+      time
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.DeadlineExtended= (email,type,round,time) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Deadlines Extended",
+    text:
+    "Your request for "+
+      "Folder :" +
+      type +
+      ", Round : " +
+      round+
+      " has been Extended to "+
+      " , Deadline : " +
+      time
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.DeadlineRequest= (email,type,round,user) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Deadlines Request",
+    text:
+    "You Got Deadline request from "+
+      user +
+      "For Folder :" +
+      type +
+      ", Round : " +
+      round
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.FolderSubmit= (email,user,course) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Folder Submission",
+    text:
+    "Folder for "+
+      course +
+      "has been Submitted by :" +
+      user 
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.FolderEvaluated= (email,course) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Folder Evaluated",
+    text:
+    "Folder "+
+      course +
+      "has been Evaluated"
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
     } else {
       console.log("Email sent: " + info.response);
     }

@@ -29,7 +29,9 @@ module.exports.Add = async (req, res) => {
         const task = await Task.create({taskType:e.taskType,User:e.User,Deadline:e.Deadline
         ,Status:e.Status,Program:e.Program,Comment:e.Comment})
         console.log("\n\nTASK",task)
-        Mail.TaskAssigned(e)
+        e.User.map((item)=>{
+          Mail.TaskAssigned(e,item.Email)
+        })
         return task
           
       }
@@ -221,6 +223,7 @@ module.exports.Update = async (req, res) => {
     ini.Task =  Tasks
     const up2 = await InitTask.findOneAndUpdate({ _id: req.body.id },ini);
     console.log("Task added", Tasks);
+    
     await res.status(201).json(Tasks);
   } catch (err) {
     console.log(err);

@@ -361,6 +361,7 @@
 var InitTask = require("../../../Models/InitTask");
 var Task = require("../../../Models/Tasks");
 var Userdoc = require("../../../Models/User");
+const Mail = require("../../../helpers/mailing");
 module.exports.Add = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");
@@ -410,6 +411,7 @@ module.exports.UpdateTaskInit = async (req, res) => {
       { _id: req.params.id },
       req.body
     );
+    
     console.log("all InitTasks", IniTask);
     await res.json(IniTask);
   } catch (err) {
@@ -611,8 +613,14 @@ module.exports.UpdateInside = async (req, res) => {
     console.log("abc", abc);
     ini.Task = Tasks;
     const up2 = await InitTask.findOneAndUpdate({ _id: req.params.id }, ini);
-    console.log("Task added", Tasks);
+    console.log("Task added", up2);
+    
 
+      up2.AssignMember.map((item)=>{
+        console.log("fj",item)
+      Mail.TaskEdited(up2,item.Email)
+      })
+    
     await res.status(201).json(Tasks);
   } catch (err) {
     console.log(err);

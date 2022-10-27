@@ -1,6 +1,8 @@
 var Folderdoc = require("../../../Models/Folders");
 var Base64doc = require("../../../Models/Base64");
-
+var Courses=require("../../../Models/CourseModels/ProgramWiseCourses")
+var Mail=require("../../../helpers/mailing")
+var User=require("../../../Models/User")
 module.exports.Add = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");
@@ -84,6 +86,18 @@ module.exports.SubmitaRound = async (req, res) => {
           if(req.body.Round=="Round1"){  
           const up = await Folderdoc.findOneAndUpdate({_id:req.params.id},{Round1:true});
           console.log("CourseFolder",up)
+          const course=await Courses.findById(up.Course)
+          const user=await User.find({})
+          const userr=await User.findById(up.User)
+
+          user.map((item)=>{
+      
+            item.Roles.map((i)=>{
+              if(i=="Admin"){
+                Mail.FolderSubmit(user.Email,userr.Name,course.Name+" - "+course.Code)
+              }
+            })
+          })
           await res.status(200).json(up)
         }
         else if(req.body.Round=="Round2"){  
@@ -98,9 +112,7 @@ module.exports.SubmitaRound = async (req, res) => {
       } catch (err) {
         console.log(err);
       }    
-
 }
-
 module.exports.ICEFSubimt = async (req, res) => {
     
     try {
@@ -239,8 +251,10 @@ module.exports.editEvaluation = async (req, res) => {
       if (!req.user.Roles.includes("Evaluator")) return await res.status(401).json("UnAutherized");        
       try {        
         const old = await Folderdoc.findByIdAndUpdate(req.params.id,{Evaluated:true})               
-        
-      
+        const userr=await User.findById(old.User)
+        const course=await Courses.findById(old.Course)
+
+        Mail.FolderEvaluated(userr.Email,course.Name+" - "+course.Code)
          console.log("CourseFolder",old)
         await res.status(200).json(old)
         
