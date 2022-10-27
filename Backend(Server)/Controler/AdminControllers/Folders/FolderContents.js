@@ -2,7 +2,8 @@ var TheoryContents = require("../../../Models/FolderContents/TheoryContents");
 var LabContents = require("../../../Models/FolderContents/LabContents");
 var TheoryReq= require("../../../Models/deadlineTheory");
 var LabReq= require("../../../Models/deadlineLab");
-
+var Mail=require("../../../helpers/mailing")
+var User=require("../../../Models/User")
 module.exports.Theory = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");
@@ -190,14 +191,20 @@ module.exports.Lab = async (req, res) => {
         if(req.body.round=="Round1"){
           const obj={Quiz:old.Round1.Quiz,Assignment:old.Round1.Assignment,Deadline:datee}
           await LabContents.findByIdAndUpdate(old._id,{Round1:obj})
-          await LabReq.findByIdAndUpdate(req.body._id,{pending:false})
+          const resss=await LabReq.findByIdAndUpdate(req.body._id,{pending:false})
+          const user=await User.findById(resss.Request_id)
+          Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
+
+              
+          
         console.log("R1")
         }
         if(req.body.round=="Round2"){
           const obj={Quiz:old.Round2.Quiz,Assignment:old.Round2.Assignment,Deadline:datee}
           await LabContents.findByIdAndUpdate(old._id,{Round2:obj})
-          await LabReq.findByIdAndUpdate(req.body._id,{pending:false})
-
+          const resss=await LabReq.findByIdAndUpdate(req.body._id,{pending:false})
+          const user=await User.findById(resss.Request_id)
+          Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
         }
       }
       else if(req.body.type=="Theory"){
@@ -211,14 +218,17 @@ module.exports.Lab = async (req, res) => {
           console.log("R1")
           const obj={Quiz:old.Round1.Quiz,Assignment:old.Round1.Assignment,Deadline:datee}
           await TheoryContents.findByIdAndUpdate(old._id,{Round1:obj})
-          await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false})
+          const resss=await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false})
+          const user=await User.findById(resss.Request_id)
+          Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
           console.log("R11")
         }
         if(req.body.round=="Round2"){
           const obj={Quiz:old.Round2.Quiz,Assignment:old.Round2.Assignment,Deadline:datee}
           await TheoryContents.findByIdAndUpdate(old._id,{Round2:obj})
-          await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false})
-
+          const resss=await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false})
+          const user=await User.findById(resss.Request_id)
+          Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
         }
         console.log("R1sasd")
         await res.status(200).json({message:"success"});
@@ -244,11 +254,27 @@ module.exports.Lab = async (req, res) => {
         if(req.body.round=="Round1"){
           const obj={Quiz:old.Round1.Quiz,Assignment:old.Round1.Assignment,Deadline:datee}
           await LabContents.findByIdAndUpdate(old._id,{Round1:obj})
+          const USER=await User.find({})
+          USER.map((i)=>{
+            i.Roles.map((item)=>{
+              if(item=="Faculty"){
+                Mail.CourseDeadlines(i.Email,req.body.type,req.body.round,datee)
+              }
+            })
+          })
         }
         if(req.body.round=="Round2"){
           const obj={Quiz:old.Round2.Quiz,Assignment:old.Round2.Assignment,Deadline:datee}
           await LabContents.findByIdAndUpdate(old._id,{Round2:obj})
+          const USER=await User.find({})
+          USER.map((i)=>{
+            i.Roles.map((item)=>{
+              if(item=="Faculty"){
+                Mail.CourseDeadlines(i.Email,req.body.type,req.body.round,datee)
 
+              }
+            })
+          })
         }
       }
       else if(req.body.type=="Theory"){
@@ -260,12 +286,29 @@ module.exports.Lab = async (req, res) => {
           console.log("R1")
           const obj={Quiz:old.Round1.Quiz,Assignment:old.Round1.Assignment,Deadline:datee}
           await TheoryContents.findByIdAndUpdate(old._id,{Round1:obj})
+          const USER=await User.find({})
+          USER.map((i)=>{
+            i.Roles.map((item)=>{
+              if(item=="Faculty"){
+                Mail.CourseDeadlines(i.Email,req.body.type,req.body.round,datee)
+
+              }
+            })
+          })
           console.log("R111")
         }
         if(req.body.round=="Round2"){
           const obj={Quiz:old.Round2.Quiz,Assignment:old.Round2.Assignment,Deadline:datee}
           await TheoryContents.findByIdAndUpdate(old._id,{Round2:obj})
+          const USER=await User.find({})
+          USER.map((i)=>{
+            i.Roles.map((item)=>{
+              if(item=="Faculty"){
+                Mail.CourseDeadlines(i.Email,req.body.type,req.body.round,datee)
 
+              }
+            })
+          })
         }
         console.log("sucss")
         await res.status(200).json({message:"success"});

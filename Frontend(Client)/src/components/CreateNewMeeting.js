@@ -51,7 +51,8 @@ export default function CreateNewMeeting() {
       var row = [];
       var tasks = [],
         members = [];
-      res.data.map((val, id) => {
+        console.log("res:",res.data)
+      res.data.map(async(val, id) => {
         val.taskType.map((i) => {
           tasks.push(i.taskType);
         });
@@ -59,7 +60,13 @@ export default function CreateNewMeeting() {
           members.push(i.Name);
         });
         console.log("yasks", tasks);
-
+        console.log("ds,",val)
+        if(val.taskType.length==0){
+          const res = await axios.delete(
+            `http://localhost:4000/Meeting/delete/${val._id}`
+          );
+        }
+        else{
         row[id] = {
           _id: val._id,
           id: id,
@@ -68,10 +75,11 @@ export default function CreateNewMeeting() {
           meetingDate: val.dateTime,
           report: val,
         };
+      }
 
         (tasks = []), (members = []);
       });
-      console.log("eqe", row);
+
       setmeetings(row);
     };
 
@@ -101,8 +109,7 @@ export default function CreateNewMeeting() {
         })*
         
       });*/
-      console.log("tasks", rows);
-      console.log("arr", array);
+    
       // arr.filter((item)=>item!=(rows.find((i)=>{i.User._id==item._id})))
       //  console.log("arrr",arr)
       setusers(array);
@@ -132,8 +139,7 @@ export default function CreateNewMeeting() {
 
   useEffect(() => {
     const getAllusers = async () => {
-      console.log("users", users);
-      console.log("taskhgs", task);
+      
       var us = tusers;
       task?.map((item) => {
         item?.AssignMember?.map((i) => {
@@ -150,6 +156,8 @@ export default function CreateNewMeeting() {
     const [taske, settaske] = useState(row.row.report.taskType);
     const [memberse, setmemberse] = useState(row.row.report.teacher_id);
     const [open2, setOpen2] = useState(false);
+ 
+    
     const handleClose2 = () => setOpen2(false);
     const Deletemeet = async (roww) => {
       const res = await axios.delete(
@@ -159,33 +167,40 @@ export default function CreateNewMeeting() {
       setchange(true);
     };
     const Update = async () => {
-      var mem = [],
-        Task = [];
-      var flag = false;
+      /*var mem = [],
       memberse.map((i) => {
-        mem.push(i?._id);
+        mem.push(i);
       });
       rows.map((value) => {
         var a = taske?.find((i) => i?._id == value?._id);
         a?.AssignMember?.map((x) => {
           mem.push(x);
         });
-      });
-      taske.map((i) => {
-        Task.push(i?._id);
+      });*/
+      var Task = [];
+      var flag = false;
+
+     taske.map((i,index) => {
+        Task.push(i);
+        if(index==(taske.length)-1){
+        }
+        else{
         var a = meetings.find((it) => it?.task == i?.taskType);
         if (a) {
           flag = true;
         }
+      }
       });
-      settaske(Task);
-      setmemberse(mem);
+
+
+      //settaske(Task);
+      //setmemberse(mem);
 
       var obj = {
         id: row.row._id,
         dateTime: datee,
         taskType: taske,
-        teacher_id: mem,
+        teacher_id: memberse,
       };
       if (flag == true) {
         alert("Meeting already exists for this task!!");
@@ -198,6 +213,7 @@ export default function CreateNewMeeting() {
         alert("Meeting Updated");
         setchangee(true);
         handleClose2();
+        
       }
     };
 
@@ -226,6 +242,7 @@ export default function CreateNewMeeting() {
                   multiple
                   id="tags-standard"
                   options={rows}
+                  value={taske}
                   getOptionLabel={(option) => option.taskType}
                   onChange={(value, newValue) => {
                     settaske(newValue);
@@ -280,6 +297,8 @@ export default function CreateNewMeeting() {
                   multiple
                   id="tags-standard"
                   options={users}
+
+                  value={memberse}
                   getOptionLabel={(option) => option.Name}
                   onChange={(value, newValue) => {
                     setmemberse(newValue);
