@@ -181,7 +181,7 @@ export default function AddNewCourseDocument() {
                         setBookWriter1("")
                       }
                     }}
-                    style={{ backgroundColor: "#4b2980" }}
+                    style={{ backgroundColor: "#4b2980" , marginLeft:"15px"}}
                   >
                     ADD Writter
                 </Button>
@@ -780,11 +780,13 @@ export default function AddNewCourseDocument() {
                     style={{ backgroundColor: "#fff" }}
                     label="Author"
                     variant="outlined"
-                    fullWidth
+                    size="small"
+                    fullWidth                  
                     value={BookWriter1}
                     onChange={(e) => setBookWriter1(e.target.value)}
                   ></TextField>
-                
+                </div>
+                <div className="col-3">
                 <Button                    
                     variant="contained"
                     className="btn btn-primary btn-block"

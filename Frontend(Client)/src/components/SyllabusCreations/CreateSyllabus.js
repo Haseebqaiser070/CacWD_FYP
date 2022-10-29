@@ -76,6 +76,33 @@ export default function CreateSyllabus() {
     setChapter("");
     setBookfinal("");
   };
+
+  const Edit = () => {
+    var b = "";
+    if (refmat == true) {
+      b = Bookfinal + "-Ref. Material";
+      setrefmat(false);
+    } else if (refmat == false) {
+      b = Bookfinal;
+    }
+    var list = Rows.map((i)=>{
+      if(i.lecture==lecid){
+        i.CDFUnit= unit
+        i.topics= topicsCovered
+        i.material= b
+      }
+      return i 
+    })
+    setRows([...list]);
+    setunit([]);
+    setTopicsCovered("");
+    setBookName("");
+    setChapter("");
+    setBookfinal("");
+    setOpen(false)
+  };
+  const [lecid,setlecid]=useState("")
+  
   useEffect(() => {
     getstuff();
     getAuths();
@@ -136,6 +163,11 @@ export default function CreateSyllabus() {
       field: "material",
       headerName: "Reference Material",
       width: "300",
+      valueGetter: ((params) => {
+        var arr = params?.row?.material.split("-");
+        var outarr = arr.join(", \n")
+        return outarr
+      }),
     },
 
     {
@@ -155,7 +187,20 @@ export default function CreateSyllabus() {
                   marginLeft: 10,
                   padding: 10,
                 }}
-                onClick={handleOpen}
+                onClick={()=>{
+                  var arrs = row.material.split("-")
+                  setTopicsCovered(row.topics);
+                  arrs[arrs.length-1] == "Ref. Material"?setrefmat(true):setrefmat(false);                  
+                  setBookName("");
+                  setChapter("");
+                  setunit(row.CDFUnit)
+                  setlecid(row.lecture)
+                  if(arrs[arrs.length-1]=="Ref. Material"){
+                    arrs.pop()
+                  }
+                  setBookfinal(arrs.join("-"));
+                  handleOpen()
+                }}
               >
                 <AiFillEdit />
               </Button>
@@ -324,7 +369,7 @@ export default function CreateSyllabus() {
                     size="medium"
                     style={{ backgroundColor: "#4b2980" }}
                     onClick={() => {
-                      Add();
+                      Edit();
                     }}
                   >
                     Submit

@@ -120,7 +120,7 @@ export default function CDFFinal() {
             <div className="row">
               <div className="col">
                 <h6>
-                  <b>Course Code: {Content.Code} </b>
+                  <b>Course Code: {Content.Code.split("-")[0]}{Content.Code.split("-")[1]}</b>
                 </h6>
               </div>
               <div className="col">
@@ -151,7 +151,7 @@ export default function CDFFinal() {
               <div className="col">
                 <h6 style={{ textAlign: "right" }}>
                   <b>Pre-Requisite: {Content.PreRequisites.map((i)=>{
-                    return(<>{i.Code}</>)
+                    return(<>{i.Code}{i.Name}</>)
                   })}</b>
                 </h6>
               </div>
@@ -374,32 +374,109 @@ export default function CDFFinal() {
                   <tr>
                     <td>Quizzes</td>
                     {CDF.CLOs.map((i)=>{
-                    return(
-                      <th>{i.Quizzes.map(e=>e.title)}</th>)})}
+                      if(i.Quizzes.length==1){
+                        return <th>{i.Quizzes.map((e) => e.title)}</th>;
+                      }
+                      else if(i.Quizzes.length>1){
+                        return <th>{i.Quizzes.map((e,index) =>{ 
+                          console.log(e.title)
+                          console.log(e)
+                          console.log("index",index)
+                          console.log("length",e?.title?.length)
+                          console.log("length-1",e?.title?.length-1)
+                          if(index==0){
+                            return e?.title
+                          }                          
+                          // else if(index==i.Quizzes.length-2){
+                          //   return e?.title?.charAt(e.title.length-1)
+                          // }
+                          else if(index==i.Quizzes.length-1){
+                            return "& "+e?.title?.charAt(e.title.length-1)
+                          }                            
+                          else{
+                            return ", "+e?.title?.charAt(e.title.length-1)
+                          }
+                        })}</th>;
+                      }
+                      else{
+                        return <th>{"-"}</th>
+                      }
+                    })}
                   </tr>
                   <tr>
                     <td>Assignments</td>
-                    {CDF.CLOs.map((i)=>{
-                    return(
-                      <th>{i.Assignment.map(e=>e.title)}</th>)})}
+                    {CDF.CLOs.map((i)=>{                    
+                      if(i.Assignment.length==1){
+                        return <th>{i.Assignment.map((e) => e.title)}</th>;
+                      }
+                      else if(i.Assignment.length>1){
+                        return <th>{i.Assignment.map((e,index) =>{ 
+                          console.log("index",index)
+                          console.log(e)
+                          console.log(e.title)
+                          console.log("length",e?.title?.length)
+                          console.log("length-1",e?.title?.length-1)
+                          if(index==0){
+                            return e?.title
+                          }                          
+                          
+                          // else if(index==i.Assignment.length-2){
+                          //   return e?.title?.charAt(e.title.length-1)
+                          // }
+                           
+                          else if(index==i.Assignment.length-1){
+                            
+                            return "& "+e?.title?.charAt(e.title.length-1)
+                          }
+                          
+                          else{
+                            return ", "+e?.title?.charAt(e.title.length-1)
+                          }
+                        })}</th>;
+                      }
+                      else{
+                        return <th>{"-"}</th>
+                      }
+                    })}
                   </tr>
                   <tr>
                   <td>Mid Term Exam</td>
                   {CDF.CLOs.map((i)=>{
-                    return(
-                      <th>{i.Mid}</th>)})}
+                    if(i.Mid!=""){
+                      return(
+                        <th>{i.Mid}</th>)
+                    }
+                    else{
+                      return(
+                      <th>{"-"}</th>)
+                    }
+                  })}
                   </tr>
                   <tr>
                     <td>Final Term Exam</td>
                     {CDF.CLOs.map((i)=>{
-                    return(
-                      <th>{i.Final}</th>)})}
+                    if(i.Final!=""){
+                      return(
+                        <th>{i.Final}</th>)
+                    }
+                    else{
+                      return(
+                      <th>{"-"}</th>)
+                    }
+                      })}
                   </tr>
                   <tr>
                     <td>Project</td>
                     {CDF.CLOs.map((i)=>{
-                    return(
-                      <th>{i.Project}</th>)})}
+                      if(i.Project!=""){
+                        return(
+                          <th>{i.Project}</th>)
+                      }
+                      else{
+                        return(
+                        <th>{"-"}</th>)
+                      }
+                    })}
 
                   </tr>
                 </tbody>
