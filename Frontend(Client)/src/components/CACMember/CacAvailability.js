@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material/styles";
 import { AiOutlineClockCircle, AiOutlineUsergroupAdd } from "react-icons/ai";
-import { Grid, MenuItem, Modal, OutlinedInput } from "@mui/material";
+import { Card, Grid, MenuItem, Modal, OutlinedInput } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,6 +14,7 @@ import { Box } from "@mui/system";
 import MeetingUpdateNotification from "./AvailabilityUpdateNotification";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { muibtn } from "../style";
 
 const style = {
   position: "absolute",
@@ -25,6 +26,12 @@ const style = {
   boxShadow: 24,
   p: 4,
   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+};
+
+const cardStyle = {
+  backgroundColor: "#4b2980",
+  color: "#fff",
+  padding: 20,
 };
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -288,250 +295,261 @@ export default function CacAvailability() {
   return (
     !loading && (
       <div
-        className="container"
-        style={{ height: 700, width: "100%", padding: 20 }}
+        style={{
+          width: "100%",
+          padding: 40,
+          backgroundColor: "#f5f5f5",
+        }}
       >
-        {flag ? <></> : <MeetingUpdateNotification />}
-        <h1 className="py-4">
-          <b>Meeting Availability</b>
-        </h1>
+        <Card style={{ padding: 30, borderRadius: 10 }}>
+          {flag ? <></> : <MeetingUpdateNotification />}
+          <h1 className="py-4 mb-4">
+            <b>SEMESTER TIMETABLE (FREE SLOTS)</b>
+          </h1>
 
-        <div className="d-flex justify-content-end mb-4">
-          {flag ? (
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              style={{ marginTop: 16 }}
-              onClick={handleOpen}
-            >
-              <AiOutlineClockCircle style={{ marginRight: 10 }} />
-              Edit Availability
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              style={{ marginTop: 16 }}
-              onClick={handleOpen}
-            >
-              <AiOutlineClockCircle style={{ marginRight: 10 }} />
-              Set Availability
-            </Button>
-          )}
-        </div>
-
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <>
-              <div className="form-group py-2">
-                <FormControl fullWidth size="small">
-                  <InputLabel id="demo-multiple-name-label">Monday</InputLabel>
-                  <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    name="mon"
-                    multiple
-                    value={availabilityTimeMon}
-                    onChange={handleChangeMon}
-                    input={<OutlinedInput label="Monday" />}
-                    MenuProps={MenuProps}
-                    autoWidth
-                  >
-                    {times.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="form-group py-2">
-                <FormControl fullWidth size="small">
-                  <InputLabel id="demo-multiple-name-label">Tuesday</InputLabel>
-                  <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    name="tue"
-                    multiple
-                    value={availabilityTimeTue}
-                    onChange={handleChangeTue}
-                    input={<OutlinedInput label="Tuesday" />}
-                    MenuProps={MenuProps}
-                    autoWidth
-                  >
-                    {times.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="form-group py-2">
-                <FormControl fullWidth size="small">
-                  <InputLabel id="demo-multiple-name-label">
-                    Wednesday
-                  </InputLabel>
-                  <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    name="wed"
-                    multiple
-                    value={availabilityTimeWed}
-                    onChange={handleChangeWed}
-                    input={<OutlinedInput label="Wednesday" />}
-                    MenuProps={MenuProps}
-                    autoWidth
-                  >
-                    {times.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="form-group py-2">
-                <FormControl fullWidth size="small">
-                  <InputLabel id="demo-multiple-name-label">
-                    Thursday
-                  </InputLabel>
-                  <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    name="thur"
-                    multiple
-                    value={availabilityTimeThur}
-                    onChange={handleChangeThur}
-                    input={<OutlinedInput label="Thursday" />}
-                    MenuProps={MenuProps}
-                    autoWidth
-                  >
-                    {times.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="form-group py-2">
-                <FormControl fullWidth size="small">
-                  <InputLabel id="demo-multiple-name-label">Friday</InputLabel>
-                  <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    name="fri"
-                    multiple
-                    value={availabilityTimeFri}
-                    onChange={handleChangeFri}
-                    input={<OutlinedInput label="Friday" />}
-                    MenuProps={MenuProps}
-                    autoWidth
-                  >
-                    {times.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
-              <div className="form-group py-2">
-                <FormControl fullWidth size="small">
-                  <InputLabel id="demo-multiple-name-label">
-                    Saturday
-                  </InputLabel>
-                  <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    name="sat"
-                    multiple
-                    value={availabilityTimeSat}
-                    onChange={handleChangeSat}
-                    input={<OutlinedInput label="Saturday" />}
-                    MenuProps={MenuProps}
-                    autoWidth
-                  >
-                    {times.map((time) => (
-                      <MenuItem key={time} value={time}>
-                        {time}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-
+          <div className="d-flex justify-content-end mb-4">
+            {flag ? (
               <Button
                 variant="contained"
                 color="primary"
                 size="small"
-                style={{ marginTop: 16 }}
-                onClick={handleSubmit}
+                style={muibtn}
+                onClick={handleOpen}
               >
                 <AiOutlineClockCircle style={{ marginRight: 10 }} />
-                Submit
+                Edit Your Availability
               </Button>
-            </>
-          </Box>
-        </Modal>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                style={muibtn}
+                onClick={handleOpen}
+              >
+                <AiOutlineClockCircle style={{ marginRight: 10 }} />
+                Set Your Availability
+              </Button>
+            )}
+          </div>
 
-        <div style={{ padding: 30 }}>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2} style={{ marginBottom: 30 }}>
-              <Grid item xs={4}>
-                <Item>
-                  <h1>Monday</h1>
-                  <h5>{availabilityData?.mon}</h5>
-                </Item>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <>
+                <div className="form-group py-2">
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-multiple-name-label">
+                      Monday
+                    </InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      name="mon"
+                      multiple
+                      value={availabilityTimeMon}
+                      onChange={handleChangeMon}
+                      input={<OutlinedInput label="Monday" />}
+                      MenuProps={MenuProps}
+                      autoWidth
+                    >
+                      {times.map((time) => (
+                        <MenuItem key={time} value={time}>
+                          {time}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div className="form-group py-2">
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-multiple-name-label">
+                      Tuesday
+                    </InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      name="tue"
+                      multiple
+                      value={availabilityTimeTue}
+                      onChange={handleChangeTue}
+                      input={<OutlinedInput label="Tuesday" />}
+                      MenuProps={MenuProps}
+                      autoWidth
+                    >
+                      {times.map((time) => (
+                        <MenuItem key={time} value={time}>
+                          {time}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div className="form-group py-2">
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-multiple-name-label">
+                      Wednesday
+                    </InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      name="wed"
+                      multiple
+                      value={availabilityTimeWed}
+                      onChange={handleChangeWed}
+                      input={<OutlinedInput label="Wednesday" />}
+                      MenuProps={MenuProps}
+                      autoWidth
+                    >
+                      {times.map((time) => (
+                        <MenuItem key={time} value={time}>
+                          {time}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div className="form-group py-2">
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-multiple-name-label">
+                      Thursday
+                    </InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      name="thur"
+                      multiple
+                      value={availabilityTimeThur}
+                      onChange={handleChangeThur}
+                      input={<OutlinedInput label="Thursday" />}
+                      MenuProps={MenuProps}
+                      autoWidth
+                    >
+                      {times.map((time) => (
+                        <MenuItem key={time} value={time}>
+                          {time}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div className="form-group py-2">
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-multiple-name-label">
+                      Friday
+                    </InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      name="fri"
+                      multiple
+                      value={availabilityTimeFri}
+                      onChange={handleChangeFri}
+                      input={<OutlinedInput label="Friday" />}
+                      MenuProps={MenuProps}
+                      autoWidth
+                    >
+                      {times.map((time) => (
+                        <MenuItem key={time} value={time}>
+                          {time}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <div className="form-group py-2">
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-multiple-name-label">
+                      Saturday
+                    </InputLabel>
+                    <Select
+                      labelId="demo-multiple-name-label"
+                      id="demo-multiple-name"
+                      name="sat"
+                      multiple
+                      value={availabilityTimeSat}
+                      onChange={handleChangeSat}
+                      input={<OutlinedInput label="Saturday" />}
+                      MenuProps={MenuProps}
+                      autoWidth
+                    >
+                      {times.map((time) => (
+                        <MenuItem key={time} value={time}>
+                          {time}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  style={{ marginTop: 16 }}
+                  onClick={handleSubmit}
+                >
+                  <AiOutlineClockCircle style={{ marginRight: 10 }} />
+                  Submit
+                </Button>
+              </>
+            </Box>
+          </Modal>
+
+          <div style={{ padding: 30 }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container spacing={2} style={{ marginBottom: 30 }}>
+                <Grid item xs={4}>
+                  <Item style={cardStyle}>
+                    <h1>Monday</h1>
+                    <h5>{availabilityData?.mon}</h5>
+                  </Item>
+                </Grid>
+                <Grid item xs={4}>
+                  <Item style={cardStyle}>
+                    <h1>Tuesday</h1>
+                    <h5>{availabilityData?.tue}</h5>
+                  </Item>
+                </Grid>
+                <Grid item xs={4}>
+                  <Item style={cardStyle}>
+                    <h1>Wednesday</h1>
+                    <h5>{availabilityData?.wed}</h5>
+                  </Item>
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-                <Item>
-                  <h1>Tuesday</h1>
-                  <h5>{availabilityData?.tue}</h5>
-                </Item>
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                  <Item style={cardStyle}>
+                    <h1>Thursday</h1>
+                    <h5>{availabilityData?.thur}</h5>
+                  </Item>
+                </Grid>
+                <Grid item xs={4}>
+                  <Item style={cardStyle}>
+                    <h1>Friday</h1>
+                    <h5>{availabilityData?.fri}</h5>
+                  </Item>
+                </Grid>
+                <Grid item xs={4}>
+                  <Item style={cardStyle}>
+                    <h1>Saturday</h1>
+                    <h5>{availabilityData?.sat}</h5>
+                  </Item>
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-                <Item>
-                  <h1>Wednesday</h1>
-                  <h5>{availabilityData?.wed}</h5>
-                </Item>
-              </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-              <Grid item xs={4}>
-                <Item>
-                  <h1>Thursday</h1>
-                  <h5>{availabilityData?.thur}</h5>
-                </Item>
-              </Grid>
-              <Grid item xs={4}>
-                <Item>
-                  <h1>Friday</h1>
-                  <h5>{availabilityData?.fri}</h5>
-                </Item>
-              </Grid>
-              <Grid item xs={4}>
-                <Item>
-                  <h1>Saturday</h1>
-                  <h5>{availabilityData?.sat}</h5>
-                </Item>
-              </Grid>
-            </Grid>
-          </Box>
-        </div>
+            </Box>
+          </div>
+        </Card>
       </div>
     )
   );

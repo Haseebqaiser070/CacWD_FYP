@@ -32,7 +32,7 @@ const modalstyle = {
 };
 
 export default function CourseFolderTheory() {
-const navigate=useNavigate();
+  const navigate = useNavigate();
   const [Quiz1, setQuiz1] = useState("");
   const [Assignments1, setAssignments1] = useState("");
   const [Quiz2, setQuiz2] = useState("");
@@ -40,8 +40,8 @@ const navigate=useNavigate();
   const [Mid, setMidSessional] = useState("Mid");
   const [Checked, setChecked] = useState(true);
 
-  const [date,setDate]=useState()
-  const [date1,setDate1]=useState()
+  const [date, setDate] = useState();
+  const [date1, setDate1] = useState();
   const [open, setOpen] = useState(false);
 
   const [open1, setOpen1] = useState(false);
@@ -52,18 +52,16 @@ const navigate=useNavigate();
   //check function here might find the issue
   const handleChange = (event) => {
     setChecked(event.target.checked);
-    if(Checked==true){
-      setMidSessional("Mid")
-    }
-    else{
-      setMidSessional("Sessional")
-
+    if (Checked == true) {
+      setMidSessional("Mid");
+    } else {
+      setMidSessional("Sessional");
     }
   };
   const onsubmit1 = async (e) => {
     e.preventDefault();
-    navigate('/Admin/Dashboard')
-    onsubmit3()
+    navigate("/Admin/Dashboard");
+    onsubmit3();
 
     if (!isNaN(Quiz1) && !isNaN(Assignments1)) {
       const res = await axios.post("http://localhost:4000/Content/Theory", {
@@ -71,32 +69,29 @@ const navigate=useNavigate();
         Round1: {
           Quiz: Quiz1,
           Assignment: Assignments1,
-          Deadline:date1
+          Deadline: date1,
         },
-        Mid:Mid
+        Mid: Mid,
       });
-     // navigate('/Admin/Dashboard')
-
+      // navigate('/Admin/Dashboard')
     } else {
       alert("inValid Input");
     }
   };
   const onsubmit2 = async (e) => {
     e.preventDefault();
-    navigate('/Admin/Dashboard')
-    onsubmit3()
+    navigate("/Admin/Dashboard");
+    onsubmit3();
     if (!isNaN(Quiz2) && !isNaN(Assignments2)) {
       const res = await axios.post("http://localhost:4000/Content/Theory", {
         Round: "Round2",
         Round2: {
           Quiz: Quiz2,
           Assignment: Assignments2,
-          Deadline:date
+          Deadline: date,
         },
-        Mid:Mid
-
+        Mid: Mid,
       });
-
     } else {
       alert("inValid Input");
     }
@@ -111,25 +106,22 @@ const navigate=useNavigate();
     setAssignments1(res.data.Round1.Assignment);
     setAssignments2(res.data.Round2.Assignment);
     setMidSessional(res.data.Mid);
-    setDate1(res.data.Round1.Deadline)
-    setDate(res.data.Round2.Deadline)
-    if(res.data.Mid=="Mid"){
-      setChecked(true)
+    setDate1(res.data.Round1.Deadline);
+    setDate(res.data.Round2.Deadline);
+    if (res.data.Mid == "Mid") {
+      setChecked(true);
+    } else {
+      setChecked(false);
     }
-    else{
-      setChecked(false)
-    }
-
   };
-  
-const onsubmit3=async(date,round,type)=>{
-  
-  const res = await axios.put(`http://localhost:4000/Content/adddate`,{
-    date:date,
-    round:round,
-    type:type,
-  });
-}
+
+  const onsubmit3 = async (date, round, type) => {
+    const res = await axios.put(`http://localhost:4000/Content/adddate`, {
+      date: date,
+      round: round,
+      type: type,
+    });
+  };
   return (
     <div
       style={{
@@ -140,18 +132,11 @@ const onsubmit3=async(date,round,type)=>{
     >
       <Card style={{ padding: 40, borderRadius: 10 }}>
         <h1 className="mb-4 pb-4">
-          <b>Define Course Folder Theory</b>
+          <b>DEFINE COURSE FOLDER THEORY</b>
         </h1>
         <FormControlLabel
           className="py-4"
-          control={
-            <Switch
-              checked={Checked}
-             // onChangeva
-              onChange={
-              handleChange}
-            />
-          }
+          control={<Switch checked={Checked} onChange={handleChange} />}
           label="MidTerm"
         />
         <div className="row">
@@ -224,7 +209,7 @@ const onsubmit3=async(date,round,type)=>{
                     </label>
                     <input
                       name="time"
-                       onChange={(e)=>setDate1(e.target.value)}
+                      onChange={(e) => setDate1(e.target.value)}
                       style={{ width: "100%" }}
                       type="datetime-local"
                       value={date1}
@@ -234,8 +219,8 @@ const onsubmit3=async(date,round,type)=>{
                       variant="contained"
                       color="primary"
                       size="small"
-                      style={{ marginTop: 16 }}
-                      onClick={()=>onsubmit3(date1,"Round1","Theory")}
+                      style={muibtn}
+                      onClick={() => onsubmit3(date1, "Round1", "Theory")}
                     >
                       <AiOutlineFieldTime style={{ marginRight: 10 }} />
                       submit
@@ -314,7 +299,7 @@ const onsubmit3=async(date,round,type)=>{
                     </label>
                     <input
                       name="time"
-                       onChange={(e)=>setDate(e.target.value)}
+                      onChange={(e) => setDate(e.target.value)}
                       style={{ width: "100%" }}
                       type="datetime-local"
                       value={date}
@@ -325,8 +310,7 @@ const onsubmit3=async(date,round,type)=>{
                       color="primary"
                       size="small"
                       style={{ marginTop: 16 }}
-                      onClick={()=>onsubmit3(date,"Round2","Theory")}
-
+                      onClick={() => onsubmit3(date, "Round2", "Theory")}
                     >
                       <AiOutlineFieldTime style={{ marginRight: 10 }} />
                       Submit

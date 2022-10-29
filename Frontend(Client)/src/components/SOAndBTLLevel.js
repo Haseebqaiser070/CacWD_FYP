@@ -162,7 +162,7 @@ export default function SO_Level() {
       >
         <Card style={{ padding: 30, borderRadius: 10 }}>
           <h1 className="py-4 my-2">
-            <b>ADD SO</b>
+            <b>ALL STUDENT OUTCOMES</b>
           </h1>
           <div className="d-flex justify-content-end mb-4 pb-2">
             <Button

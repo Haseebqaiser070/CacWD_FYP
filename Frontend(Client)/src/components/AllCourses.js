@@ -87,12 +87,12 @@ export default function AllCourses() {
           ")"
         );
       },
-      width: 170,
+      width: 150,
     },
     {
       field: "Action",
       headerName: "Action",
-      width: 300,
+      width: 350,
       editable: false,
       renderCell: ActionButton,
     },

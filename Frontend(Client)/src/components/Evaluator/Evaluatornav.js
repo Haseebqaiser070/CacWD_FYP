@@ -39,7 +39,13 @@ export default function FacultyNavigation() {
   };
   return (
     <React.Fragment>
-      <div class="bg">
+      <div
+        class="bg"
+        style={{
+          boxShadow: "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px",
+          borderBottom: "1px solid #fff",
+        }}
+      >
         <nav class="sb-topnav navbar navbar-expand navbar-dark ">
           <a class="navbar-brand ps-3" to="/Dashboard">
             <b>EVALUATOR DASHBOARD</b>

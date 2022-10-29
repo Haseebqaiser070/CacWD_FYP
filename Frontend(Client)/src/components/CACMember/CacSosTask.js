@@ -101,7 +101,7 @@ export default function CacSosTask() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1 className="py-4 my-2">
+        <h1 className="py-4 mb-4">
           <b>SCHEME OF STUDIES ASSIGNED</b>
         </h1>
         <div>
@@ -110,7 +110,7 @@ export default function CacSosTask() {
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
             }}
-            style={{ height: 400, width: "100%" }}
+            style={{ height: "60vh", width: "100%" }}
             columns={columns}
             getRowId={(RepoProgram) => RepoProgram._id}
             rows={RepoProgram}

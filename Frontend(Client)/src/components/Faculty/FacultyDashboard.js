@@ -59,7 +59,7 @@ export default function FacultyDashboard() {
   return (
     <div style={{ width: "100%", padding: 30 }}>
       <div className="row mt-4 mb-4">
-      <div>
+        <div>
           <Card style={{ padding: 25, marginBottom: 25 }}>
             <h4 style={{ fontSize: "18px" }} className="mb-4">
               Courses assigned
@@ -69,34 +69,37 @@ export default function FacultyDashboard() {
                 className="table table-hover"
                 style={{ textAlign: "center" }}
               >
-                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                <thead style={{ backgroundColor: "#023866", color: "#fff" }}>
                   <th className="col-4">Program</th>
                   <th className="col-3">Course</th>
                   <th className="col-4">Action</th>
                 </thead>
-                <tbody style={{ backgroundColor: "#f5f5f5" }}>                 
-                {Courses.map((i)=>{
-                  return(
-                    <tr>
-                    <td>{i.Program}</td>
-                    <td>{i.Name}</td>
-                    <td>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={() => {
-                          navigate(`/Faculty/Courses/${i.Program}/${i.Code}`, {
-                            replace: true,
-                          });
-                        }}
-                      >
-                        View
-                      </Button>
-                    </td>
-                  </tr>
-                  )
-                })}   
+                <tbody style={{ backgroundColor: "#f5f5f5" }}>
+                  {Courses.map((i) => {
+                    return (
+                      <tr>
+                        <td>{i.Program}</td>
+                        <td>{i.Name}</td>
+                        <td>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={() => {
+                              navigate(
+                                `/Faculty/Courses/${i.Program}/${i.Code}`,
+                                {
+                                  replace: true,
+                                }
+                              );
+                            }}
+                          >
+                            View
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -115,34 +118,34 @@ export default function FacultyDashboard() {
                 className="table table-hover"
                 style={{ textAlign: "center" }}
               >
-                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                <thead style={{ backgroundColor: "#023866", color: "#fff" }}>
                   <th className="col-4">Program</th>
                   <th className="col-3">Course</th>
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                {Courses.map((i)=>{
-                  return(
-                    <tr>
-                    <td>{i.Program}</td>
-                    <td>{i.Name}</td>
-                    <td>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={() => {
-                          navigate(`/Faculty/CDF/${i.Program}/${i.Code}`, {
-                            replace: true,
-                          });
-                        }}
-                      >
-                        View
-                      </Button>
-                    </td>
-                  </tr>
-                  )
-                })}   
+                  {Courses.map((i) => {
+                    return (
+                      <tr>
+                        <td>{i.Program}</td>
+                        <td>{i.Name}</td>
+                        <td>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={() => {
+                              navigate(`/Faculty/CDF/${i.Program}/${i.Code}`, {
+                                replace: true,
+                              });
+                            }}
+                          >
+                            View
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -158,34 +161,37 @@ export default function FacultyDashboard() {
                 className="table table-hover"
                 style={{ textAlign: "center" }}
               >
-                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                <thead style={{ backgroundColor: "#023866", color: "#fff" }}>
                   <th className="col-4">Program</th>
                   <th className="col-3">Course</th>
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                {Courses.map((i)=>{
-                  return(
-                    <tr>
-                    <td>{i.Program}</td>
-                    <td>{i.Name}</td>
-                    <td>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={() => {
-                          navigate(`/Faculty/Syllabus/${i.Program}/${i.Code}`, {
-                            replace: true,
-                          });
-                        }}
-                      >
-                        View
-                      </Button>
-                    </td>
-                  </tr>
-                  )
-                })}   
+                  {Courses.map((i) => {
+                    return (
+                      <tr>
+                        <td>{i.Program}</td>
+                        <td>{i.Name}</td>
+                        <td>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={() => {
+                              navigate(
+                                `/Faculty/Syllabus/${i.Program}/${i.Code}`,
+                                {
+                                  replace: true,
+                                }
+                              );
+                            }}
+                          >
+                            View
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -201,7 +207,7 @@ export default function FacultyDashboard() {
                 className="table table-hover"
                 style={{ textAlign: "center" }}
               >
-                <thead style={{ backgroundColor: "#1565C0", color: "#fff" }}>
+                <thead style={{ backgroundColor: "#023866", color: "#fff" }}>
                   <th className="col-8">OBE Guide Book</th>
                   <th className="col-4">Action</th>
                 </thead>
