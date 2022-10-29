@@ -336,7 +336,7 @@ export default function InitializeTask() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1>
+        <h1 className="mb-4 py-4">
           <b>TASK INITIALIZATION AND ASSIGNMENT</b>
         </h1>
 
@@ -671,7 +671,7 @@ export default function InitializeTask() {
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
             }}
-            style={{ height: "60vh", width: "100%" }}
+            style={{ height: "70vh", width: "100%" }}
             columns={columns}
             rows={rows}
             getRowId={(Rows) => Rows._id}

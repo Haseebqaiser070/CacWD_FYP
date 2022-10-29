@@ -12,23 +12,23 @@ const columns = [
   {
     field: "Program",
     headerName: "Program",
-    flex: 1,
+    width: "200",
   },
   {
     field: "Course",
     headerName: "Course",
-    flex: 1,
+    width: "350",
   },
   {
     field: "Evaluator",
     headerName: "Evaluator",
-    flex: 1,
+    width: "200",
   },
 
   {
     field: "actions",
     headerName: "Actions",
-    flex: 1,
+    width: "250",
     editable: false,
     renderCell: HandleButton,
   },
@@ -95,7 +95,7 @@ export default function ReturnedFolders() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1>
+        <h1 className="mb-4 py-4">
           <b>RETURNED FOLDERS</b>
         </h1>
         <div>

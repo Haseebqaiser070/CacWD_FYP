@@ -6,6 +6,7 @@ import {
   AiFillEdit,
   AiFillDelete,
   AiOutlineClockCircle,
+  AiFillClockCircle,
 } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
@@ -446,15 +447,16 @@ export default function ViewCacAvailability() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1>
+        <h1 className="py-4 mb-4">
           <b>CAC MEMBERS AVAILABILITIES</b>
         </h1>
         <div>
           <div className="d-flex justify-content-end mb-4">
             <Button
+              className="mb-4"
               variant="contained"
               color="primary"
-              size="small"
+              size="medium"
               style={muibtn}
               onClick={handleClickOpen}
             >
@@ -493,7 +495,10 @@ export default function ViewCacAvailability() {
             <table className="table table-border">
               <thead>
                 <tr style={{ textAlign: "center", textTransform: "uppercase" }}>
-                  <th>Time Slots</th>
+                  <th>
+                    <AiFillClockCircle style={{ marginRight: 10 }} />
+                    Time Slots
+                  </th>
                   <th>Monday</th>
                   <th>Tuesday</th>
                   <th>Wednesday</th>
