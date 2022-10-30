@@ -84,6 +84,7 @@ export default function Navigation() {
         className="bg"
         style={{
           boxShadow: "rgba(0, 0, 0, 0.45) 0px 25px 20px -20px",
+          borderBottom: "1px solid #fff",
         }}
       >
         <nav className="sb-topnav navbar navbar-expand navbar-dark ">

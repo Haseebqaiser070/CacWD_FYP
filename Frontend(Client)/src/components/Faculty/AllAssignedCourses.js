@@ -60,7 +60,7 @@ export default function AllAssignedCourses() {
       className="container"
       style={{ height: 700, width: "100%", padding: 20 }}
     >
-      <h1 className="py-4">
+      <h1 className="py-4 mb-4">
         <b>Create Course Folder</b>
       </h1>
       <div>
@@ -69,7 +69,7 @@ export default function AllAssignedCourses() {
             NoRowsOverlay: CustomNoRowsOverlay,
             LoadingOverlay: LinearProgress,
           }}
-          style={{ height: 400, width: "100%" }}
+          style={{ height: "70vh", width: "100%" }}
           columns={columns}
           getRowId={(Rows) => Rows._id}
           rows={Rows}

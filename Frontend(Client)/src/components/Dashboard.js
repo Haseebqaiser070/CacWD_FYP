@@ -1,69 +1,74 @@
 import { Button, Card } from "@mui/material";
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import axios from 'axios'
+import axios from "axios";
+import { muibtn } from "./style";
 export default function Dashboard() {
-  const [meetings,setmeetings]=useState([])
-  const [assignTasks,setassignTask]=useState([])
-  const [Returned,setReturned]=useState([])
+  const [meetings, setmeetings] = useState([]);
+  const [assignTasks, setassignTask] = useState([]);
+  const [Returned, setReturned] = useState([]);
   const navigate = useNavigate();
-  axios.defaults.withCredentials=true
-  useEffect(() => {    
+  axios.defaults.withCredentials = true;
+  useEffect(() => {
     getmeetings();
-    getassigned()
-    getReturned()
+    getassigned();
+    getReturned();
   }, []);
 
   const getassigned = async () => {
     const res = await axios.get("http://localhost:4000/Task/show/Assigned");
     console.log(res.data);
-    var clone = []
-    var count = 0 
-    res.data.forEach(e => {
-      if(count<5){
-        clone.push(e)
-        count = count +1
+    var clone = [];
+    var count = 0;
+    res.data.forEach((e) => {
+      if (count < 5) {
+        clone.push(e);
+        count = count + 1;
       }
     });
     setassignTask(clone);
   };
   const getReturned = async () => {
-    const res = await axios.get(
-      "http://localhost:4000/Task/show/Returned"
-    );
-    var clone = []
-    var count = 0 
-    res.data.forEach(e => {
-      if(count<5){
-        clone.push(e)
-        count = count +1
+    const res = await axios.get("http://localhost:4000/Task/show/Returned");
+    var clone = [];
+    var count = 0;
+    res.data.forEach((e) => {
+      if (count < 5) {
+        clone.push(e);
+        count = count + 1;
       }
     });
     setReturned(clone);
   };
 
-  const getmeetings= async () => {
+  const getmeetings = async () => {
     const res = await axios.get("http://localhost:4000/Meeting/all");
-   var row=[]
-   var tasks=[],members=[]
-   res.data.map((val, id) => {
-      val.taskType.map((i)=>{
-        tasks.push(i.taskType)
-      })
-      val.teacher_id.map((i)=>{
-        members.push(i.Name)
-      })
-     
+    var row = [];
+    var tasks = [],
+      members = [];
+    res.data.map((val, id) => {
+      val.taskType.map((i) => {
+        tasks.push(i.taskType);
+      });
+      val.teacher_id.map((i) => {
+        members.push(i.Name);
+      });
 
-     row[id]={_id:val._id,id: id, task: tasks, Cacmembers: members, meetingDate:val.dateTime,report:val}
-    
-     tasks=[],members=[]
-    })
-    console.log("meetings",res.data)
+      row[id] = {
+        _id: val._id,
+        id: id,
+        task: tasks,
+        Cacmembers: members,
+        meetingDate: val.dateTime,
+        report: val,
+      };
+
+      (tasks = []), (members = []);
+    });
+    console.log("meetings", res.data);
     setmeetings(row);
-   
   };
 
   return (
@@ -88,32 +93,32 @@ export default function Dashboard() {
               className="table table-hover"
               style={{ textAlign: "center" }}
             >
-              <thead style={{ backgroundColor: "#00447f", color: "#fff" }}>
+              <thead style={{ backgroundColor: "#023866", color: "#fff" }}>
                 <th className="col-4">Meeting Subject</th>
                 <th className="col-3">Date</th>
                 <th className="col-4">Members</th>
               </thead>
               <tbody style={{ backgroundColor: "#f5f5f5" }}>
-               { meetings.map((item,id)=>(
-                
-                <tr>
-                  <td>{item.task}</td>
-                  <td>{item.meetingDate}</td>
-                  <td>{item.Cacmembers}</td>
-                </tr>
-))}
+                {meetings.map((item, id) => (
+                  <tr>
+                    <td>{item.task}</td>
+                    <td>{item.meetingDate}</td>
+                    <td>{item.Cacmembers}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={() => {                
-                  navigate(`/Admin/CreateNewMeeting` , { replace: true });
-                }}
-              >
-                View All
-              </Button>
+              variant="contained"
+              color="primary"
+              size="small"
+              style={muibtn}
+              onClick={() => {
+                navigate(`/Admin/CreateNewMeeting`, { replace: true });
+              }}
+            >
+              View All
+            </Button>
           </div>
         </Card>
       </div>
@@ -129,28 +134,30 @@ export default function Dashboard() {
                 className="table table-hover"
                 style={{ textAlign: "center" }}
               >
-                <thead style={{ backgroundColor: "#00447f", color: "#fff" }}>
+                <thead style={{ backgroundColor: "#023866", color: "#fff" }}>
                   <th className="col-4">Task Type</th>
                   <th className="col-3">Date</th>
                   <th className="col-4">Members</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {assignTasks.map((i)=>{
-                    return(
-                    <tr>
-                    <td>{i.taskType}</td>
-                    <td>{i.Deadline}</td>
-                    <td>{i.User.map(i=>i.Name)},</td>
-                    </tr>
-                    )})}                
+                  {assignTasks.map((i) => {
+                    return (
+                      <tr>
+                        <td>{i.taskType}</td>
+                        <td>{i.Deadline}</td>
+                        <td>{i.User.map((i) => i.Name)},</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
               <Button
                 variant="contained"
                 color="primary"
                 size="small"
-                onClick={() => {                
-                  navigate(`/Admin/InitializeTask` , { replace: true });
+                style={muibtn}
+                onClick={() => {
+                  navigate(`/Admin/InitializeTask`, { replace: true });
                 }}
               >
                 View All
@@ -168,29 +175,31 @@ export default function Dashboard() {
                 className="table table-hover"
                 style={{ textAlign: "center" }}
               >
-                <thead style={{ backgroundColor: "#00447f", color: "#fff" }}>
+                <thead style={{ backgroundColor: "#023866", color: "#fff" }}>
                   <th className="col-4">Task Type</th>
                   <th className="col-3">Date</th>
                   <th className="col-4">Members</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                {Returned.map((i)=>{
-                    return(
-                    <tr>
-                    <td>{i.taskType}</td>
-                    <td>{i.Deadline}</td>
-                    <td>{i.User.map(i=>i.Name)},</td>
-                    </tr>
-                    )})}
+                  {Returned.map((i) => {
+                    return (
+                      <tr>
+                        <td>{i.taskType}</td>
+                        <td>{i.Deadline}</td>
+                        <td>{i.User.map((i) => i.Name)},</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
               <Button
                 variant="contained"
                 color="primary"
                 size="small"
-
-                onClick={()=>{navigate(`/Admin/ReturnedTasks`, { replace: true } );}}
-              
+                style={muibtn}
+                onClick={() => {
+                  navigate(`/Admin/ReturnedTasks`, { replace: true });
+                }}
               >
                 View All
               </Button>

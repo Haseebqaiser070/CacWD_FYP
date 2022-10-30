@@ -106,7 +106,7 @@ export default function AllCourseFolder() {
       className="container"
       style={{ height: 700, width: "100%", padding: 20 }}
     >
-      <h1 className="py-4">
+      <h1 className="mb-4 py-4">
         <b>ALL COURSE FOLDERS</b>
       </h1>
       <div>

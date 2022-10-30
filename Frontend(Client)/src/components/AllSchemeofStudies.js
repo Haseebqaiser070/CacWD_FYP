@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import { DataGrid } from "@mui/x-data-grid";
 import {
+  Card,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -55,17 +56,17 @@ export default function AllSOS() {
     {
       field: "Year",
       headerName: "Year",
-      flex: 1,
+      width: "200",
     },
     {
       field: "Program",
       headerName: "Program",
-      flex: 1,
+      width: "500",
     },
     {
       field: "Action",
       headerName: "Action",
-      flex: 1,
+      width: "300",
       editable: false,
       renderCell: ActionButton,
     },
@@ -121,31 +122,30 @@ export default function AllSOS() {
 
   return (
     <div
-      className="container"
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: 700,
         width: "100%",
-        padding: 20,
+        padding: 40,
+        backgroundColor: "#f5f5f5",
       }}
     >
-      <h1 className="py-4">All Scheme of Studies</h1>
-      <DataGrid
-        components={{
-          NoRowsOverlay: CustomNoRowsOverlay,
-          LoadingOverlay: LinearProgress,
-        }}
-        style={{ height: 500, width: "100%" }}
-        columns={columns}
-        rows={SOSs}
-        getRowId={(Rows) => Rows._id}
-        pageSize={10}
-        rowsPerPageOptions={[5]}
-        disableSelectionOnClick
-      />
+      <Card style={{ padding: 30, borderRadius: 10 }}>
+        <h1 className="mb-4 py-4">
+          <b>ALL SCHEME OF STUDIES</b>
+        </h1>
+        <DataGrid
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            LoadingOverlay: LinearProgress,
+          }}
+          style={{ height: 500, width: "100%" }}
+          columns={columns}
+          rows={SOSs}
+          getRowId={(Rows) => Rows._id}
+          pageSize={10}
+          rowsPerPageOptions={[5]}
+          disableSelectionOnClick
+        />
+      </Card>
     </div>
   );
 }

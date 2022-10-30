@@ -11,7 +11,7 @@ import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 
 import axios from "axios";
-import { Card, LinearProgress } from "@mui/material";
+import { Card, getTableRowUtilityClass, LinearProgress } from "@mui/material";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { muiAbtn, muibtn } from "./style";
 import PositionedSnackbar from "./AuxillaryComponents/DeleteSnack";
@@ -41,6 +41,8 @@ export default function AllCategories() {
   const handleClose = () => {
     // setDegree("Degree Program");
     setCategoryName("");
+    setup("")
+    setgid("")
     // setEnteredCourse([]);
     setOpen(false);
   };
@@ -51,7 +53,7 @@ export default function AllCategories() {
   // const [Programdb, setProgramdb] = useState([]);
   // const [Degree, setDegree] = useState("Degree Program");
   const [Rows, setRows] = useState([]);
-  const [Category, setCategory] = useState([]);
+  // const [Category, setCategory] = useState([]);
 
   // const getPrograms = async () => {
   //   const res = await axios.get("http://localhost:4000/Program/show");
@@ -66,6 +68,9 @@ export default function AllCategories() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+  const [up, setup] = useState("");
+  const [gid, setgid] = useState("");
+
   function ActionButton(props) {
     const { row } = props;
     return (
@@ -75,7 +80,12 @@ export default function AllCategories() {
           color="primary"
           size="small"
           style={muiAbtn}
-          //  onClick={Update(Rows._id)}
+           onClick={()=>{
+            setup(row)
+            setgid(row._id)
+            setCategoryName(row.CategoryName)
+            setOpen(true)          
+          }}
         >
           <AiFillEdit style={{ marginRight: 10 }} />
           Edit
@@ -116,10 +126,10 @@ export default function AllCategories() {
     getRows();
     handleCloseDialog();
   };
-  const Update = async (id) => {
-    const res = await axios.get(`http://localhost:4000/Category/${id}`);
-    const data = res.data;
-  };
+  // const Update = async (id) => {
+  //   const res = await axios.get(`http://localhost:4000/Category/${id}`);
+  //   const data = res.data;
+  // };
 
   useEffect(() => {
     getRows();
@@ -161,15 +171,54 @@ export default function AllCategories() {
   ];
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (CategoryName != "") {
+    var not = ["of","the","and","&","for","in","like"]
+    var dig=CategoryName.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var naam = dig2.join(" ")
+    var check = false;    
+    Rows.forEach((i) => {
+      if (i.CategoryName.toLowerCase() == CategoryName.toLowerCase()) {
+        check = true;
+      }      
+    });
+    if(up!=""){
+      if (CategoryName.toLowerCase() == up.CategoryName.toLowerCase()) {
+        check = false;         
+      }
+    }    
+    if (check) {      
+      alert("Category Already Exists");      
+    }
+    else if (CategoryName != ""&&up=="") {
       await axios.post("http://localhost:4000/Category/add", {
-        CategoryName,
+        CategoryName:naam,
       });
       // setDegree("Degree Program");
       setCategoryName("");
       // setEnteredCourse([]);
       getRows();
-    } else {
+      setup("")
+      setOpen(false)                
+    } 
+    else if (CategoryName != ""&&up!="") {
+      await axios.put(`http://localhost:4000/Category/${gid}`, {
+        CategoryName:naam,
+      });
+      // setDegree("Degree Program");
+      setCategoryName("");
+      // setEnteredCourse([]);
+      getRows();
+      setup("")
+      setOpen(false)                
+    }     
+    else {
       alert("empty values");
     }
   };

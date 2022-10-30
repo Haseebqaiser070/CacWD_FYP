@@ -124,16 +124,27 @@ export default function CreateCDF() {
   const [DomainRow, setDomainRow] = useState([]);
   const [SORow, setSORow] = useState([]);
   const [BTLRow, setBTLRow] = useState([]);
-
   const [openTopic, setOpenTopic] = useState(false);
   const handleOpenTopic = () => setOpenTopic(true);
   const handleCloseTopic = () => {
+    setTopicsfinal("");
+    setteachingHours("");
+    setmainTopic("");
+    setsubTopic("");
+    setuid("")
     setOpenTopic(false);
   };
 
   const [openClo, setOpenClo] = useState(false);
   const handleOpenClo = () => setOpenClo(true);
   const handleCloseClo = () => {
+    setunit([]);
+    setclo("");
+    setbtl("");
+    setdomain("");
+    setVerbs([]);
+    setVerb("");
+    setso([]);
     setOpenClo(false);
   };
 
@@ -171,6 +182,7 @@ export default function CreateCDF() {
     const data = await res.data;
     setBTLRow([...data]);
   };
+  const[uid,setuid]=useState("")
   const maintopicscolumns = [
     {
       field: "Unit",
@@ -204,7 +216,14 @@ export default function CreateCDF() {
                   marginLeft: 10,
                   padding: 10,
                 }}
-                onClick={handleOpenTopic}
+                onClick={()=>{
+                  setuid(row.Unit)
+                  setTopicsfinal(row.Topic);
+                  setteachingHours(row.TeachingHours);
+                  setmainTopic("");
+                  setsubTopic("");
+                  handleOpenTopic()
+                }}
               >
                 <AiFillEdit />
               </Button>
@@ -251,7 +270,18 @@ export default function CreateCDF() {
                           size="small"
                           style={{ backgroundColor: "#4b2980" }}
                           onClick={() => {
-                            const s = Topicsfinal + mainTopic + ": ";
+                            var not = ["of","the","and","&","for","in","like"]
+                            var dig = mainTopic.split(" ")
+                            var dig2 = dig.map((i)=>{
+                              if(!not.includes(i.toLowerCase())){
+                                return i.charAt(0).toUpperCase()+i.slice(1)
+                              }
+                              else{
+                                return i.toLowerCase()
+                              }
+                            })
+                            var naam = dig2.join(" ")
+                            const s = Topicsfinal + naam + ": ";
                             setTopicsfinal(s);
                             setmainTopic("");
                           }}
@@ -341,7 +371,7 @@ export default function CreateCDF() {
                         color="primary"
                         size="medium"
                         style={{ backgroundColor: "#4b2980" }}
-                        onClick={() => Topics()}
+                        onClick={() => TopicsEdit()}
                       >
                         Submit
                       </Button>
@@ -381,6 +411,25 @@ export default function CreateCDF() {
       },
     },
   ];
+
+  const TopicsEdit=()=>{
+    var list = TopicRows.map((i)=>{
+      if(i.Unit==uid){
+        i.Topic=Topicsfinal
+        i.TeachingHours=teachingHours  
+      }
+      return i 
+    })
+    setTopicRows([...list]);
+    setuid("")
+    setTopicsfinal("");
+    setteachingHours("");
+    setmainTopic("");
+    setsubTopic("");    
+    setOpenTopic(false);
+  }
+  const [whatis,setwhatis]=useState("")
+  const [srid,setsrid]=useState("")
   const clocolumns = [
     {
       field: "sr",
@@ -402,7 +451,7 @@ export default function CreateCDF() {
       headerName: "Bloom Taxonomy Learning Level",
       width: "200",
       valueGetter: (params) => {
-        return params?.row?.BTL?.BTL;
+        return params?.row?.BTL[0]?.BTL;
       },
     },
     {
@@ -435,7 +484,31 @@ export default function CreateCDF() {
                   marginLeft: 10,
                   padding: 10,
                 }}
-                onClick={handleOpenClo}
+                onClick={()=>{
+                  setwhatis(row.LaborTheory)
+                  setsrid(row.sr)                            
+                  var arr=row.Unit.split("")
+                  var arr2 = arr.filter((i)=>{
+                    if(i!=","&&i!="-")return i
+                  })                  
+                  console.log("arr",arr)
+                  console.log("arr2",arr2)
+                  var obj =[]
+                  arr2.forEach((i)=>{
+                    obj.push({Unit:i})
+                  })
+                  console.log("obj",obj)
+                  setunit(obj);
+                  var array = row.CLO.split(" ")
+                  setbtl(row.BTL[0]);
+                  setdomain("");
+                  setVerbs([]);                  
+                  setVerb(array[0]);
+                  setso(row.So);
+                  array.shift()
+                  setclo(array.join(" "));
+                  handleOpenClo()
+                }}
               >
                 <AiFillEdit />
               </Button>
@@ -499,6 +572,7 @@ export default function CreateCDF() {
                             setbtl(e.target.value);
                           }}
                         >
+                          <MenuItem value={btl} selected disabled>{btl.BTL}</MenuItem>
                           {BTLRow.map((a) => {
                             return <MenuItem value={a}>{a.BTL}</MenuItem>;
                           })}
@@ -519,6 +593,7 @@ export default function CreateCDF() {
                           label="Select Verb"
                           onChange={(e) => setVerb(e.target.value)}
                         >
+                          <MenuItem value={Verb} selected disabled>{Verb}</MenuItem>
                           {Verbs.map((i) => {
                             return <MenuItem value={i}>{i}</MenuItem>;
                           })}
@@ -610,7 +685,7 @@ export default function CreateCDF() {
                       color="primary"
                       size="medium"
                       style={{ backgroundColor: "#4b2980" }}
-                      onClick={() => CLOS("Lab")}
+                      onClick={() => CLOSEdit()}
                     >
                       Submit
                     </Button>
@@ -715,7 +790,7 @@ export default function CreateCDF() {
           LaborTheory: str,
           Unit: uns,
           CLO: CLOO,
-          BTL: btl,
+          BTL: [btl],
           So: so,
           Quizzes: [],
           Assignment: [],
@@ -739,7 +814,7 @@ export default function CreateCDF() {
             LaborTheory: str,
             Unit: uns,
             CLO: CLOO,
-            BTL: btl,
+            BTL: [btl],
             So: so,
             Quizzes: [],
             Assignment: [],
@@ -757,7 +832,7 @@ export default function CreateCDF() {
             LaborTheory: str,
             Unit: uns,
             CLO: CLOO,
-            BTL: btl,
+            BTL: [btl],
             So: so,
             Quizzes: [],
             Assignment: [],
@@ -781,7 +856,79 @@ export default function CreateCDF() {
       alert("Missing Fields");
     }
   };
-
+  
+  const CLOSEdit = () => {
+    var uns = "";
+    var CLOO = Verb + " " + clo;
+    unit.forEach((i) => {
+      if (uns.length == 0) {
+        uns = uns + i.Unit;
+      } else if (uns.length == 1) {
+        uns = uns + "-" + i.Unit;
+      } else {
+        var e = uns.slice(0, -2);
+        uns = e + "-" + i.Unit;
+      }
+    });
+    if (
+      Verb != "" &&
+      uns != "" &&
+      clo != "" &&
+      unit.length >= 1 &&
+      so.length >= 1
+    ) {
+      const clone = CLORows.map((i) => {
+        if(i.sr==srid){          
+            i.sr= srid
+            i.LaborTheory= whatis
+            i.Unit= uns
+            i.CLO= CLOO
+            i.BTL= [btl]
+            i.So= so
+        }
+        return i
+      });
+      if (whatis == "Lab") {
+        var clone2 = LabCLORows.map((i) => {
+          if(i.sr==srid){          
+              i.sr= srid
+              i.LaborTheory= whatis
+              i.Unit= uns
+              i.CLO= CLOO
+              i.BTL= [btl]
+              i.So= so
+          }
+          return i
+        });
+          
+        setLabCLORows(clone2);
+      } else {
+        var clone2 = TheoryCLORows.map((i) => {
+          if(i.sr==srid){          
+              i.sr= srid
+              i.LaborTheory= whatis
+              i.Unit= uns
+              i.CLO= CLOO
+              i.BTL= [btl]
+              i.So= so
+          }
+          return i
+        });
+        setTheoryCLORows(clone2);
+      }
+      setunit([]);
+      setclo("");
+      setbtl("");
+      setdomain("");
+      setVerbs([]);
+      setVerb("");
+      setso([]);
+      setOpenClo(false)
+      setCLORows([...clone]);
+    } else {
+      alert("Missing Fields");
+    }
+  };
   const onSubmithandler = async (e) => {
     e.preventDefault();
     console.log("\n\n\n\nFinal");
@@ -830,7 +977,7 @@ export default function CreateCDF() {
         <div className="row">
           <div className="col">
             <h6>
-              <b>Course Code: {row.Code}</b>
+              <b>Course Code: {row.Code.split("-")[0]}{row.Code.split("-")[1]}</b>
             </h6>
           </div>
           <div className="col">
@@ -920,7 +1067,19 @@ export default function CreateCDF() {
                     size="medium"
                     style={{ backgroundColor: "#4b2980" }}
                     onClick={() => {
-                      const s = Topicsfinal + mainTopic + ": ";
+
+                      var not = ["of","the","and","&","for","in","like"]
+                      var dig = mainTopic.split(" ")
+                      var dig2 = dig.map((i)=>{
+                        if(!not.includes(i.toLowerCase())){
+                          return i.charAt(0).toUpperCase()+i.slice(1)
+                        }
+                        else{
+                          return i.toLowerCase()
+                        }
+                      })
+                      var naam = dig2.join(" ")
+                      const s = Topicsfinal + naam + ": ";s
                       setTopicsfinal(s);
                       setmainTopic("");
                     }}

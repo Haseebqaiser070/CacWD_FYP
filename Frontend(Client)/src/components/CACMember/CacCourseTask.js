@@ -105,7 +105,7 @@ export default function CacCourseTask() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1 className="py-4 my-2">
+        <h1 className="py-4 mb-4">
           <b>COURSES ASSIGNED</b>
         </h1>
         <div>
@@ -114,7 +114,7 @@ export default function CacCourseTask() {
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
             }}
-            style={{ height: 400, width: "100%" }}
+            style={{ height: "60vh", width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}

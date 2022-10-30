@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Card, Modal } from "@mui/material";
+import { Button, Card, LinearProgress, Modal } from "@mui/material";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -163,7 +163,7 @@ export default function PendingDeadlineRequests() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1 className="mb-4">
+        <h1 className="mb-4 py-4">
           <b>PENDING DEADLINE REQUESTS</b>
         </h1>
         <div>

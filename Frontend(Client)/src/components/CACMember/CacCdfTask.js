@@ -6,7 +6,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineCheckSquare, AiFillEdit } from "react-icons/ai";
 import { muiAbtn } from "../style";
-import { Card } from "@mui/material";
+import { Card, LinearProgress } from "@mui/material";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 
 export default function CacCdfTask() {
   const [Rows, setRows] = useState([]);
@@ -43,20 +44,20 @@ export default function CacCdfTask() {
           size="small"
           style={muiAbtn}
           onClick={async () => {
-            try{
-            var response = await axios.post(
-              `http://localhost:4000/CDFCreate/Submit/${row.Code}`,
-              {
-                withCredentials: true,
-              }
-            );
-            getRepoCourse();
-            }catch (err) {
+            try {
+              var response = await axios.post(
+                `http://localhost:4000/CDFCreate/Submit/${row.Code}`,
+                {
+                  withCredentials: true,
+                }
+              );
+              getRepoCourse();
+            } catch (err) {
               if (err.response?.data == "Deadline Passed") {
                 alert("Cannot Submit Deadline has Passed");
               } else if (err.response?.data == "No Versions") {
                 alert("Cannot Submit Nothing added");
-              } 
+              }
             }
           }}
         >
@@ -105,17 +106,19 @@ export default function CacCdfTask() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1 className="py-4 my-2">
+        <h1 className="py-4 mb-4">
           <b>COURSE DESCRIPTION FORM ASSIGNED</b>
         </h1>
         <div>
           <DataGrid
-            style={{ height: 400, width: "100%" }}
+            components={{
+              NoRowsOverlay: CustomNoRowsOverlay,
+              LoadingOverlay: LinearProgress,
+            }}
+            style={{ height: "60vh", width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}
-            pageSize={10}
-            rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />
         </div>

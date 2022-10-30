@@ -136,7 +136,7 @@ const getContent = async () => {
             <div className="row">
               <div className="col">
                 <h6>
-                  <b>Course Code: {Content.Code} </b>
+                  <b>Course Code: {Content.Code.split("-")[0]}{Content.Code.split("-")[1]}</b>
                 </h6>
               </div>
               <div className="col">
@@ -205,25 +205,104 @@ const getContent = async () => {
                     <th>No. of teaching hours</th>
                   </tr>
                 </thead>
-                <tbody>
-      
-
-              { 
-              CDF.Topics.map((i)=>
-              {return(
-                  <>
+                <tbody style={{ textAlign: "center" }}>
                   <tr>
-                    <td style={{ textAlign: "center" }}>{i.Unit}</td>
-                    <td>
-                      {i.Topic}
-                    </td>
-                    <td style={{ textAlign: "center" }}>{i.TeachingHours}</td>
+                    <td>Quizzes</td>
+                    {CDF.CLOs.map((i)=>{
+                      if(i.Quizzes.length==1){
+                        return <th>{i.Quizzes.map((e) => e.title)}</th>;
+                      }
+                      else if(i.Quizzes.length>1){
+                        return <th>{i.Quizzes.map((e,index) =>{                           
+                          if(index==0){
+                            return e?.title
+                          }                          
+                          // else if(index==i.Quizzes.length-2){
+                          //   return e?.title?.charAt(e.title.length-1)
+                          // }
+                          else if(index==i.Quizzes.length-1){
+                            return "& "+e?.title?.charAt(e.title.length-1)
+                          }                            
+                          else{
+                            return ", "+e?.title?.charAt(e.title.length-1)
+                          }
+                        })}</th>;
+                      }
+                      else{
+                        return <th>{"-"}</th>
+                      }
+                    })}
                   </tr>
-                  </>
-                  )})}
                   <tr>
-                    <th colSpan={2}>Total Contact Hours</th>
-                    <td style={{ textAlign: "center" }}>{Totalteaching}</td>
+                    <td>Assignments</td>
+                    {CDF.CLOs.map((i)=>{                    
+                      if(i.Assignment.length==1){
+                        return <th>{i.Assignment.map((e) => e.title)}</th>;
+                      }
+                      else if(i.Assignment.length>1){
+                        return <th>{i.Assignment.map((e,index) =>{                           
+                          if(index==0){
+                            return e?.title
+                          }                          
+                          
+                          // else if(index==i.Assignment.length-2){
+                          //   return e?.title?.charAt(e.title.length-1)
+                          // }
+                           
+                          else if(index==i.Assignment.length-1){
+                            
+                            return "& "+e?.title?.charAt(e.title.length-1)
+                          }
+                          
+                          else{
+                            return ", "+e?.title?.charAt(e.title.length-1)
+                          }
+                        })}</th>;
+                      }
+                      else{
+                        return <th>{"-"}</th>
+                      }
+                    })}
+                  </tr>
+                  <tr>
+                  <td>Mid Term Exam</td>
+                  {CDF.CLOs.map((i)=>{
+                    if(i.Mid!=""){
+                      return(
+                        <th>{i.Mid}</th>)
+                    }
+                    else{
+                      return(
+                      <th>{"-"}</th>)
+                    }
+                  })}
+                  </tr>
+                  <tr>
+                    <td>Final Term Exam</td>
+                    {CDF.CLOs.map((i)=>{
+                    if(i.Final!=""){
+                      return(
+                        <th>{i.Final}</th>)
+                    }
+                    else{
+                      return(
+                      <th>{"-"}</th>)
+                    }
+                      })}
+                  </tr>
+                  <tr>
+                    <td>Project</td>
+                    {CDF.CLOs.map((i)=>{
+                      if(i.Project!=""){
+                        return(
+                          <th>{i.Project}</th>)
+                      }
+                      else{
+                        return(
+                        <th>{"-"}</th>)
+                      }
+                    })}
+
                   </tr>
                 </tbody>
               </table>

@@ -129,24 +129,25 @@ export default function Evaluators() {
       }
     });
     if (verify) {
-      try{
-      if (!up) {
-        await axios.post("http://localhost:4000/EvalFolders/add", {
-          obj,
-          User,
-        });
-      } else {
-        await axios.post("http://localhost:4000/EvalFolders/add2", {
-          obj,
-          User,
-        });
-      }
-      getData();
-      handleClose();
-    }
-      catch (err) {
+      try {
+        if (!up) {
+          await axios.post("http://localhost:4000/EvalFolders/add", {
+            obj,
+            User,
+          });
+        } else {
+          await axios.post("http://localhost:4000/EvalFolders/add2", {
+            obj,
+            User,
+          });
+        }
+        getData();
+        handleClose();
+      } catch (err) {
         if (err.response?.data === "Already Assigned") {
-          alert("Already Assigned a Teacher to this Section, Course and Program");
+          alert(
+            "Already Assigned a Teacher to this Section, Course and Program"
+          );
         }
       }
     } else {
@@ -177,7 +178,7 @@ export default function Evaluators() {
     {
       field: "Email",
       headerName: "Email",
-      width: "400",
+      width: "350",
     },
 
     {
@@ -252,7 +253,7 @@ export default function Evaluators() {
             variant="contained"
             className="mb-2 muibtn"
             color="primary"
-            size="small"
+            size="medium"
             style={muibtn}
             onClick={handleClickOpen}
           >

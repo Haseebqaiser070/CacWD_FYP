@@ -7,28 +7,30 @@ import { Card, LinearProgress, Tooltip } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Card, LinearProgress } from "@mui/material";
 import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
+import { AiFillEye } from "react-icons/ai";
 const columns = [
   {
     field: "Program",
     headerName: "Program",
-    flex: 1,
+    width: "200",
   },
   {
     field: "Course",
     headerName: "Course",
-    flex: 1,
+    width: "350",
   },
   {
     field: "Faculty",
     headerName: "Faculty",
-    flex: 1,
+    width: "250",
   },
 
   {
     field: "actions",
     headerName: "Actions",
-    flex: 1,
+    width: "200",
     editable: false,
     renderCell: HandleButton,
   },
@@ -55,7 +57,8 @@ function HandleButton(row) {
           //navigate('/Faculty/Returned',{state:{row:row}})
         }}
       >
-        View
+        <AiFillEye style={{ marginRight: 10 }} />
+        View Folder
       </Button>
     </>
   );
@@ -99,7 +102,7 @@ export default function AllCourseFolder() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1>
+        <h1 className="mb-4 py-4">
           <b>EVALUATED FOLDERS</b>
         </h1>
         <div>
@@ -108,11 +111,11 @@ export default function AllCourseFolder() {
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
             }}
-            style={{ height: 400, width: "100%" }}
+            style={{ height: "70vh", width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows?._id}
             rows={Rows}
-            pageSize={10}
+            pageSize={5}
             rowsPerPageOptions={[5]}
             disableSelectionOnClick
           />

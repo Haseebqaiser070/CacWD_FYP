@@ -277,7 +277,7 @@ export default function CDF() {
               <div className="row">
                 <div className="col">
                   <h6>
-                    <b>Course Code: {Content.Code} </b>
+                    <b>Course Code: {Content.Code.split("-")[0]}{Content.Code.split("-")[1]} </b>
                   </h6>
                 </div>
                 <div className="col">
@@ -542,37 +542,105 @@ export default function CDF() {
                     })}
                   </thead>
                   <tbody style={{ textAlign: "center" }}>
-                    <tr>
-                      <td>Quizzes</td>
-                      {CDF.CLOs.map((i) => {
+                  <tr>
+                    <td>Quizzes</td>
+                    {CDF.CLOs.map((i)=>{
+                      if(i.Quizzes.length==1){
                         return <th>{i.Quizzes.map((e) => e.title)}</th>;
-                      })}
-                    </tr>
-                    <tr>
-                      <td>Assignments</td>
-                      {CDF.CLOs.map((i) => {
+                      }
+                      else if(i.Quizzes.length>1){
+                        return <th>{i.Quizzes.map((e,index) =>{                           
+                          if(index==0){
+                            return e?.title
+                          }                          
+                          // else if(index==i.Quizzes.length-2){
+                          //   return e?.title?.charAt(e.title.length-1)
+                          // }
+                          else if(index==i.Quizzes.length-1){
+                            return "& "+e?.title?.charAt(e.title.length-1)
+                          }                            
+                          else{
+                            return ", "+e?.title?.charAt(e.title.length-1)
+                          }
+                        })}</th>;
+                      }
+                      else{
+                        return <th>{"-"}</th>
+                      }
+                    })}
+                  </tr>
+                  <tr>
+                    <td>Assignments</td>
+                    {CDF.CLOs.map((i)=>{                    
+                      if(i.Assignment.length==1){
                         return <th>{i.Assignment.map((e) => e.title)}</th>;
+                      }
+                      else if(i.Assignment.length>1){
+                        return <th>{i.Assignment.map((e,index) =>{                           
+                          if(index==0){
+                            return e?.title
+                          }                          
+                          
+                          // else if(index==i.Assignment.length-2){
+                          //   return e?.title?.charAt(e.title.length-1)
+                          // }
+                           
+                          else if(index==i.Assignment.length-1){
+                            
+                            return "& "+e?.title?.charAt(e.title.length-1)
+                          }
+                          
+                          else{
+                            return ", "+e?.title?.charAt(e.title.length-1)
+                          }
+                        })}</th>;
+                      }
+                      else{
+                        return <th>{"-"}</th>
+                      }
+                    })}
+                  </tr>
+                  <tr>
+                  <td>Mid Term Exam</td>
+                  {CDF.CLOs.map((i)=>{
+                    if(i.Mid!=""){
+                      return(
+                        <th>{i.Mid}</th>)
+                    }
+                    else{
+                      return(
+                      <th>{"-"}</th>)
+                    }
+                  })}
+                  </tr>
+                  <tr>
+                    <td>Final Term Exam</td>
+                    {CDF.CLOs.map((i)=>{
+                    if(i.Final!=""){
+                      return(
+                        <th>{i.Final}</th>)
+                    }
+                    else{
+                      return(
+                      <th>{"-"}</th>)
+                    }
                       })}
-                    </tr>
-                    <tr>
-                      <td>Mid Term Exam</td>
-                      {CDF.CLOs.map((i) => {
-                        return <th>{i.Mid}</th>;
-                      })}
-                    </tr>
-                    <tr>
-                      <td>Final Term Exam</td>
-                      {CDF.CLOs.map((i) => {
-                        return <th>{i.Final}</th>;
-                      })}
-                    </tr>
-                    <tr>
-                      <td>Project</td>
-                      {CDF.CLOs.map((i) => {
-                        return <th>{i.Project}</th>;
-                      })}
-                    </tr>
-                  </tbody>
+                  </tr>
+                  <tr>
+                    <td>Project</td>
+                    {CDF.CLOs.map((i)=>{
+                      if(i.Project!=""){
+                        return(
+                          <th>{i.Project}</th>)
+                      }
+                      else{
+                        return(
+                        <th>{"-"}</th>)
+                      }
+                    })}
+
+                  </tr>
+                </tbody>
                 </table>
               </div>
             </div>

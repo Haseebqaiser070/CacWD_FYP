@@ -151,7 +151,7 @@ export default function BTLLevel() {
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
         <h1 className="py-4 my-2">
-          <b>ADD BTL LEVELS</b>
+          <b>ALL BTL LEVELS</b>
         </h1>
 
         <div className="d-flex justify-content-end mb-4 pb-2">

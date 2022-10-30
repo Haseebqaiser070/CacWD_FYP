@@ -66,20 +66,29 @@ export default function AddNewCourseDocument() {
   const [BookName, setBookName] = useState("");
   const [BookYear, setBookYear] = useState("");
   const [BookWriter, setBookWriter] = useState("");
+  const [BookWriter1, setBookWriter1] = useState("");
+
   const [Books, setBooks] = useState(Content.Books);
   const navigate = useNavigate();
   console.log(Courses);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
+    setobjective("")
     setOpen(false);
   };
 
   const [openBook, setOpenBook] = useState(false);
   const handleOpenBook = () => setOpenBook(true);
   const handleCloseBook = () => {
+    
+    setBookName("");
+    setBookYear("");
+    setBookWriter("");
+    setBookWriter1("");
     setOpenBook(false);
   };
+  const [bookid,setbookid]=useState("")
 
   const recommended_books = [
     {
@@ -113,7 +122,12 @@ export default function AddNewCourseDocument() {
                 marginLeft: 10,
                 padding: 10,
               }}
-              onClick={handleOpenBook}
+              onClick={()=>{
+                setbookid(props.row.id)
+                setBookName(props.row.BookName)
+                setBookWriter(props.row.BookWriter)
+                setBookYear(props.row.BookYear)
+                handleOpenBook()}}
             >
               <AiFillEdit />
             </Button>
@@ -150,6 +164,33 @@ export default function AddNewCourseDocument() {
                     className="mb-3"
                     label="Author"
                     variant="outlined"
+                    size="small"                    
+                    value={BookWriter1}
+                    onChange={(e) => setBookWriter1(e.target.value)}
+                  ></TextField>
+                   <Button                    
+                    variant="contained"
+                    className="btn btn-primary btn-block"
+                    onClick={()=>{
+                      if(BookWriter==""){
+                        setBookWriter(BookWriter+BookWriter1)                        
+                        setBookWriter1("")
+                      }
+                      else{
+                        setBookWriter(BookWriter+", "+BookWriter1)
+                        setBookWriter1("")
+                      }
+                    }}
+                    style={{ backgroundColor: "#4b2980" , marginLeft:"15px"}}
+                  >
+                    ADD Writter
+                </Button>
+                </div>                
+                <div>
+                  <TextField
+                    className="mb-3"
+                    label="Author"
+                    variant="outlined"
                     size="small"
                     fullWidth
                     value={BookWriter}
@@ -169,10 +210,9 @@ export default function AddNewCourseDocument() {
                 </div>
                 <div>
                   <Button
-                    type="submit"
                     variant="contained"
                     className="mt-4"
-                    // onClick={handleBook}
+                    onClick={handleBookEdit}
                     style={{ backgroundColor: "#4b2980" }}
                   >
                     EDIT BOOKS
@@ -204,6 +244,7 @@ export default function AddNewCourseDocument() {
       ),
     },
   ];
+  const [objid,setobjid]=useState("")
   const columns = [
     {
       field: "title",
@@ -227,7 +268,12 @@ export default function AddNewCourseDocument() {
                 marginLeft: 10,
                 padding: 10,
               }}
-              onClick={handleOpen}
+              onClick={()=>{
+                  setobjid(props.row.id)               
+                  setobjective(props.row.title.slice(0, -1))
+                  handleOpen()
+                }                
+              }
             >
               <AiFillEdit />
             </Button>
@@ -264,9 +310,8 @@ export default function AddNewCourseDocument() {
                 <div>
                   <Button
                     variant="contained"
-                    type="submit"
                     className="mt-4"
-                    // onClick={handleObjective}
+                    onClick={ObjectiveEdit}
                     style={{ backgroundColor: "#4b2980" }}
                   >
                     Edit
@@ -290,7 +335,14 @@ export default function AddNewCourseDocument() {
                 var data = objectiveList.filter(
                   (obj) => obj.id !== props.row.id
                 );
-                setObjectiveList(data);
+                var list = data.map((i)=>{                  
+                  var tt = i.title.slice(0, -1)
+                  i.title=tt+";"
+                  return i 
+                })
+                var tt=list[list.length-1].title.slice(0, -1)+'.'
+                list[list.length-1].title=tt
+                setObjectiveList([...list]);
               }}
             >
               <AiFillDelete />
@@ -303,24 +355,166 @@ export default function AddNewCourseDocument() {
 
   const handleAdd = (e) => {
     e.preventDefault();
+    var not = ["of","the","and","&","for","in","like"]
+    var dig = mainTopic.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var naam = dig2.join(" ")
+
     let clone = catalogue.slice(0, -2);
     if (catalogue != "") {
       clone = clone + ";";
     }
-    setCatalogue(`${clone} ${mainTopic}. `);
+    setCatalogue(`${clone} ${naam}. `);
     setmainTopic("");
+  };
+
+  const ObjectiveEdit= () => {
+    var not = ["of","the","and","&","for","in","like"]
+    var dig = objective.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var naam = dig2.join(" ")     
+    if(naam.charAt(naam.length-1)=="."||naam.charAt(naam.length-1)==";"){
+      naam = naam.slice(0, -1)
+    }
+    var list = objectiveList.map((i)=>{
+      if(i.id==objid){
+        i.title=naam+";"  
+      }
+      var tt=i.title.slice(0, -1)      
+      i.title=tt+";"
+      return i 
+    })
+    var tt=list[list.length-1].title.slice(0, -1)+'.'
+    list[list.length-1].title=tt
+    setObjectiveList([...list]);
+    setobjective("");
+    setOpen(false);
   };
   const handleObjective = (e) => {
     e.preventDefault();
-    setObjectiveList([...objectiveList, { id: uuidv4(), title: objective }]);
+    var not = ["of","the","and","&","for","in","like"]
+    var dig = objective.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var naam = dig2.join(" ")
+    var list = objectiveList.map((i)=>{
+      
+      var tt = i.title.slice(0, -1)
+      i.title=tt+";"
+      return i 
+    })
+     if(naam.charAt(naam.length-1)!="."){
+      setObjectiveList([...list,{ id: uuidv4(),title:naam+"."}]);  
+      }
+     else{
+      setObjectiveList([...list,{ id: uuidv4(),title:naam}]);        
+     }
     setobjective("");
   };
-  const handleBook = (e) => {
-    e.preventDefault();
-    setBooks([...Books, { id: uuidv4(), BookName, BookWriter, BookYear }]);
+
+
+  const handleBookEdit =()=>{    
+    var not = ["of","the","and","&","for","in","like",","]
+    
+    var dig = BookName.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var Bknaam = dig2.join(" ")    
+    var dig = BookWriter.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var BWnaam = dig2.join(" ")
+    
+    var list = Books.map((i)=>{
+      if(i.id==bookid){
+        
+        if(BookYear.charAt(BookYear.length-1)!="."){
+            i.BookName= Bknaam,
+            i.BookWriter= BWnaam,
+            i.BookYear=BookYear+"."}
+        else{
+            i.BookName= Bknaam,
+            i.BookWriter= BWnaam,
+            i.BookYear=BookYear}
+      }
+      return i 
+    })
+    setBooks([...list]);
     setBookName("");
     setBookYear("");
     setBookWriter("");
+    setBookWriter1("");
+    setOpenBook(false)
+  } 
+  const handleBook = (e) => {
+    e.preventDefault();
+    
+    var not = ["of","the","and","&","for","in","like",","]
+    
+    var dig = BookName.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+
+    var Bknaam = dig2.join(" ")    
+    var dig = BookWriter.split(" ")
+    var dig2 = dig.map((i)=>{
+      if(!not.includes(i.toLowerCase())){
+        return i.charAt(0).toUpperCase()+i.slice(1)
+      }
+      else{
+        return i.toLowerCase()
+      }
+    })
+    var BWnaam = dig2.join(" ")
+    if(BookYear.charAt(BookYear.length-1)!="."){
+      setBooks([...Books, { id: uuidv4(), BookName:Bknaam, BookWriter:BWnaam, BookYear:BookYear+"." }]);
+      
+    }
+    else{
+    setBooks([...Books, { id: uuidv4(), BookName:Bknaam, BookWriter:BWnaam, BookYear }]);
+    }
+    setBookName("");
+    setBookYear("");
+    setBookWriter("");
+    setBookWriter1("");
   };
   useEffect(() => {
     getData();
@@ -566,17 +760,6 @@ export default function AddNewCourseDocument() {
                 <div className="col">
                   <TextField
                     style={{ backgroundColor: "#fff" }}
-                    label="Author"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    value={BookWriter}
-                    onChange={(e) => setBookWriter(e.target.value)}
-                  ></TextField>
-                </div>
-                <div className="col">
-                  <TextField
-                    style={{ backgroundColor: "#fff" }}
                     label="Year"
                     variant="outlined"
                     size="small"
@@ -585,6 +768,60 @@ export default function AddNewCourseDocument() {
                     onChange={(e) => setBookYear(e.target.value)}
                   ></TextField>
                 </div>
+                </div>
+               
+               
+                <div
+                style={{ backgroundColor: "#e8f0f7", padding: 20 }}
+                className="row"
+              >
+                <div className="col">
+                  <TextField
+                    style={{ backgroundColor: "#fff" }}
+                    label="Author"
+                    variant="outlined"
+                    size="small"
+                    fullWidth                  
+                    value={BookWriter1}
+                    onChange={(e) => setBookWriter1(e.target.value)}
+                  ></TextField>
+                </div>
+                <div className="col-3">
+                <Button                    
+                    variant="contained"
+                    className="btn btn-primary btn-block"
+                    onClick={()=>{
+                      if(BookWriter==""){
+                        setBookWriter(BookWriter+BookWriter1)                        
+                        setBookWriter1("")
+                      }
+                      else{
+                        setBookWriter(BookWriter+", "+BookWriter1)
+                        setBookWriter1("")
+                      }
+                    }}
+                    style={{ backgroundColor: "#4b2980" }}
+                  >
+                    ADD Writter
+                </Button>
+                </div>
+                </div>
+                <div
+                style={{ backgroundColor: "#e8f0f7", padding: 20 }}
+                className="row"
+              >
+                <div className="col">
+                  <TextField
+                    style={{ backgroundColor: "#fff" }}
+                    label="Author"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    value={BookWriter}
+                    onChange={(e) => setBookWriter(e.target.value)}
+                  ></TextField>
+                </div>
+               </div> 
                 <div className="col-3 d-grid gap-2">
                   <Button
                     type="submit"
@@ -596,7 +833,6 @@ export default function AddNewCourseDocument() {
                     ADD
                   </Button>
                 </div>
-              </div>
             </form>
           </div>
           <div style={{ height: 300, width: "100%" }}>

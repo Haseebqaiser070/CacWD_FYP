@@ -103,7 +103,7 @@ export default function EvaluatorFolderInRevision() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1>
+        <h1 className="mb-4 py-4">
           <b>FOLDER IN REVISION</b>
         </h1>
         <div>
@@ -112,7 +112,7 @@ export default function EvaluatorFolderInRevision() {
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
             }}
-            style={{ height: 400, width: "100%" }}
+            style={{ height: "70vh", width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}

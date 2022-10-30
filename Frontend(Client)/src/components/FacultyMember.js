@@ -130,23 +130,25 @@ export default function FacultyMembers() {
     });
     if (verify) {
       try {
-      if (!up) {
-        await axios.post("http://localhost:4000/AssginFolders/add", {
-          obj,
-          User,
-        });
-      } else {
-        await axios.post("http://localhost:4000/AssginFolders/add2", {
-          obj,
-          User,
-        });
-      }
-      getData();
-      handleClose();
-    }catch (err) {
-      if (err.response?.data === "Already Assigned") {
-        alert("Already Assigned a Teacher to this Section, Course and Program");
-      }
+        if (!up) {
+          await axios.post("http://localhost:4000/AssginFolders/add", {
+            obj,
+            User,
+          });
+        } else {
+          await axios.post("http://localhost:4000/AssginFolders/add2", {
+            obj,
+            User,
+          });
+        }
+        getData();
+        handleClose();
+      } catch (err) {
+        if (err.response?.data === "Already Assigned") {
+          alert(
+            "Already Assigned a Teacher to this Section, Course and Program"
+          );
+        }
       }
     } else {
       alert("Empty Field");
@@ -243,7 +245,7 @@ export default function FacultyMembers() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1>
+        <h1 className="mb-4 py-4">
           <b>FACULTY MEMBERS</b>
         </h1>
         <div className="d-flex justify-content-end mb-4">
@@ -251,7 +253,7 @@ export default function FacultyMembers() {
             variant="contained"
             className="mb-2 muibtn"
             color="primary"
-            size="small"
+            size="medium"
             style={muibtn}
             onClick={handleClickOpen}
           >
@@ -282,7 +284,7 @@ export default function FacultyMembers() {
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
             }}
-            style={{ height: 400, width: "100%" }}
+            style={{ height: "70vh", width: "100%" }}
             columns={columns}
             getRowId={(Rows) => Rows._id}
             rows={Rows}
