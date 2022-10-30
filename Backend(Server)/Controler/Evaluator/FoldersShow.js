@@ -60,6 +60,7 @@ module.exports.ShowId = async (req, res) => {
       console.log(req.user)
       if (!req.user) return await res.json("Timed Out");
       try {  
+        console.log("id in showId",req.params.id)
         const user = await Userdoc.findById(req.params.id).
         populate({path:"EvaluateFolders",model:"Eval",populate:{path:"Folder",model:"Folder",
         populate:{path:"Course",model:"ProgramCourses"}}}).

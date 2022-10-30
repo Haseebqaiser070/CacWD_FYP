@@ -286,6 +286,17 @@ export default function Navigation() {
                       </div>
                       Course Folder Lab
                     </Link>
+                    
+                <Link
+                      class="nav-link sidenavtext "
+                      to="FolderInRevisionA"
+                      style={{ marginLeft: "12px", fontSize: "14px" }}
+                    >
+                      <div class="sb-nav-link-icon">
+                        <BsFillFolderFill color="#fff" />
+                      </div>
+                      Folder In Revision
+                    </Link>
                     <Link
                       class="nav-link sidenavtext "
                       to="PendingDeadlineRequests"

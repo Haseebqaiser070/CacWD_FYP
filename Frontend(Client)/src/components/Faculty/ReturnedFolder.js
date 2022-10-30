@@ -72,15 +72,15 @@ export default function ReturnedFolders() {
     var row = [];
     var index = 0;
     res.data.map((val, id) => {
-      if (val.Evaluated == true && val.User._id == userid) {
-        row[id] = {
+      if (val.Evaluated == true && val.User._id == userid && val.WantRevision==false) {
+        row.push( {
           _id: val._id,
           id: id,
           Program: val.Program,
           Course: val.Course.Name + "-" + val.LabTheory,
           Evaluator: val.Evaluator.Name,
           data: val,
-        };
+        })
       }
     });
     setRows(row);

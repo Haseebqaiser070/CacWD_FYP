@@ -113,6 +113,41 @@ module.exports.SubmitaRound = async (req, res) => {
         console.log(err);
       }    
 }
+
+
+module.exports.SubmitaRoundRevision = async (req, res) => {
+    
+  try {
+      console.log(req.user)
+      if (!req.user) return await res.json("Timed Out");
+      if (!req.user.Roles.includes("Faculty")) return await res.status(401).json("UnAutherized");
+      try {       
+        
+        const up = await Folderdoc.findOneAndUpdate({_id:req.params.id},{Revision:true});
+        console.log("CourseFolder",up)
+        const course=await Courses.findById(up.Course)
+        const user=await User.find({})
+        const userr=await User.findById(up.User)
+
+        user.map((item)=>{
+    
+          item.Roles.map((i)=>{
+            if(i=="Admin"){
+              Mail.FolderSubmit(user.Email,userr.Name,course.Name+" - "+course.Code)
+            }
+          })
+        })
+        await res.status(200).json(up)
+      
+      
+      }catch (err) {
+          console.log(err);
+          await res.status(400).json("error")    
+      }  
+    } catch (err) {
+      console.log(err);
+    }    
+}
 module.exports.ICEFSubimt = async (req, res) => {
     
     try {
@@ -255,6 +290,53 @@ module.exports.editEvaluation = async (req, res) => {
         const course=await Courses.findById(old.Course)
 
         Mail.FolderEvaluated(userr.Email,course.Name+" - "+course.Code)
+         console.log("CourseFolder",old)
+        await res.status(200).json(old)
+        
+      }catch (err) {
+          console.log(err);
+          await res.status(400).json("error")    
+      }  
+    } catch (err) {
+      console.log(err);
+    }    
+}
+module.exports.editRevisionEvaluation = async (req, res) => {
+    
+  try {
+      console.log(req.params.id)
+      if (!req.user) return await res.json("Timed Out");
+      if (!req.user.Roles.includes("Evaluator")) return await res.status(401).json("UnAutherized");        
+      try {        
+        const oldd = await Folderdoc.findByIdAndUpdate(req.params.id,{Revision:false})               
+        const old = await Folderdoc.findByIdAndUpdate(req.params.id,{WantRevision:false})   
+        const userr=await User.findById(old.User)
+        const course=await Courses.findById(old.Course)
+
+        Mail.FolderEvaluated(userr.Email,course.Name+" - "+course.Code)
+         console.log("CourseFolderrr",old)
+        await res.status(200).json(old)
+        
+      }catch (err) {
+          console.log(err);
+          await res.status(400).json("error")    
+      }  
+    } catch (err) {
+      console.log(err);
+    }    
+}
+module.exports.editRevision = async (req, res) => {
+    
+  try {
+      console.log(req.params.id)
+      if (!req.user) return await res.json("Timed Out");
+      if (!req.user.Roles.includes("Evaluator")) return await res.status(401).json("UnAutherized");        
+      try {        
+        const old = await Folderdoc.findByIdAndUpdate(req.params.id,{WantRevision:true})               
+        const userr=await User.findById(old.User)
+        const course=await Courses.findById(old.Course)
+
+        Mail.FolderRevision(userr.Email,course.Name+" - "+course.Code)
          console.log("CourseFolder",old)
         await res.status(200).json(old)
         

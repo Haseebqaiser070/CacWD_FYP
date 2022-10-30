@@ -427,3 +427,65 @@ module.exports.FolderEvaluated= (email,course) => {
     }
   });
 };
+
+module.exports.FolderRevision= (email,course) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Folder Revision",
+    text:
+    "Folder "+
+      course +
+      "has been sent for Revision"
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.TaskDeadlineOne = (e, email) => {
+  console.log("sfs", email);
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Task Deadline Reminder",
+    text:
+      "Your task submission deadline is tomorrow, make sure to Submit \n\n" +
+      "Assigned Task Type :" +
+      e.taskType +
+      "\n Assigned Course : " +
+      e.Course?.Name +
+      "\n Deadline: " +
+      e.Deadline,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+module.exports.MeetingReminder = (email, time, title) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Meeting Reminder",
+    text: "Meeting Title :" + title + ", Meeting Time : " + time,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};

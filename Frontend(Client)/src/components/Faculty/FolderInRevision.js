@@ -40,6 +40,29 @@ function HandleButton(row) {
     console.log("helllo", roww);
     navigate("/Faculty/Returned", { state: roww.row });
   };
+  const senddataa = (roww) => {
+    console.log("helllo", roww.row.data._id);
+    const idd=roww.row.data._id
+    if(roww.row.data.LabTheory=="Theory"){
+    navigate(
+      `/Faculty/CourseFolder/${idd}`,
+      { state: { idd } },
+      {
+        replace: true,
+      }
+    );
+    }
+    else{
+      navigate(
+        `/Faculty/LabFolder/${idd}`,
+        { state: { idd } },
+        {
+          replace: true,
+        }
+      );
+    }
+    //navigate("/Faculty/Returned", { state: roww.row });
+  };
   return (
     <>
       <Tooltip title="View Revision" placement="top-start">
@@ -52,13 +75,17 @@ function HandleButton(row) {
             marginLeft: 10,
             padding: 10,
           }}
+          onClick={() => {
+            senddata(row);
+            //navigate('/Faculty/Returned',{state:{row:row}})
+          }}
           // onClick={handleOpenClo}
         >
           <AiFillEye />
         </Button>
       </Tooltip>
 
-      <Tooltip title="Edit" placement="top-start">
+     <Tooltip title="Edit" placement="top-start">
         <Button
           variant="contained"
           color="primary"
@@ -68,18 +95,48 @@ function HandleButton(row) {
             marginLeft: 10,
             padding: 10,
           }}
+          onClick={() => {
+            senddataa(row);
+            //navigate('/Faculty/Returned',{state:{row:row}})
+          }}
           //   onClick={handleOpenClo}
         >
           <AiFillEdit />
         </Button>
-      </Tooltip>
+        </Tooltip>
     </>
   );
 }
 export default function FolderInRevision() {
-  const [Rows, setRows] = useState([]);
   const navigate = useNavigate();
-
+  const [Rows, setRows] = useState([]);
+  const [Posts, setPosts] = useState([]);
+  const userid = JSON.parse(localStorage.getItem("user"));
+  React.useEffect(() => {
+    getData();
+  }, []);
+  const getData = async () => {
+    const res = await axios.get(`http://localhost:4000/EvalFolders/showfolder`);
+    setPosts(res.data);
+    console.log("res",res.data)
+    var row = [];
+    var index = 0;
+    res.data.map((val, id) => {
+      if (val.User?._id == userid && val.WantRevision==true) {
+        row.push( {
+          _id: val._id,
+          id: id,
+          Program: val.Program,
+          Course: val.Course.Name + "-" + val.Course.Code,
+          Evaluator: val.Evaluator?.Name,
+          Faculty: val.User.Name,
+          data: val,
+        })
+      }
+    });
+    console.log("uajh", row);
+    setRows(row);
+  };
   return (
     <div
       style={{

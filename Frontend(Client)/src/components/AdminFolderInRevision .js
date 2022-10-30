@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "../css/styles.css";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
-import { muiAbtn } from "../style";
+import { muiAbtn } from "./style";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Card, LinearProgress, Tooltip } from "@mui/material";
 import { AiFillEdit, AiFillEye } from "react-icons/ai";
-import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
+import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 const columns = [
   {
     field: "Program",
@@ -38,7 +37,7 @@ function HandleButton(row) {
   const navigate = useNavigate();
   const senddata = (roww) => {
     console.log("helllo", roww);
-    navigate("/Evaluator/Returned", { state: roww.row });
+    navigate("/Admin/Returned", { state: roww.row });
   };
   return (
     <>
@@ -79,7 +78,7 @@ export default function EvaluatorFolderInRevision() {
     var row = [];
     var index = 0;
     res.data.map((val, id) => {
-      if (val.Evaluator?._id == userid && val.WantRevision==true) {
+      if ( val.WantRevision==true) {
         row.push( {
           _id: val._id,
           id: id,

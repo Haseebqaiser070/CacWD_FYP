@@ -48,7 +48,8 @@ import BtlDictionary from "../BTLDictionary";
 import OngoingTasks from "../PdfTemplates/OngoingTasks";
 import IndiviualTask from "../PdfTemplates/IndiviualTask";
 import CompletedTasks from "../CompletedTasks";
-
+import AdminFolderInRevision from "../AdminFolderInRevision "
+import ReturnedPageAdmin from '../ReturnedPageAdmin'
 function AdminRoutes() {
   return (
     <Routes>
@@ -62,7 +63,14 @@ function AdminRoutes() {
         <Route path="/Returned" element={<Returned />} />
         <Route path="/OngoingTasks" element={<OngoingTasks />} />
         <Route path="/IndiviualTask/:tid" element={<IndiviualTask />} />
-
+        <Route
+          path="/FolderInRevisionA"
+          element={<AdminFolderInRevision />}
+        />
+        <Route
+          path="/Returned"
+          element={<ReturnedPageAdmin />}
+        />
         <Route
           path="/CourseReturnedView/:Code"
           element={<CourseReturnedView />}

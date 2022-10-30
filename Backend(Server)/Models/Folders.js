@@ -147,6 +147,14 @@ var FolderSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  WantRevision:{
+    type: Boolean,
+    default: false,
+  },
+  Revision:{
+    type: Boolean,
+    default: false,
+  },
   Evaluator: {
     type: mongoose.Schema.ObjectId,
     ref: "User",

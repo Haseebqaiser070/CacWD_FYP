@@ -143,6 +143,7 @@ export default function CourseFolder() {
   const [pressed1,setpressed1]=useState(false)
   const [submitted1,setSubmitted1]=useState(false)
   const [submitted2,setSubmitted2]=useState(false)
+  const [submittedRevision,setRevisionSubmitted]=useState(false)
 
   const [fileBase64String, setFileBase64String] = useState("");
   useEffect(()=>{
@@ -243,6 +244,7 @@ export default function CourseFolder() {
     console.log("FolderData",res.data);
     setFolder(res.data);
     setSubmitted1(res.data.Round1)
+    setRevisionSubmitted(res.data.WantRevision)
     setSubmitted2(res.data.Round2)
 
   };
@@ -453,6 +455,111 @@ export default function CourseFolder() {
       alert("Submitted")
     } else {
       alert("Enter all required documents for Round 1");
+    }
+  };
+  const SubmitR1Revision = async () => {
+    var Round1 = true;
+    getFolderData()
+    console.log("folders in submit r1",Folder)
+    Quiz1.forEach((i) => {
+      var t = "Quiz " +i;
+
+      var res = Folder.files.some((obj) => 
+        obj.Title==t 
+      );
+      console.log("quizez",res)
+      if (!res) {
+        Round1 = false;
+      }
+    });
+    Assignments1.forEach((i) => {
+      var t = "Assignment " + i;
+
+      var res = Folder.files.find((obj) => 
+      obj.Title==t
+      );
+      console.log("assignments",res)
+
+      if (!res) {
+        Round1 = false;
+      }
+    });
+    if (folders.Mid == "Mid") {
+      var t = "Mid";
+
+      var res = Folder.files.some((obj) => 
+        obj.Title==t
+      );
+      console.log("mid",res)
+
+      if (!res) {
+        Round1 = false;
+      }
+    } else if (folders.Mid == "Sessional") {
+      var t = "Sessional 1";
+
+      var res = Folder.files.some((obj) => 
+          obj.Title==t
+      );
+      console.log("mid",res)
+
+      if (!res) {
+        Round1 = false;
+      }
+      var tt = "Sessional 2";       
+      var res2 = Folder.files.some((obj) => {
+        obj.Title==tt
+      });
+        console.log("mid",res2)
+        if (!res2) {
+          Round1 = false;
+        }
+    }
+    var Round2 = true;
+    Quiz2.forEach((i) => {
+      var t = "Quiz " + i;
+      var res = Folder.files.some((obj) => 
+        obj.Title==t 
+      );
+      if (!res) {
+        Round2 = false;
+      }
+    });
+    Assignments2.forEach((i) => {
+      var t = "Assignment " + i;
+      var res = Folder.files.some((obj) => 
+        obj.Title==t 
+      );
+      if (!res) {
+        Round2 = false;
+      }
+    });      
+    var t = "Terminal";
+    var res = Folder.files.some((obj) => 
+        obj.Title==t 
+      );
+      if (!res) {
+        Round2 = false;
+    }
+    if (Folder.ICEF == null||Folder.ICEF == "") {
+      Round2 = false;
+    }
+    if (Folder.Obe == null||Folder.Obe == "") {
+      Round2 = false;
+    }
+    if (Round1 && Round2) {
+      console.log("Round1", { Round1: true });
+      const res = await axios.put(
+        `http://localhost:4000/Folders/SubmitaRoundRevision/${id}`,
+        {
+          Revision: true,
+        }
+      );
+      setRevisionSubmitted(false)
+      getFolderData();
+      alert("Revision Submitted")
+    } else {
+      alert("Enter all required documents for Revision");
     }
   };
 
@@ -736,7 +843,7 @@ export default function CourseFolder() {
                 {Quiz1.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                     {submitted1?
+                     {submitted1==true && submittedRevision==false ?
                       
                         (Folder.files.find((obj) => {
                           var t = "Quiz " + i;
@@ -772,7 +879,7 @@ export default function CourseFolder() {
                       (
                         
                         
-                        round1flag? (
+                        round1flag==true && submittedRevision==false? (
                           <button
                           class="btn btn-block py-2 btn-primary"
                           id="quiz1"
@@ -823,7 +930,7 @@ export default function CourseFolder() {
                 {Assignments1.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                      {submitted1?
+                      {submitted1==true && submittedRevision==false?
                       
                       (Folder.files.find((obj) => {
                         var t = "Assignment " + i;
@@ -855,7 +962,7 @@ export default function CourseFolder() {
                     </button>
                       ))
                    
-                    :(round1flag?
+                    :(round1flag==true && submittedRevision==false?
                       (
                         <button
                         class="btn btn-block py-2 btn-primary"
@@ -907,7 +1014,7 @@ export default function CourseFolder() {
                   );
                 })}
                 {folders != "" && folders.Mid == "Mid" ? (
-                 submitted1? (
+                 submitted1 ==true && submittedRevision==false? (
                   <td className="d-grid py-2 px-2">
                 <button
                   class="btn btn-block py-2 btn-primary"
@@ -929,7 +1036,7 @@ export default function CourseFolder() {
                 </button>
               </td>):(
               
-              round1flag?
+              round1flag==true && submittedRevision==false?
                 (
                   <button
                   class="btn btn-block py-2 btn-primary"
@@ -967,7 +1074,7 @@ export default function CourseFolder() {
                   </td>))
                                 
                 ) : (
-                  submitted1?(
+                  submitted1==true && submittedRevision==false?(
                     <>
                       <td className="d-grid py-2 px-2">
                         <button
@@ -1011,7 +1118,7 @@ export default function CourseFolder() {
                       </td>
                     </>):(
               
-              round1flag?
+              round1flag==true && submittedRevision==false?
               (<>
                 <button
                 class="btn btn-block py-2 btn-primary"
@@ -1084,7 +1191,7 @@ export default function CourseFolder() {
                   </>))
                 )}
                 <td className="d-grid py-4 px-2">
-               {submitted1?  (<button
+               {submitted1==true && submittedRevision==false?  (<button
                     class="btn btn-block py-2 btn-primary"
                     type="button"
                     style={{backgroundColor:"grey",borderColor:'grey'}}
@@ -1096,7 +1203,7 @@ export default function CourseFolder() {
                     Round 1 (Submitted)
                   </button>
                  )  :(
-                  round1flag?
+                  round1flag==true && submittedRevision==false?
                   <>
                   <h4
                   
@@ -1110,6 +1217,7 @@ export default function CourseFolder() {
                   class="btn btn-block py-2 btn-primary"
                   type="button"
                   style={{backgroundColor:"grey",borderColor:'grey'}}
+                  onClick={SubmitE1}
 
                 >
                   Send Extension Request
@@ -1124,6 +1232,10 @@ export default function CourseFolder() {
                   </button>
                   }
                   </>:
+                  (submittedRevision?
+                    <>
+                  </>
+                    :
                   <button
                     class="btn btn-block py-2 btn-primary"
                     type="button"
@@ -1131,6 +1243,7 @@ export default function CourseFolder() {
                   >
                     Submit
                   </button>
+                  )
                 )}
                 </td>
               </tr>
@@ -1154,7 +1267,7 @@ export default function CourseFolder() {
                 {Quiz2.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                     {submitted2?
+                     {submitted2==true && submittedRevision==false?
                       
                         (Folder.files.find((obj) => {
                           var t = "Quiz " + i;
@@ -1188,9 +1301,7 @@ export default function CourseFolder() {
                      
                       :
                       (
-                        
-                        
-                        round2flag? (
+                        round2flag==true && submittedRevision==false? (
                           <button
                           class="btn btn-block py-2 btn-primary"
                           id="quiz1"
@@ -1242,7 +1353,7 @@ export default function CourseFolder() {
               {Assignments2.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                      {submitted2?
+                      {submitted2==true && submittedRevision==false?
                       
                       (Folder.files.find((obj) => {
                         var t = "Assignment " + i;
@@ -1274,7 +1385,7 @@ export default function CourseFolder() {
                     </button>
                       ))
                    
-                    :(round2flag?
+                    :(round2flag==true && submittedRevision==false?
                       (
                         <button
                         class="btn btn-block py-2 btn-primary"
@@ -1326,7 +1437,7 @@ export default function CourseFolder() {
                   );
                 })}
 
-              {submitted2? (
+              {submitted2==true && submittedRevision==false? (
                   <td className="d-grid py-2 px-2">
                 <button
                   class="btn btn-block py-2 btn-primary"
@@ -1348,7 +1459,7 @@ export default function CourseFolder() {
                 </button>
               </td>):(
               
-              round2flag?
+              round2flag==true && submittedRevision==false?
                 (<td className="d-grid py-2 px-2">
                   <button
                   class="btn btn-block py-2 btn-primary"
@@ -1386,7 +1497,7 @@ export default function CourseFolder() {
                     </button>
                   </td>))}
                  
-                  {submitted2? (
+                  {submitted2==true && submittedRevision==false? (
                 <td className="d-grid py-2 px-2">
                 <button
                   class="btn py-2  btn-block btn-primary"
@@ -1405,7 +1516,7 @@ export default function CourseFolder() {
                 </button>
               </td>):(
               
-              round2flag?
+              round2flag==true && submittedRevision==false?
                 (<td className="d-grid py-2 px-2">
                   <button
                   class="btn btn-block py-2 btn-primary"
@@ -1436,15 +1547,8 @@ export default function CourseFolder() {
                     )}
                   </button>
                 </td>))}
-                 
 
-
-
-
-
-
-
-                {submitted2? (
+                {submitted2==true && submittedRevision==false? (
               
                <td className="d-grid py-2 px-2">
                <button
@@ -1462,7 +1566,7 @@ export default function CourseFolder() {
              </td>
               ):(
               
-              round2flag?
+              round2flag==true && submittedRevision==false?
                 (
                   <td className="d-grid py-2 px-2">
                   <button
@@ -1491,15 +1595,8 @@ export default function CourseFolder() {
                   </button>
                 </td>
                 ))}
-                 
 
-
-
-
-
-
-
-            {submitted2? (
+            {submitted2==true && submittedRevision==false? (
             
             <td className="d-grid py-2 px-2">
               <button
@@ -1518,7 +1615,7 @@ export default function CourseFolder() {
              
              ):(
              
-             round2flag?
+             round2flag==true && submittedRevision==false?
                (<td className="d-grid py-2 px-2">
                  <button
                  class="btn btn-block py-2 btn-primary"
@@ -1547,7 +1644,7 @@ export default function CourseFolder() {
                ))}
 
 
-            {submitted2?  (
+            {submitted2==true && submittedRevision==false?  (
             <td className="d-grid py-2 px-2">
               <button
                 class="btn btn-block py-2 btn-primary"
@@ -1565,7 +1662,7 @@ export default function CourseFolder() {
 
                 <td className="d-grid py-4 px-2">
                 {
-                  round2flag?
+                  round2flag==true && submittedRevision==false?
                (<>
                   <h4
                   
@@ -1593,13 +1690,17 @@ export default function CourseFolder() {
                     Send Extension Request
                   </button>
                   }</>):(
+                    (submittedRevision?
+                      <>
+                    </>
+                      :
                   <button
                     class="btn btn-block py-2 btn-primary"
                     type="button"
                     onClick={SubmitR2}
                   >
                     Submit
-                  </button>)
+                  </button>))
                 }</td>)}
                 
               </tr>
@@ -1607,6 +1708,24 @@ export default function CourseFolder() {
           </div>
         </tbody>
       </table>
+      {submittedRevision?
+      <div style={{display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',}}>
+      <button
+      
+                    class="btn btn-block py-2 btn-primary"
+                    type="button"
+                    
+                    onClick={SubmitR1Revision}
+                  >
+                    Send Revision
+                  </button>
+      
+      </div>
+      :
+      <></>
+      }
       {Decoded != "" ? (
         <>
           <div

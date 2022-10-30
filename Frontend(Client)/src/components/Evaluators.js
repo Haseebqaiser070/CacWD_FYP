@@ -95,9 +95,10 @@ export default function Evaluators() {
     const response = await axios.get(
       `http://localhost:4000/EvalFolders/showAllbyid/${id}`
     );
-    const col = response.data.map((i) => {
+    console.log("response",response)
+    const col = response.data?.map((i) => {
       return {
-        Faculty: i.Folder.User,
+        Faculty: i.Folder?.User,
         Folders: i.Folder,
       };
     });
@@ -107,7 +108,7 @@ export default function Evaluators() {
       col.map(async (i) => {
         console.log("i", i);
         const res = await axios.get(
-          `http://localhost:4000/UserAssigedFolders/showAllbyid/${i.Faculty._id}`
+          `http://localhost:4000/UserAssigedFolders/showAllbyid/${i.Faculty?._id}`
         );
         return [...res.data];
       })

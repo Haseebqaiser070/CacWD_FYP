@@ -362,6 +362,81 @@ var InitTask = require("../../../Models/InitTask");
 var Task = require("../../../Models/Tasks");
 var Userdoc = require("../../../Models/User");
 const Mail = require("../../../helpers/mailing");
+var taskmeetingdoc = require("../../../Models/TaskMeeting");
+
+const todaydate= new Date()
+console.log("tds",todaydate.getHours())
+if(todaydate.getHours()==7 && todaydate.getMinutes()==30){
+
+const task= Task.find({}).populate("User Course").then((Res)=>{
+  const today = new Date()
+  console.log("today",today.getMinutes())
+const yesterday = new Date(today)
+
+yesterday.setDate(yesterday.getDate() + 1)
+  const datetomatch=yesterday.getDate()+"-"+(yesterday.getMonth()+1)+"-"+yesterday.getFullYear()
+  
+  Res.map((item)=>{
+    const itemdate=new Date(item.Deadline)
+    const itdate=itemdate.getDate()+"-"+(itemdate.getMonth()+1)+"-"+itemdate.getFullYear()
+    if(itdate==datetomatch){
+      item.User?.map((it)=>{
+       Mail.TaskDeadlineOne(item,it.Email)
+
+      })
+   
+    }
+  })
+})
+
+
+const meetings= taskmeetingdoc.find({}).populate("taskType teacher_id").then((Res)=>{
+ // console.log("ressa",Res)
+  const today = new Date()
+const yesterday = new Date(today)
+
+yesterday.setDate(yesterday.getDate() + 1)
+ // console.log("phelloy",yesterday)
+  const datetomatch=yesterday.getDate()+"-"+(yesterday.getMonth()+1)+"-"+yesterday.getFullYear()
+  const previousday=yesterday.getDay()+""
+  console.log("datetomatchinmeetings",datetomatch)
+  console.log("datets",previousday)
+  const daysarray=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+  Res.map((item)=>{
+    var array=[]
+    item.taskType.map((item)=>{
+      array.push(item.taskType)
+    })
+    if(item.dateTime.includes(" ")){
+      if(item.dateTime.includes(daysarray[previousday-1])){
+        console.log("hello",array)
+        item.teacher_id.map((i)=>{
+        Mail.MeetingReminder(i.Email,item.dateTime,array)
+        })
+      }
+    }else{
+      const itemdate=new Date(item.dateTime)
+    const itdate=itemdate.getDate()+"-"+(itemdate.getMonth()+1)+"-"+itemdate.getFullYear()
+      if(itdate==datetomatch){
+        item.teacher_id.map((i)=>{
+         Mail.MeetingReminder(i.Email,item.dateTime,array)
+        })
+      }
+    }
+    const itemdate=new Date(item.Deadline)
+    const itdate=itemdate.getDate()+"-"+(itemdate.getMonth()+1)+"-"+itemdate.getFullYear()
+    if(itdate==datetomatch){
+      item.User?.map((it)=>{
+        Mail.TaskDeadlineOne(item,it.Email)
+
+      })
+      console.log(item)
+      console.log("hello")
+    }
+  })
+})
+}
+
 module.exports.Add = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");

@@ -3,10 +3,10 @@ import "../css/styles.css";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import { muiAbtn } from "../style";
+import { Card, LinearProgress, Tooltip } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Card } from "@mui/material";
 import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 const columns = [
   {
@@ -70,11 +70,12 @@ export default function AllCourseFolder() {
   const getData = async () => {
     const res = await axios.get(`http://localhost:4000/EvalFolders/showfolder`);
     setPosts(res.data);
+    console.log("res",res.data)
     var row = [];
     var index = 0;
     res.data.map((val, id) => {
-      if (val.Evaluator?._id == userid) {
-        row[id] = {
+      if (val.Evaluator?._id == userid && val.WantRevision!=true) {
+        row.push( {
           _id: val._id,
           id: id,
           Program: val.Program,
@@ -82,7 +83,7 @@ export default function AllCourseFolder() {
           Evaluator: val.Evaluator?.Name,
           Faculty: val.User.Name,
           data: val,
-        };
+        })
       }
     });
     console.log("uajh", row);
@@ -109,7 +110,7 @@ export default function AllCourseFolder() {
             }}
             style={{ height: 400, width: "100%" }}
             columns={columns}
-            getRowId={(Rows) => Rows._id}
+            getRowId={(Rows) => Rows?._id}
             rows={Rows}
             pageSize={10}
             rowsPerPageOptions={[5]}

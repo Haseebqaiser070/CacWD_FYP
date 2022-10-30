@@ -97,8 +97,10 @@ export default function FacultyNavigation() {
                 {openFolders &&
                   Folders.length > 0 &&
                   Folders.map((i) => {
+                    console.log("dsds",i)
                     return (
                       <>
+                        {i.Folder.Evaluated!=true?
                         <div
                           style={{
                             marginLeft: "12px",
@@ -107,7 +109,7 @@ export default function FacultyNavigation() {
                           }}
                           class="nav-link sidenavtext "
                           onClick={() => {
-                            if (i.Folder.LabTheory == "Theory") {
+                            if (i.Folder.LabTheory == "Theory" ) {
                               navigate(
                                 `/Evaluator/FolderTemplete/${i._id}`,
                                 { state: { i } },
@@ -130,12 +132,16 @@ export default function FacultyNavigation() {
                           <div class="sb-nav-link-icon">
                             <BsListCheck color="#fff" />
                           </div>
-                          {i.Folder.Course.Code} {i.Folder.Course.Name}{" "}
+                          {i.Folder?.Course?.Code} {i.Folder?.Course?.Name}{" "}
                           {i.Folder?.LabTheory == "Lab" &&
                             "(" + i.Folder?.LabTheory + ")"}
                         </div>
+                  :
+                  <></>
+                  }
                       </>
                     );
+                        
                   })}
 
                 <Link class="nav-link sidenavtext " to="FoldersInRevision">

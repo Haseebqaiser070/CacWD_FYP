@@ -94,6 +94,7 @@ export default function FacultyNavigation() {
                 {openFolders &&
                   Folders.length > 0 &&
                   Folders.map((i) => {
+                    console.log("sda",i)
                     return (
                       <>
                         <div

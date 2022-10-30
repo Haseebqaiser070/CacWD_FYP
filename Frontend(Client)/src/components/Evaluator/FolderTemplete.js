@@ -195,6 +195,28 @@ export default function FolderTemplete() {
     );
     alert("Course Evaluated");
   };
+  const addRevisionEvaluationstatus = () => {
+    axios.put(
+      `http://localhost:4000/Folders/editRevisionEvaluation/${location.i.Folder._id}`,
+      {
+        WantRevision: false,
+        Revision:false
+
+      }
+    );
+    alert("Course Revision Evaluated");
+  };
+
+  const addRevisionstatus = () => {
+    axios.put(
+      `http://localhost:4000/Folders/editRevision/${location.i.Folder._id}`,
+      {
+        WantRevision: true,
+      }
+    );
+    alert("Course Sent for Revision");
+  };
+
   const addfinal = (tit) => {
     setfinal((existingValues) => ({
       ...existingValues,
@@ -239,6 +261,9 @@ export default function FolderTemplete() {
         width: "100%",
       }}
     >
+      {console.log("cdds",Folder)}
+      {(Folder.Round1==true || Folder.Round2==true)?(
+<>
       <div style={{ marginBottom: "5%" }}>
         <div className="d-flex justify-content-end">
           <Button
@@ -266,7 +291,6 @@ export default function FolderTemplete() {
           <Navigation data={Folder} handleClickScroll={handleClickScroll} />
         </Menu>
       </div>
-      {console.log("chikde:", move)}
       {Folder.files.length == 0 ? (
         <div>No Files Uploaded</div>
       ) : (
@@ -313,7 +337,7 @@ export default function FolderTemplete() {
                     if (item.title == i.Title) {
                       ind = val;
                       clo = val;
-                      btl = ind.BTL[0].BTL;
+                      btl = ind.BTL[0]?.BTL;
                       title = i.Title;
                     }
                   });
@@ -612,7 +636,7 @@ export default function FolderTemplete() {
                     if (item.title == i.Title) {
                       ind = val;
                       cloa = val;
-                      btla = ind.BTL[0].BTL;
+                      btla = ind.BTL[0]?.BTL;
                       titlea = i.Title;
                     }
                   });
@@ -910,7 +934,7 @@ export default function FolderTemplete() {
                   if (val.Final.includes("Final") && cdf != null) {
                     ind = val;
                     clof = val;
-                    btlf = ind.BTL[0].BTL;
+                    btlf = ind.BTL[0]?.BTL;
                     titlef = i.Title;
                   }
                 });
@@ -1194,7 +1218,7 @@ export default function FolderTemplete() {
                   ) {
                     ind = val;
                     clom = val.sr;
-                    btlm = ind.BTL[0].BTL;
+                    btlm = ind.BTL[0]?.BTL;
                     titlem = i.Title;
                   }
                 });
@@ -1507,6 +1531,20 @@ export default function FolderTemplete() {
 
               <div className="row">
                 <div className="col-6">
+                  {Folder.Revision==true?
+                  
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    size="medium"
+                    type="submit"
+                    onClick={() => addRevisionEvaluationstatus()}
+                  >
+                    Evaluate Revision
+                  </Button>
+                  :
+                  
                   <Button
                     variant="contained"
                     color="primary"
@@ -1517,6 +1555,8 @@ export default function FolderTemplete() {
                   >
                     Evaluate
                   </Button>
+                  }
+                  
                 </div>
                 <div className="col-6">
                   <Button
@@ -1525,7 +1565,7 @@ export default function FolderTemplete() {
                     fullWidth
                     size="medium"
                     type="submit"
-                    // onClick={() => addEvaluationstatus()}
+                     onClick={() => addRevisionstatus()}
                   >
                     Send Folder For Revision
                   </Button>
@@ -1535,6 +1575,10 @@ export default function FolderTemplete() {
           </div>
         </div>
       )}
+    
+    </>):
+      <div>No Submission done yet!!</div>
+              }
     </div>
   );
 }

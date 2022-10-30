@@ -4,8 +4,10 @@ import Button from "@mui/material/Button";
 import Popup from "../AuxillaryComponents/PopupFunction";
 import { Box, Card, Modal } from "@mui/material";
 import axios from "axios";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { useLocation, useNavigate,useParams } from "react-router-dom";
 import useAuth from "../../MyHooks/useAuth";
+import { NestCamWiredStandTwoTone } from "@mui/icons-material";
 
 const style = {
   position: "absolute",
@@ -111,6 +113,7 @@ const [pressed1,setpressed1]=useState(false)
   }
   const [submitted1,setSubmitted1]=useState(false)
   const [submitted2,setSubmitted2]=useState(false)
+  const [submittedRevision,setRevisionSubmitted]=useState(false)
 
   const [LectureDeliveryRecord,setLectureDeliveryRecord] = useState("");
   const [Question, setQuestion] = useState("");
@@ -234,6 +237,7 @@ console.log("\nDecoded",Decoded)
     );
     console.log(res.data);
     setFolder(res.data);
+    setRevisionSubmitted(res.data.WantRevision)
     setSubmitted1(res.data.Round1)
     setSubmitted2(res.data.Round2)
   };
@@ -399,6 +403,91 @@ console.log("Rodwew",res );
       alert("Enter all required documents for Round 1");
     }
     }
+
+    const SubmitR1Revision  = async() => {
+      var Round1 = true;
+      getFolderData()
+      console.log("folders in submit r1",Folder)
+      
+      Assignments1.forEach((i) => {
+        var t = "Assignment " + i;
+  
+        var res = Folder.files.some((obj) => 
+        obj.Title==t 
+      );
+      if (!res) {
+        Round1 = false;
+      }
+      });
+      if (folders.Mid == "Mid") {
+        var t = "Mid";
+  
+        var res = Folder.files.some((obj) => 
+        obj.Title==t 
+      );
+      if (!res) {
+        Round1 = false;
+      }
+      } else if (folders.Mid == "Sessional") {
+        var t = "Sessional 1";
+  
+        var res = Folder.files.some((obj) => 
+        obj.Title==t 
+      );
+      if (!res) {
+        Round1 = false;
+      }
+      var res2 = Folder.files.some((obj) => 
+      obj.Title==t 
+    );
+    if (!res2) {
+      Round1 = false;
+    }
+      }
+      var Round2 = true;
+    
+    Assignments2.forEach((i) => {
+      var t = "Assignment " + i;
+      var res = Folder.files.some((obj) => 
+      obj.Title==t 
+    );
+    if (!res) {
+      Round2 = false;
+    }
+    });      
+    var t = "Terminal";
+    var res = Folder.files.some((obj) => 
+    obj.Title==t 
+  );
+  if (!res) {
+    Round2 = false;
+  }
+    if (Folder.ICEF == null||Folder.ICEF == "") {
+      Round2 = false;
+    }
+    if (Folder.Obe == null||Folder.Obe == "") {
+      Round2 = false;
+    }
+
+    
+
+
+      if (Round1 && Round2) {
+        console.log("Round1", { Round1: true });
+        const res = await axios.put(
+          `http://localhost:4000/Folders/SubmitaRoundRevision/${id}`,
+          {
+            Revision: true,
+          }
+        );
+        setRevisionSubmitted(false)
+
+        getFolderData();
+        alert("Revision Submitted")
+    } else {
+      alert("Enter all required documents for Revision");
+    }
+      }
 
    
   const SubmitR2  = async() => {
@@ -679,7 +768,7 @@ console.log("Rodwew",res );
                   {Assignments1.map((i) => {
                     return (
                       <td className="d-grid py-2 px-2">
-                        {submitted1?
+                        {submitted1==true && submittedRevision==false?
                         
                         (Folder.files.find((obj) => {
                           var t = "Assignment " + i;
@@ -711,7 +800,7 @@ console.log("Rodwew",res );
                       </button>
                         ))
                      
-                      :(round1flag?
+                      :(round1flag==true && submittedRevision==false?
                         (
                           <button
                           class="btn btn-block py-2 btn-primary"
@@ -763,7 +852,7 @@ console.log("Rodwew",res );
                     );
                   })}
                   {folders != "" && folders.Mid == "Mid" ? (
-                   submitted1? (
+                   submitted1==true && submittedRevision==false? (
                     <td className="d-grid py-2 px-2">
                   <button
                     class="btn btn-block py-2 btn-primary"
@@ -785,7 +874,7 @@ console.log("Rodwew",res );
                   </button>
                 </td>):(
                 
-                round1flag?
+                round1flag==true && submittedRevision==false?
                   (
                     <button
                     class="btn btn-block py-2 btn-primary"
@@ -823,7 +912,7 @@ console.log("Rodwew",res );
                     </td>))
                                   
                   ) : (
-                    submitted1?(
+                    submitted1==true && submittedRevision==false?(
                       <>
                         <td className="d-grid py-2 px-2">
                           <button
@@ -867,7 +956,7 @@ console.log("Rodwew",res );
                         </td>
                       </>):(
                 
-                round1flag?
+                round1flag==true && submittedRevision==false?
                 (<>
                   <button
                   class="btn btn-block py-2 btn-primary"
@@ -940,7 +1029,7 @@ console.log("Rodwew",res );
                     </>))
                   )}
                   <td className="d-grid py-4 px-2">
-                 {submitted1?  (<button
+                 {submitted1==true && submittedRevision==false?  (<button
                       class="btn btn-block py-2 btn-primary"
                       type="button"
                       style={{backgroundColor:"grey",borderColor:'grey'}}
@@ -952,7 +1041,7 @@ console.log("Rodwew",res );
                       Round 1 (Submitted)
                     </button>
                    )  :(
-                    round1flag?
+                    round1flag==true && submittedRevision==false?
                     <>
                     <h4
                     
@@ -980,6 +1069,10 @@ console.log("Rodwew",res );
                     </button>
                     }
                     </>:
+                    (submittedRevision?
+                      <>
+                    </>
+                      :
                     <button
                       class="btn btn-block py-2 btn-primary"
                       type="button"
@@ -987,6 +1080,7 @@ console.log("Rodwew",res );
                     >
                       Submit
                     </button>
+                    )
                   )}
                   </td>
                 </tr>
@@ -1010,7 +1104,7 @@ console.log("Rodwew",res );
                 {Assignments2.map((i) => {
                     return (
                       <td className="d-grid py-2 px-2">
-                        {submitted2?
+                        {submitted2==true && submittedRevision==false?
                         
                         (Folder.files.find((obj) => {
                           var t = "Assignment " + i;
@@ -1042,7 +1136,7 @@ console.log("Rodwew",res );
                       </button>
                         ))
                      
-                      :(round2flag?
+                      :(round2flag==true && submittedRevision==false?
                         (
                           <button
                           class="btn btn-block py-2 btn-primary"
@@ -1094,7 +1188,7 @@ console.log("Rodwew",res );
                     );
                   })}
   
-                {submitted2? (
+                {submitted2==true && submittedRevision==false? (
                     <td className="d-grid py-2 px-2">
                   <button
                     class="btn btn-block py-2 btn-primary"
@@ -1116,7 +1210,7 @@ console.log("Rodwew",res );
                   </button>
                 </td>):(
                 
-                round2flag?
+                round2flag==true && submittedRevision==false?
                   (<td className="d-grid py-2 px-2">
                     <button
                     class="btn btn-block py-2 btn-primary"
@@ -1154,7 +1248,7 @@ console.log("Rodwew",res );
                       </button>
                     </td>))}
                    
-                    {submitted2? (
+                    {submitted2==true && submittedRevision==false? (
                   <td className="d-grid py-2 px-2">
                   <button
                     class="btn py-2  btn-block btn-primary"
@@ -1173,7 +1267,7 @@ console.log("Rodwew",res );
                   </button>
                 </td>):(
                 
-                round2flag?
+                round2flag==true && submittedRevision==false?
                   (<td className="d-grid py-2 px-2">
                     <button
                     class="btn btn-block py-2 btn-primary"
@@ -1212,7 +1306,7 @@ console.log("Rodwew",res );
   
   
   
-                  {submitted2? (
+                  {submitted2==true && submittedRevision==false? (
                 
                  <td className="d-grid py-2 px-2">
                  <button
@@ -1230,7 +1324,7 @@ console.log("Rodwew",res );
                </td>
                 ):(
                 
-                round2flag?
+                round2flag==true && submittedRevision==false?
                   (
                     <td className="d-grid py-2 px-2">
                     <button
@@ -1267,7 +1361,7 @@ console.log("Rodwew",res );
   
   
   
-              {submitted2? (
+              {submitted2==true && submittedRevision==false? (
               
               <td className="d-grid py-2 px-2">
                 <button
@@ -1286,7 +1380,7 @@ console.log("Rodwew",res );
                
                ):(
                
-               round2flag?
+               round2flag==true && submittedRevision==false?
                  (<td className="d-grid py-2 px-2">
                    <button
                    class="btn btn-block py-2 btn-primary"
@@ -1315,7 +1409,7 @@ console.log("Rodwew",res );
                  ))}
   
   
-              {submitted2?  (
+              {submitted2==true && submittedRevision==false?  (
               <td className="d-grid py-2 px-2">
                 <button
                   class="btn btn-block py-2 btn-primary"
@@ -1333,7 +1427,7 @@ console.log("Rodwew",res );
   
                   <td className="d-grid py-4 px-2">
                   {
-                    round2flag?
+                    round2flag==true && submittedRevision==false?
                  (<>
                     <h4
                     
@@ -1361,13 +1455,17 @@ console.log("Rodwew",res );
                       Send Extension Request
                     </button>
                     }</>):(
+                      (submittedRevision?
+                        <>
+                      </>
+                      :
                     <button
                       class="btn btn-block py-2 btn-primary"
                       type="button"
                       onClick={SubmitR2}
                     >
                       Submit
-                    </button>)
+                    </button>))
                   }</td>)}
                   
                 </tr>
@@ -1375,6 +1473,24 @@ console.log("Rodwew",res );
             </div>
           </tbody>
         </table>
+        {submittedRevision?
+      <div style={{display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',}}>
+      <button
+      
+                    class="btn btn-block py-2 btn-primary"
+                    type="button"
+                    
+                    onClick={SubmitR1Revision}
+                  >
+                    Send Revision
+                  </button>
+      
+      </div>
+      :
+      <></>
+      }
         {Decoded != "" ? (
           <>
             <div
