@@ -55,7 +55,7 @@ module.exports.TheoryReq = async (req, res) => {
     
     console.log("hell23e34o")
     if (!req.user) return await res.status(401).json("Timed Out");
-    const aa = await deadlineTheory.create({Request_id:req.params.id,Round:req.body.Round,Deadline:req.body.Deadline,Type:req.body.Type,pending:true});
+    const aa = await deadlineTheory.create({Request_id:req.params.id,Round:req.body.Round,Deadline:req.body.Deadline,Type:req.body.Type,pending:true,DeadlineDate:req.body.DeadlineDate});
     console.log("aa", aa);
     const user=await User.find({})
     const admin=await User.findById({_id:req.params.id})
@@ -77,7 +77,7 @@ module.exports.LabReq = async (req, res) => {
   try {
     console.log("hell23e34o")
     if (!req.user) return await res.status(401).json("Timed Out");
-    const aa = await deadlineLab.create({Request_id:req.params.id,Round:req.body.Round,Deadline:req.body.Deadline,Type:req.body.Type,pending:true});
+    const aa = await deadlineLab.create({Request_id:req.params.id,Round:req.body.Round,Deadline:req.body.Deadline,Type:req.body.Type,pending:true,DeadlineDate:req.body.DeadlineDate});
     console.log("aa", aa);
     const user=await User.find({})
     const admin=await User.findById({_id:req.params.id})

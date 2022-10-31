@@ -83,7 +83,7 @@ module.exports.Add = async (req, res) => {
         }
       })
     );
-    console.log("body", req.body);
+    console.log("body", req.body.obj);
     console.log("Folders", Folders);
     req.body.User.CourseFolders = [...Folders];
     const up = await Userdoc.findOneAndUpdate(
@@ -92,7 +92,9 @@ module.exports.Add = async (req, res) => {
     );
     console.log("User Updated", up);
     console.log("Folders", Folders);
-    Mail.CourseAssign(req.body.obj, req.body.User.Email);
+    req.body.obj.map((item)=>{
+      Mail.CourseAssign({Course:item.Course.Name+"-"+item.Course.Code,Program:item.Program,Section:item.Section}, req.body.User.Email);
+    })
     await res.status(201).json(Folders);
   } catch (err) {
     console.log(err);

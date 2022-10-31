@@ -87,7 +87,7 @@ module.exports.TaskEdited = (e,email) => {
 
 
 module.exports.TaskReturned = (e,email) => {
-  console.log("sfs", e);
+  console.log("sssfs", e);
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
@@ -202,6 +202,10 @@ module.exports.MeetingDetails = (email, time, title) => {
 };
 
 module.exports.AvailabilityDetails= (email,uemail,time) => {
+  console.log("easmai",email)
+  console.log("uasmai",uemail)
+  console.log("time",time)
+
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
@@ -244,6 +248,7 @@ module.exports.MeetingUpdates = (email,time,title) => {
 };
 
 module.exports.Meetingdeleted = (email,time,title) => {
+  console.log("emails",email+time,title)
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
@@ -339,20 +344,20 @@ module.exports.CourseDeadlines= (email,type,round,time) => {
   });
 };
 
-module.exports.DeadlineExtended= (email,type,round,time) => {
+module.exports.DeadlineExtended= (email,type,round,Name) => {
+ 
   var mailOptions = {
     from: "cacfyp@gmail.com",
     to: email,
-    subject: "Deadlines Extended",
+    subject: "Deadlines Extention Request",
     text:
-    "Your request for "+
+    "You have a Request fot Folder Deadline Extension "+
       "Folder :" +
       type +
       ", Round : " +
       round+
-      " has been Extended to "+
-      " , Deadline : " +
-      time
+      " has been Made by "+
+      Name
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

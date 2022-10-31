@@ -11,5 +11,5 @@ router.route("/showLab").get(Contents.ShowLab);
 router.route("/showLabReq").get(Contents.ShowLabReq);
 router.route("/updatedate").put(Contents.updatedate);
 router.route("/adddate").put(Contents.adddate);
-
+router.route("/Folders").get(Contents.Folders)
 module.exports = router;

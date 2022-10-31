@@ -16,6 +16,9 @@ var DeadlineTheorySchema = new mongoose.Schema({
     },
     Deadline:{
         type:String
+    },
+    DeadlineDate:{
+        type:Date
     }
     ,
     Type:{

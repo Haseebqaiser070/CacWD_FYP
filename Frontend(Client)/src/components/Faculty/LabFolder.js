@@ -49,21 +49,36 @@ const [pressed1,setpressed1]=useState(false)
   useEffect(()=>{
     getLab()
   },[])
+  useEffect(()=>{
+    getDeadline()
+
+  },[])
   const getDeadline = async () => {
     const res = await axios.get(`http://localhost:4000/Content/ShowLab`);
     console.log("deadlinesdata",res?.data);
-    if(res.data!=null){
-    var s=res?.data.Round1.Deadline
-    var s1=res?.data.Round2.Deadline
-
-    s=new Date(res?.data.Round1?.Deadline)
-    s1=new Date(res?.data.Round2?.Deadline)
-    setdeadline11(s)
-    setdeadline22(s1)
-    console.log("sdc",s.getYear)
-   setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
-   setdeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
-    }
+    const answer=await getDeadlineRequest()
+    console.log("answrarray",answer)
+        var s=res?.data?.Round1?.Deadline
+        var s1=res?.data?.Round2?.Deadline
+    
+        s=new Date(res?.data?.Round1?.Deadline)
+        s1=new Date(res?.data?.Round2?.Deadline)
+        if(answer[0]==false){
+          console.log("sdc")
+    
+          setdeadline11(s)
+          setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
+          setflag(s,deadline22)
+    
+        }
+        if(answer[1]==false){
+          console.log("sdc")
+    
+          setdeadline22(s1)
+          setdeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
+          setflag(deadline11,s1)
+    
+        }
   };
   const[Assignments1,setAssignments1]=useState([])
   const[Assignments2,setAssignments2]=useState([])
@@ -134,27 +149,27 @@ const [pressed1,setpressed1]=useState(false)
   const [deadline2,setdeadline2]=useState();
   const [deadline11,setdeadline11]=useState();
   const [deadline22,setdeadline22]=useState();
- 
+  const [deadlinereq1,setdeadreq1]=useState(false)
+  const [deadlinereq2,setdeadreq2]=useState(false)
+
   const [round1flag,setflag1]=useState(false);
   const [round2flag,setflag2]=useState(false);
   const [fileBase64String, setFileBase64String] = useState("");
   console.log("fileBase64String",fileBase64String)
-  useEffect(()=>{
+  const setflag=async(deadline11,deadline22)=>{
     var b=date.getMonth()+1
     var a=(date.getDate()+"/"+(b)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes())
-    console.log("date",a)
-    console.log("date",deadline2)
-
+    console.log("date",deadline22)
+    console.log("dsaa",date)
+    
     if(date>deadline11){
-      console.log("ssds")
       setflag1(true)
     }
     if(date>deadline22){
-      console.log("ssds")
 
       setflag2(true)
     }
-  },[deadline1,deadline2])
+  }
   const encodeFileBase64 = (file,ty) => {
     var reader = new FileReader();
     console.log("\nfile",file)
@@ -226,8 +241,7 @@ console.log("\nDecoded",Decoded)
   };
   useEffect(() => {
     getFolderData();
-    getDeadline()
-
+   
   }, []);
   const [Folder,setFolder]=useState({files:[],ICEF:null,Obe:null})
   
@@ -469,12 +483,9 @@ console.log("Rodwew",res );
       Round2 = false;
     }
 
-    
-
-
-      if (Round1 && Round2) {
+  
         console.log("Round1", { Round1: true });
-        const res = await axios.put(
+        const ress = await axios.put(
           `http://localhost:4000/Folders/SubmitaRoundRevision/${id}`,
           {
             Revision: true,
@@ -484,12 +495,46 @@ console.log("Rodwew",res );
 
         getFolderData();
         alert("Revision Submitted")
-    } else {
-      alert("Enter all required documents for Revision");
-    }
+   
       }
 
-   
+      const getDeadlineRequest = async () => {
+        const res=await axios.get(`http://localhost:4000/Content/ShowLabReq`)
+        console.log("deadlinesdata",res?.data);
+        console.log("FolderData",userid);
+        var returnarray=[false,false]
+        var a=res.data.Lab?.find((item)=>item?.Request_id?._id==userid)
+        console.log("rerse",returnarray)
+        if(a!=undefined){
+        if(a?.pending==false){
+          if(a.Round.includes("Round1")){
+            var s=new Date(a?.DeadlineDate)
+           
+            setdeadline11(s)
+            setdeadline1(a?.Deadline)
+            setdeadreq1(true)
+            returnarray[0]=true
+            setflag(s,deadline22)
+            //console.log("a",s)
+           // setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
+          }
+          else{
+            var s=new Date(a?.DeadlineDate)
+            console.log("ads",s)
+            setdeadline22(s)
+            setdeadline2(a?.Deadline)
+            setdeadreq2(true)
+            returnarray[1]=true
+            setflag(deadline11,s)
+          }
+        }
+         
+        }
+        console.log("reds",returnarray)
+        return returnarray
+    
+    
+      };
   const SubmitR2  = async() => {
 
     var Round2 = true;

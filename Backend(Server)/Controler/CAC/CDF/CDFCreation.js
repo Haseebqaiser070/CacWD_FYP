@@ -52,11 +52,9 @@ module.exports.showUsers = async (req, res) => {
     console.log("\n\n\n\n\n\n\n\n",newtask,"\n\n\n\n\n\n\n\n")
     const resss=await Userdoc.find({})
     console.log("ds",resss)
-    resss.map((item)=>{
-      if(item.Roles[0]=="Admin"){
-        Mail.TaskReturned(task,item.Email)
-      }
-    })
+    
+        Mail.TaskReturned(task,newuser.Email)
+      
     
     // user.CourseCDF = newCourseCDF
     // console.log("\n\n\n\n\n\n\n\n newCourseCDF",newCourseCDF)

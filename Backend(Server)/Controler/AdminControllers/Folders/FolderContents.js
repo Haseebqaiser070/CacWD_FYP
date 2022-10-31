@@ -4,6 +4,7 @@ var TheoryReq= require("../../../Models/deadlineTheory");
 var LabReq= require("../../../Models/deadlineLab");
 var Mail=require("../../../helpers/mailing")
 var User=require("../../../Models/User")
+var Folders=require("../../../Models/Folders")
 module.exports.Theory = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");
@@ -172,7 +173,7 @@ module.exports.Lab = async (req, res) => {
       if(!req.user.Roles.includes("Admin")) return res.status(401).json("Unautherized");
       const aa = await LabReq.find({}).populate("Request_id");
       const bb=await TheoryReq.find({}).populate("Request_id");
-      console.log("aa", aa);
+      console.log("aa", bb);
       await res.status(200).json({Lab:aa,Theory:bb});
     } catch (err) {
       console.log(err);
@@ -190,8 +191,8 @@ module.exports.Lab = async (req, res) => {
         console.log("date",datee)
         if(req.body.round=="Round1"){
           const obj={Quiz:old.Round1.Quiz,Assignment:old.Round1.Assignment,Deadline:datee}
-          await LabContents.findByIdAndUpdate(old._id,{Round1:obj})
-          const resss=await LabReq.findByIdAndUpdate(req.body._id,{pending:false})
+         // await LabContents.findByIdAndUpdate(old._id,{Round1:obj})
+          const resss=await LabReq.findByIdAndUpdate(req.body._id,{pending:false,Deadline:(datee.getDate()+"/"+(datee.getMonth()+1)+"/"+datee.getFullYear()+" "+datee.getHours()+":"+datee.getMinutes()),DeadlineDate:req.body.date})
           const user=await User.findById(resss.Request_id)
           Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
 
@@ -201,8 +202,8 @@ module.exports.Lab = async (req, res) => {
         }
         if(req.body.round=="Round2"){
           const obj={Quiz:old.Round2.Quiz,Assignment:old.Round2.Assignment,Deadline:datee}
-          await LabContents.findByIdAndUpdate(old._id,{Round2:obj})
-          const resss=await LabReq.findByIdAndUpdate(req.body._id,{pending:false})
+         // await LabContents.findByIdAndUpdate(old._id,{Round2:obj})
+          const resss=await LabReq.findByIdAndUpdate(req.body._id,{pending:false,Deadline:(datee.getDate()+"/"+(datee.getMonth()+1)+"/"+datee.getFullYear()+" "+datee.getHours()+":"+datee.getMinutes()),DeadlineDate:req.body.date})
           const user=await User.findById(resss.Request_id)
           Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
         }
@@ -217,16 +218,16 @@ module.exports.Lab = async (req, res) => {
         if(req.body.round=="Round1"){
           console.log("R1")
           const obj={Quiz:old.Round1.Quiz,Assignment:old.Round1.Assignment,Deadline:datee}
-          await TheoryContents.findByIdAndUpdate(old._id,{Round1:obj})
-          const resss=await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false})
+         // await TheoryContents.findByIdAndUpdate(old._id,{Round1:obj})
+          const resss=await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false,Deadline:(datee.getDate()+"/"+(datee.getMonth()+1)+"/"+datee.getFullYear()+" "+datee.getHours()+":"+datee.getMinutes()),DeadlineDate:req.body.date})
           const user=await User.findById(resss.Request_id)
           Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
           console.log("R11")
         }
         if(req.body.round=="Round2"){
           const obj={Quiz:old.Round2.Quiz,Assignment:old.Round2.Assignment,Deadline:datee}
-          await TheoryContents.findByIdAndUpdate(old._id,{Round2:obj})
-          const resss=await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false})
+         // await TheoryContents.findByIdAndUpdate(old._id,{Round2:obj})
+          const resss=await TheoryReq.findByIdAndUpdate(req.body._id,{pending:false,Deadline:(datee.getDate()+"/"+(datee.getMonth()+1)+"/"+datee.getFullYear()+" "+datee.getHours()+":"+datee.getMinutes()),DeadlineDate:req.body.date})
           const user=await User.findById(resss.Request_id)
           Mail.DeadlineExtended(user.Email,req.body.type,req.body.round,datee)
         }
@@ -317,6 +318,25 @@ module.exports.Lab = async (req, res) => {
       /*const aa = await LabReq.find({}).populate("Request_id");
       const bb=await TheoryReq.find({}).populate("Request_id");
       console.log("aa", aa);*/
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  module.exports.Folders = async (req, res) => {
+    try {
+      console.log(req.user)
+      if (!req.user) return await res.json("Timed Out");
+      try {      
+        console.log("user",req.user._id)
+        const user = await Folders.find({}).
+        populate("Course User Evaluator")
+        console.log("Folders",user)
+        await res.status(200).json(user)
+        } catch (err) {
+          console.log(err);
+          await res.status(400).json("error")    
+        }  
     } catch (err) {
       console.log(err);
     }
