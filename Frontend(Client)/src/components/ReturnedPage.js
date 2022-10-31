@@ -563,7 +563,8 @@ export default function ReturnedFolder({ route }) {
               Evaluation
             </div>
             {state.data.Evaluation?.map((item, index) => {
-              if (item.title.includes("Quiz")) {
+              console.log("item",item)
+              if (item.title?.includes("Quiz")) {
                 return (
                   <table
                     className="table"
@@ -689,7 +690,7 @@ export default function ReturnedFolder({ route }) {
               }
             })}
             {state.data.Evaluation?.map((item, index) => {
-              if (item.title.includes("Assignment")) {
+              if (item.title?.includes("Assignment")) {
                 return (
                   <table
                     className="table"
@@ -816,8 +817,8 @@ export default function ReturnedFolder({ route }) {
             })}
             {state.data.Evaluation?.map((item, index) => {
               if (
-                item.title.includes("Mid") ||
-                item.title.includes("Sessional")
+                item.title?.includes("Mid") ||
+                item.title?.includes("Sessional")
               ) {
                 return (
                   <table
@@ -944,7 +945,7 @@ export default function ReturnedFolder({ route }) {
               }
             })}
             {state.data.Evaluation?.map((item, index) => {
-              if (item.title.includes("Terminal")) {
+              if (item.title?.includes("Terminal")) {
                 return (
                   <table
                     className="table"

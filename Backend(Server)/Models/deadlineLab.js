@@ -17,6 +17,9 @@ var DeadlineLabSchema = new mongoose.Schema({
     Deadline:{
         type:String
     },
+    DeadlineDate:{
+        type:Date
+    },
     Type:{
         type:String
     }

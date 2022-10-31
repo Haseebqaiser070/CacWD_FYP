@@ -3,7 +3,7 @@ var taskmeetingdoc = require("../../Models/TaskMeeting");
 var ideal=require("../../Models/idealtime")
 var User=require("../../Models/User")
 var Mail=require("../../helpers/mailing")
-
+var Task=require("../../Models/InitTask")
 
 
 module.exports.Create = async (req, res) => {
@@ -61,7 +61,7 @@ module.exports.AddAvailability = async (req, res) => {
       if(item.Roles[0]=="Admin"){
         User.findById({_id:meeting.teacher_id}).then((re)=>{
           console.log("ress",re)
-          Mail.AvailabilityDetails(item.Email,re.Email,meeting.time)
+          Mail.AvailabilityDetails(item.Email,re.Name,meeting.time)
       })
       }
     })
@@ -134,12 +134,17 @@ module.exports.Delete = async (req, res) => {
     console.log("meeting deleted", meeting);
     var array=[]
     meeting.taskType.map((item)=>{
-      array.push(item.taskType)
+      Task.findById({_id:item}).then((res)=>{
+        array.push(res.taskType)
+
+        console.log("ite",res)
+      })
+      
     })
     meeting.teacher_id.map((item)=>{
       User.findById({_id:item}).then((re)=>{
        console.log("ress",re)
-       Mail.Meetingdeleted(re.Email,req.body.dateTime,array)
+       Mail.Meetingdeleted(re.Email,meeting.dateTime,array)
       })
    })
     await res.json(meeting);

@@ -56,11 +56,9 @@ module.exports.showUsers = async (req, res) => {
   
     const resss=await Userdoc.find({})
     console.log("ds",resss)
-    resss.map((item)=>{
-      if(item.Roles[0]=="Admin"){
-        Mail.TaskReturned(task,item.Email)
-      }
-    })
+    
+        Mail.TaskReturned(task,user.Email)
+     
     await res.status(200).json("submitted")
     } catch (err) {
       console.log(err);

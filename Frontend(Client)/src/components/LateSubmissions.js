@@ -1,161 +1,143 @@
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, LinearProgress, Modal } from "@mui/material";
+import { Button, getListSubheaderUtilityClass, LinearProgress, Modal } from "@mui/material";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { Box } from "@mui/system";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 
-const modalstyle = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 500,
-  bgcolor: "background.paper",
-  //   border: "2px solid #000",
-
-  boxShadow: 24,
-  p: 4,
-};
-function incrementDeadline(rowid) {
-  const navigate = useNavigate();
-  console.log("rowid", rowid);
-  const [open, setOpen] = useState(false);
-  const [date, setdate] = useState(new Date());
-
-  const [round, setround] = useState("");
-  const [type, settype] = useState("");
-  useEffect(() => {
-    if (rowid.row.Request.includes("Round1")) {
-      setround("Round1");
-    } else {
-      setround("Round2");
-    }
-    if (rowid.row.Request.includes("Lab")) {
-      settype("Lab");
-    } else {
-      settype("Theory");
-    }
-  }, []);
-  const handleClose = () => setOpen(false);
-  const updatedate = async () => {
-    const res = await axios.put(`http://localhost:4000/Content/updatedate`, {
-      date: date,
-      round: round,
-      type: type,
-      _id: rowid.row._id,
-    });
-    console.log("res", res);
-    Navigate(-1);
-  };
-  return (
-    <div>
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        style={{ marginLeft: 16 }}
-        onClick={() => setOpen(true)}
-      >
-        <AiOutlineFieldTime style={{ marginRight: 10 }} />
-        Increase Due Date
-      </Button>
-
-      <Modal
-        open={open}
-        onClose={() => handleClose()}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={modalstyle}>
-          <div style={{ marginBottom: 10 }}>
-            <label style={{ display: "block" }} for="title">
-              <b>Select Date & Time</b>
-            </label>
-            <input
-              name="time"
-              onChange={(e) => setdate(e.target.value)}
-              style={{ width: "100%" }}
-              type="datetime-local"
-              value={date}
-            ></input>
-
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              style={{ marginTop: 16 }}
-              onClick={() => updatedate()}
-            >
-              <AiOutlineFieldTime style={{ marginRight: 10 }} />
-              Increase Due Date
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-    </div>
-  );
-}
 export default function PendingDeadlineRequests() {
   const [posts, setPosts] = useState({});
   const [Rows, setRows] = useState({});
-  const getdeadlines = async () => {
-    const res = await axios.get(`http://localhost:4000/Content/showLabReq`);
-    console.log("res", res);
-    setPosts(res.data);
-    var row = [];
-    var index = 0;
-    var arr = res.data.Lab.concat(res.data.Theory);
-    console.log("hello", arr);
-    arr.map((val, id) => {
-      console.log("idss", id);
-      row[id] = {
-        _id: val._id,
-        id: id,
-        FacultyMemberName: val.Request_id.Name,
-        Request: val.Round + " ( " + val.Type + " )",
-        CurrentDeadline: val.Deadline,
-      };
-    });
-    console.log("uajh", row);
-    setRows(row);
-  };
-  useEffect(() => {
-    getdeadlines();
-  }, []);
+  const [tdeadline1,settdeadline1]=useState();
+  const [tdeadline2,settdeadline2]=useState();
+  const [tdeadline11,settdeadline11]=useState();
+  const [tdeadline22,settdeadline22]=useState();
+
+  const [ldeadline1,setldeadline1]=useState();
+  const [ldeadline2,setldeadline2]=useState();
+  const [ldeadline11,setldeadline11]=useState();
+  const [ldeadline22,setldeadline22]=useState();
   const columns = [
     {
-      field: "FacultyMemberName",
+      field: "Program",
+      headerName: "Program",
+      flex: 1,
+    },
+    {
+      field: "Course",
+      headerName: "Course",
+      flex: 1,
+    },
+    {
+      field: "Faculty",
       headerName: "Faculty Member",
       flex: 1,
     },
-
     {
-      field: "Request",
-      headerName: "Request",
+      field: "Evaluator",
+      headerName: "Evaluator",
       flex: 1,
-    },
-    {
-      field: "CurrentDeadline",
-      headerName: "Current Deadline",
-      flex: 1,
-    },
-    {
-      field: "incrementDeadline",
-      headerName: "Increase Deadline",
-      flex: 1,
-      editable: false,
-      renderCell: incrementDeadline,
     },
   ];
+  const getDeadline = async () => {
+    const res = await axios.get(`http://localhost:4000/Content/ShowTheory`);
+    var s=res.data.Round1.Deadline
+    var s1=res.data.Round2.Deadline
+
+    s=new Date(res.data.Round1.Deadline)
+    s1=new Date(res.data.Round2.Deadline)
+    
+      settdeadline11(s)
+      settdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
+
+      settdeadline22(s1)
+      settdeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
+
+      const ress = await axios.get(`http://localhost:4000/Content/ShowLab`);
+    var s=ress.data?.Round1?.Deadline
+    var s1=ress.data?.Round2?.Deadline
+
+    s=new Date(ress?.data?.Round1?.Deadline)
+    s1=new Date(ress?.data?.Round2?.Deadline)
+    
+      setldeadline11(s)
+      setldeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
+
+      setldeadline22(s1)
+      setldeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
+    
+
+  };
+  useEffect(()=>{
+    getDeadline()
+    getFolders()
+  },[])
+  const getFolders = async () => {
+    const res = await axios.get(`http://localhost:4000/Content/Folders`);
+    console.log("FolderData",res.data);
+    var array=[]
+    const date=new Date(Date.now())
+    var a=(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes())
+
+
+    if(date>tdeadline11){
+      res?.data.map((item)=>{
+        console.log("edh",item)
+        if(item.Round1==false && item.LabTheory.includes("Theory")){
+          console.log("adah")
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+        }
+      })
+    }
+    if(date>tdeadline22){
+      res?.data.map((item)=>{
+        console.log("edh",item)
+        if(item.Round2==false && item.LabTheory.includes("Theory")){
+          console.log("adah")
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+        }
+      })
+    }
+    if(date>ldeadline11){
+      res?.data.map((item)=>{
+        console.log("edh",item)
+        if(item.Round1==false && item.LabTheory.includes("Lab")){
+          console.log("adah")
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+        }
+      })
+    }
+    if(date>ldeadline22){
+      res?.data.map((item)=>{
+        console.log("edh",item)
+        if(item.Round2==false && item.LabTheory.includes("Lab")){
+          console.log("adah")
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+        }
+      })
+    }
+    console.log("array",array)
+    var arr=[];
+    array.map((item,index)=>{
+      var a=arr.find((i)=>i==item)
+      if(a==undefined){
+        arr[index]={id:index,Program:item?.Program,Course:item?.Course,Faculty:item?.Faculty,Evaluator:item?.Evaluator}
+      }
+    })
+    console.log("arr",arr)
+
+    setRows(arr)
+  };
   return (
     <div style={{ width: "100%", padding: 20 }}>
       <h1 className="mb-4 py-4">
-        <b>Late Submission</b>
+        <b>LATE SUBMISSIONS</b>
       </h1>
+      <p>Theory: {tdeadline1} ,   {tdeadline2}</p>
+      <p>Lab: {ldeadline1}  , {ldeadline2}</p>
       <DataGrid
         components={{
           NoRowsOverlay: CustomNoRowsOverlay,
