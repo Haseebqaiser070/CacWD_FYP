@@ -48,8 +48,9 @@ import BtlDictionary from "../BTLDictionary";
 import OngoingTasks from "../PdfTemplates/OngoingTasks";
 import IndiviualTask from "../PdfTemplates/IndiviualTask";
 import CompletedTasks from "../CompletedTasks";
-import AdminFolderInRevision from "../AdminFolderInRevision "
-import ReturnedPageAdmin from '../ReturnedPageAdmin'
+import AdminFolderInRevision from "../AdminFolderInRevision ";
+import ReturnedPageAdmin from "../ReturnedPageAdmin";
+import FacultyCourseReport from "../PdfTemplates/FacultyCourseReport";
 function AdminRoutes() {
   return (
     <Routes>
@@ -63,14 +64,8 @@ function AdminRoutes() {
         <Route path="/Returned" element={<Returned />} />
         <Route path="/OngoingTasks" element={<OngoingTasks />} />
         <Route path="/IndiviualTask/:tid" element={<IndiviualTask />} />
-        <Route
-          path="/FolderInRevisionA"
-          element={<AdminFolderInRevision />}
-        />
-        <Route
-          path="/Returned"
-          element={<ReturnedPageAdmin />}
-        />
+        <Route path="/FolderInRevisionA" element={<AdminFolderInRevision />} />
+        <Route path="/Returned" element={<ReturnedPageAdmin />} />
         <Route
           path="/CourseReturnedView/:Code"
           element={<CourseReturnedView />}
@@ -113,7 +108,7 @@ function AdminRoutes() {
         <Route path="/FacultyMembers" element={<FacultyMembers />} />
         <Route path="/Evaluators" element={<Evaluators />} />
         <Route path="/CourseFolder" element={<CourseFolder />} />
-        <Route path="/AddProgram" element={<AddProgram />} />
+        <Route path="/AddProgram" element={<FacultyCourseReport />} />
         <Route path="/SO" element={<SO_Level />} />
         <Route path="/BTLLevel" element={<BTLLevel />} />
         <Route path="/CloDomains" element={<CloDomains />} />

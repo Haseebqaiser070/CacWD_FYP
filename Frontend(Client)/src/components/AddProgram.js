@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit, AiFillFilePdf } from "react-icons/ai";
 import {
   Autocomplete,
   Card,
@@ -80,38 +80,39 @@ export default function AddProgram() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("here");
-    var not = ["of","the","and","&","for","in","like"]
-    var Prog=Program.split(" ")
-    var Prog2 = Prog.map((i)=>{
-      if(!not.includes(i.toLowerCase())){
-        return i.charAt(0).toUpperCase()+i.slice(1)
+    var not = ["of", "the", "and", "&", "for", "in", "like"];
+    var Prog = Program.split(" ");
+    var Prog2 = Prog.map((i) => {
+      if (!not.includes(i.toLowerCase())) {
+        return i.charAt(0).toUpperCase() + i.slice(1);
+      } else {
+        return i.toLowerCase();
       }
-      else{
-        return i.toLowerCase()
-      }
-    })
-    var Progm= Prog2.join(" ")
+    });
+    var Progm = Prog2.join(" ");
     var check = false;
     rows.forEach((i) => {
-      if (i.Degree.toLowerCase() == Degree.toLowerCase() && Program.toLowerCase() == i.Program.toLowerCase()) {
+      if (
+        i.Degree.toLowerCase() == Degree.toLowerCase() &&
+        Program.toLowerCase() == i.Program.toLowerCase()
+      ) {
         check = true;
       }
     });
-    if(up!=""){
-      if (Degree.toLowerCase() == up.Degree.toLowerCase() && Program.toLowerCase()== up.Program.toLowerCase()) {
+    if (up != "") {
+      if (
+        Degree.toLowerCase() == up.Degree.toLowerCase() &&
+        Program.toLowerCase() == up.Program.toLowerCase()
+      ) {
         check = false;
       }
     }
     if (check) {
-      alert(
-        "This Program alreadt Exists"
-      );
-    }
-
-    else if (up=="" && Degree != "" && Program != "") {
+      alert("This Program alreadt Exists");
+    } else if (up == "" && Degree != "" && Program != "") {
       const res = await axios.post("http://localhost:4000/Program/add", {
         Degree,
-        Program:Progm,
+        Program: Progm,
       });
       if (res.data == "Already Exists") alert("Already Exists");
       else {
@@ -119,10 +120,10 @@ export default function AddProgram() {
         setProgram("");
         getRows();
       }
-    } else if (up!="" && Degree != "" && Program != "") {
+    } else if (up != "" && Degree != "" && Program != "") {
       const res = await axios.put(`http://localhost:4000/Program/${id}`, {
         Degree,
-        Program:Progm,
+        Program: Progm,
       });
       if (res.data == "Already Exists") alert("Already Exists");
       else {
@@ -246,14 +247,13 @@ export default function AddProgram() {
         }}
       >
         <Card style={{ padding: 30, borderRadius: 10 }}>
-          <h1>
+          <h1 className="mb-4 py-4">
             <b>DEGREE PROGRAM</b>
           </h1>
           {/* <FolderNavigation /> */}
           <div className="d-flex justify-content-end mb-4">
             <Button
               variant="contained"
-              className="mb-2 muibtn"
               color="primary"
               size="small"
               style={muibtn}
@@ -261,6 +261,16 @@ export default function AddProgram() {
             >
               <AddIcon style={{ marginRight: "6px" }} />
               Add New Program
+            </Button>
+            <Button
+              className="ms-4"
+              style={muibtn}
+              variant="contained"
+              color="primary"
+              size="small"
+            >
+              <AiFillFilePdf style={{ marginRight: 10 }} />
+              Generate Report
             </Button>
           </div>
 

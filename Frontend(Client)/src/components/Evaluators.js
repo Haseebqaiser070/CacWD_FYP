@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import Autocomplete from "@mui/material/Autocomplete";
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { AiFillDelete, AiFillEdit, AiFillFilePdf } from "react-icons/ai";
 import {
   Box,
   Card,
@@ -95,7 +95,7 @@ export default function Evaluators() {
     const response = await axios.get(
       `http://localhost:4000/EvalFolders/showAllbyid/${id}`
     );
-    console.log("response",response)
+    console.log("response", response);
     const col = response.data?.map((i) => {
       return {
         Faculty: i.Folder?.User,
@@ -245,13 +245,22 @@ export default function Evaluators() {
       }}
     >
       <Card style={{ padding: 30, borderRadius: 10 }}>
-        <h1>
+        <h1 className="mb-4 py-4">
           <b>EVALUATORS</b>
         </h1>
         <div className="d-flex justify-content-end mb-4">
           <Button
+            style={muibtn}
             variant="contained"
-            className="mb-2 muibtn"
+            color="primary"
+            size="small"
+          >
+            <AiFillFilePdf style={{ marginRight: 10 }} />
+            Generate Report
+          </Button>
+          <Button
+            variant="contained"
+            className="ms-4"
             color="primary"
             size="medium"
             style={muibtn}
