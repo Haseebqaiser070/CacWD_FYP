@@ -9,13 +9,20 @@ import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 
 export default function CourseReport() {
-  const { state } = useLocation();
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  useEffect(() => {
+    getRepoCourse();
+  }, []);
 
+  const getRepoCourse = async () => {
+    const response = await axios.get("http://localhost:4000/RepoCourse/show",{withCredentials:true});
+    setcourses(response.data);
+  };
+  const [courses,setcourses]= useState([])
   return (
     <>
       <div style={{ padding: 30 }}>
@@ -51,14 +58,20 @@ export default function CourseReport() {
                   <th className="col-5">Course Title</th>
                   <th className="col-2">Credit Hours</th>
                 </tr>
-              </thead>
+              </thead>        
+
               <tbody style={{ textAlign: "center" }}>
-                <tr>
-                  <td className="col-1">1</td>
-                  <td className="col-2">CSC-101</td>
-                  <td className="col-5">Introduction to ICT</td>
-                  <td className="col-2">3(2,1)</td>
-                </tr>
+              {courses.map((i,index)=>{
+                  return(
+                    <tr>
+                      <td className="col-1">{index+1}</td>
+                      <td className="col-2">{i.Code}</td>
+                      <td className="col-5">{i.Name}</td>
+                      <td className="col-2">{i.Credit}({i.LectureHoursWeek},{i.LabHoursWeek})</td>
+                    </tr>
+                  )
+              })}
+                
               </tbody>
             </table>
           </div>

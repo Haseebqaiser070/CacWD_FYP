@@ -72,6 +72,30 @@ module.exports.Showall = async (req, res) => {
     console.log(err);
   }
 };
+
+module.exports.Showallother = async (req, res) => {
+  try {
+    console.log(req.user);
+    if (!req.user) return await res.json("Timed Out");
+    var backSOS = await SOS.find({})
+      .populate("Page1")
+      .populate({
+        path: "Categories",
+        populate: {
+          path: "Courses",
+          model: "ProgramCourses",
+          populate: { path: "PreRequisites", model: "Repo" },
+        },
+      });
+   
+    console.log("all SOSs", backSOS);
+    await res.json(backSOS);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
 module.exports.Program = async (req, res) => {
   try {
     // console.log(req.user)
@@ -79,7 +103,7 @@ module.exports.Program = async (req, res) => {
     const backSOS = await SOSf.find({});
     console.log("all SOSs", backSOS);
     const re = backSOS.map((i) => {
-      return i.Program;
+      return {Program:i.Program,Year:i.Year}
     });
     console.log(re);
     await res.json(re);

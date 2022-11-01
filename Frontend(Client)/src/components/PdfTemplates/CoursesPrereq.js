@@ -10,11 +10,26 @@ import { useReactToPrint } from "react-to-print";
 
 export default function CoursesPrereq() {
   const { state } = useLocation();
-
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  const [SOSs, setSOSs] = useState([]);
+
+  useEffect(() => {
+    getSOS();
+  }, []);
+
+  const getSOS = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/SOS/showallother");
+      setSOSs(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -42,8 +57,21 @@ export default function CoursesPrereq() {
               <h2>Courses having PreRequisites</h2>
             </div>
           </div>
-          <div>
-            <table className="table table-bordered">
+          
+            
+            {SOSs.map((i,index)=>{
+            <div>
+               <h3
+                  style={{
+                    backgroundColor: "#000",
+                    color: "#fff",
+                    padding: 5,
+                    textAlign: "left",
+                  }}
+                  className="head my-4"
+                >
+                  {index+1} {i.Program}
+                </h3>          <table className="table table-bordered">
               <thead style={{ textAlign: "center" }}>
                 <tr>
                   <th className="col-1">S. No</th>
@@ -54,16 +82,25 @@ export default function CoursesPrereq() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
-                <tr>
-                  <td className="col-1">1</td>
-                  <td className="col-2">CSC-101</td>
-                  <td className="col-5">Introduction to ICT</td>
-                  <td className="col-2">3(2,1)</td>
-                  <td className="col-2">None</td>
-                </tr>
+              {i.Courses.filter((e,index)=>{
+                if(e.PreRequisites.length<1)
+                  {return(
+                    <tr>
+                      <td className="col-1">{index+1}</td>
+                      <td className="col-2">{e.Code}</td>
+                      <td className="col-5">{e.Name}</td>
+                      <td className="col-2">{e.Credit}({e.LectureHoursWeek},{e.LabHoursWeek})</td>
+                      <td className="col-5">{i?.PreRequisites?.map((z) => z.Name)}</td>
+
+                    </tr>
+                  )}
+              })}                
               </tbody>
-            </table>
-          </div>
+              </table>
+              </div>
+
+            })}
+            
         </div>
       </div>
     </>

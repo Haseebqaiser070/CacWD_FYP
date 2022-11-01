@@ -18,6 +18,7 @@ import {
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import { muiAbtn } from "./style";
 import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
+import { muiAbtn, muibtn } from "./style";
 
 export default function AllCourses() {
   const [Course, setCourse] = useState([]);
@@ -26,6 +27,7 @@ export default function AllCourses() {
   const navigate = useNavigate();
 
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [report, setreport] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpenDialog(true);
@@ -175,9 +177,9 @@ export default function AllCourses() {
               <InputLabel id="taskType">Generate Report</InputLabel>
               <Select
                 className="mb-4"
-                // value={Degree}
+                value={report}
                 label="Generate Report"
-                // onChange={(e) => setDegree(e.target.value)}
+                onChange={(e) => setreport(e.target.value)}
               >
                 <MenuItem value={"All Courses"}>All Courses</MenuItem>
                 <MenuItem value={"Courses with PreRequisites"}>
@@ -192,10 +194,34 @@ export default function AllCourses() {
                 <MenuItem value={"Courses without Catalogue Description"}>
                   Courses without Catalogue Description
                 </MenuItem>
-                <MenuItem value={"Available Codes for Courses"}>
+                {/* <MenuItem value={"Available Codes for Courses"}>
                   Available Codes for Courses
-                </MenuItem>
+                </MenuItem> */}
               </Select>
+              <div className="d-flex justify-content-end mb-4">
+            <Button
+              variant="contained"
+              className="mb-2 muibtn"
+              color="primary"
+              size="small"
+              style={muibtn}
+              onClick={()=>{
+              if (report=="All Courses")
+                navigate("/Admin/CourseReport");
+              else if (report=="Courses with PreRequisites")
+                navigate("/Admin/CoursesPrereq");
+              else if (report=="Courses without PreRequisites")
+                navigate("/Admin/CoursesNotPrereq");
+              else if (report=="Courses with Catalogue Description")
+                navigate("/Admin/Courseswithcd");
+              else if (report=="Courses without Catalogue Description")
+                navigate("/Admin/Courseswithoutcd");
+              else alert("Select an option")
+              }}
+            >
+              View Report
+            </Button>
+          </div>
             </FormControl>
           </div>
         </div>

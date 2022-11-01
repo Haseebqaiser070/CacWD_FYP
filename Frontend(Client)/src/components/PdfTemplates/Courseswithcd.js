@@ -16,6 +16,21 @@ export default function Courseswithcd() {
     content: () => componentRef.current,
   });
 
+  useEffect(async () => {
+    await getCourse();
+  }, []);
+  const [Course,setCourse]= useState([])
+
+  const getCourse = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/Course/show",{withCredentials:true});
+      setCourse(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div style={{ padding: 30 }}>
@@ -53,12 +68,16 @@ export default function Courseswithcd() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
-                <tr>
-                  <td className="col-1">1</td>
-                  <td className="col-2">CSC-101</td>
-                  <td className="col-5">Introduction to ICT</td>
-                  <td className="col-2">3(2,1)</td>
-                </tr>
+              {Course.map((i,index)=>{
+                  return(
+                    <tr>
+                      <td className="col-1">{index+1}</td>
+                      <td className="col-2">{i.Code}</td>
+                      <td className="col-5">{i.Name}</td>
+                      <td className="col-2">{i.Credit}({i.LectureHoursWeek},{i.LabHoursWeek})</td>
+                    </tr>
+                  )
+              })}
               </tbody>
             </table>
           </div>

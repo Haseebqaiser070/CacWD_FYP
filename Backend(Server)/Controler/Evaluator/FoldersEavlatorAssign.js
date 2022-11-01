@@ -19,7 +19,7 @@ module.exports.FinishAll = async (req, res) => {
   var all = await Userdoc.find({});
   await Promise.all(
     all.map(async (e) => {
-      const up = await Userdoc.updateOne(e._id, {
+      const up = await Userdoc.findByIdAndUpdate(e._id, {
         EvaluateFolders: [],
       });
       console.log(up);

@@ -7,7 +7,6 @@ import { Card, LinearProgress, Tooltip } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Card, LinearProgress } from "@mui/material";
 import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 import { AiFillEye } from "react-icons/ai";
 const columns = [

@@ -34,6 +34,33 @@ module.exports.Showall = async (req, res) => {
   }
 };
 
+module.exports.Showall = async (req, res) => {
+  try {
+    if (!req.user) return await res.status(401).json("Timed Out");
+    const Repos = await Repo.find({});
+    console.log("all Repos", Repos);
+    await res.json(Repos);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports.Showwithoutcat = async (req, res) => {
+  try {
+    if (!req.user) return await res.status(401).json("Timed Out");
+    const Repos = await Repo.find({});
+    const course = await coursedoc.find({});
+    const reps = Repos.filter(i=>{
+      var ab =  course.some(e=>e.Code==i.Code)
+      if(!ab) return i
+    })
+    console.log("Available", reps);
+    await res.json(reps);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports.Showallforcat = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");

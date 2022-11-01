@@ -367,7 +367,7 @@ export default function FacultyMembers() {
                           </MenuItem>
                         )}
                         {Programdb.map((p) => {
-                          return <MenuItem value={p}>{p}</MenuItem>;
+                          return <MenuItem value={p.Program}>{p.Program} ({p.Year})</MenuItem>;
                         })}
                       </Select>
                     </FormControl>

@@ -19,7 +19,7 @@ module.exports.FinishAll = async (req, res) => {
   var all = await Userdoc.find({});
   await Promise.all(
     all.map(async (e) => {
-      const up = await Userdoc.updateOne(e._id, {
+      const up = await Userdoc.findByIdAndUpdate(e._id, {
         CourseFolders: [],
       });
       console.log(up);
@@ -44,7 +44,13 @@ module.exports.Add = async (req, res) => {
             Course: e.Course,
             Section: e.Section,
           });
-          if (fold) already = true;
+          if (fold){
+            var ins = await Userdoc.find({CourseFolders:{$elemMatch:{fold}}})
+            console.log(ins)
+            if(ins){
+              already = true;
+            }
+          }
         } catch (er) {
           console.error(er);
         }
@@ -112,7 +118,13 @@ module.exports.Add2 = async (req, res) => {
             Course: e.Course,
             Section: e.Section,
           });
-          if (fold) already = true;
+          if (fold){
+            var ins = await Userdoc.find({CourseFolders:{$elemMatch:{fold}}})
+            console.log(ins)
+            if(ins){
+              already = true;
+            }
+          }
         } catch (er) {
           console.error(er);
         }

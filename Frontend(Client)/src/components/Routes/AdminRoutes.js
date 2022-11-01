@@ -48,8 +48,14 @@ import BtlDictionary from "../BTLDictionary";
 import OngoingTasks from "../PdfTemplates/OngoingTasks";
 import IndiviualTask from "../PdfTemplates/IndiviualTask";
 import CompletedTasks from "../CompletedTasks";
-import AdminFolderInRevision from "../AdminFolderInRevision "
-import ReturnedPageAdmin from '../ReturnedPageAdmin'
+import AdminFolderInRevision from "../AdminFolderInRevision ";
+import ReturnedPageAdmin from "../ReturnedPageAdmin";
+import CourseReport from "../PdfTemplates/CourseReport";
+import CoursesNotPrereq from "../PdfTemplates/CoursesNotPrereq";
+import CoursesPrereq from "../PdfTemplates/CoursesPrereq";
+import Courseswithcd from "../PdfTemplates/Courseswithcd";
+import Courseswithoutcd from "../PdfTemplates/Courseswithoutcd";
+
 function AdminRoutes() {
   return (
     <Routes>
@@ -60,48 +66,37 @@ function AdminRoutes() {
         <Route path="/AddNewCourse" element={<AddNewCourse />} />
         <Route path="/AllCourses" element={<AllCourses />} />
         <Route path="/CourseView/:id" element={<CourseFinal />} />
+        <Route path="/AllCourses" element={<AllCourses />} />
+
+
+        <Route path="/CourseReport" element={<CourseReport />} />
+        <Route path="/CoursesNotPrereq" element={<CoursesNotPrereq />} />
+        <Route path="/CoursesPrereq" element={<CoursesPrereq />} />
+        <Route path="/Courseswithcd" element={<Courseswithcd />} />
+        <Route path="/Courseswithoutcd" element={<Courseswithoutcd />} />
+
+
         <Route path="/Returned" element={<Returned />} />
         <Route path="/OngoingTasks" element={<OngoingTasks />} />
         <Route path="/IndiviualTask/:tid" element={<IndiviualTask />} />
-        <Route
-          path="/FolderInRevisionA"
-          element={<AdminFolderInRevision />}
-        />
-        <Route
-          path="/Returned"
-          element={<ReturnedPageAdmin />}
-        />
-        <Route
-          path="/CourseReturnedView/:Code"
-          element={<CourseReturnedView />}
-        />
+        <Route path="/FolderInRevisionA" element={<AdminFolderInRevision />} />
+        <Route path="/Returned" element={<ReturnedPageAdmin />} />
+        <Route path="/CourseReturnedView/:Code" element={<CourseReturnedView />} />
         <Route path="/SOSReturnedView/:Program" element={<SOSReturnedView />} />
         <Route path="/CDFReturnedView/:Code" element={<CDFReturnedView />} />
-        <Route
-          path="SyllabusReturnedView/:Code"
-          element={<SyllabusReturnedView />}
-        />
+        <Route path="SyllabusReturnedView/:Code" element={<SyllabusReturnedView />} />
         <Route path="/EditCourse/:id" element={<EditCourseForm />} />
         <Route path="/CreateNewMeeting" element={<CreateNewMeeting />} />
         <Route path="/AllSyllabus" element={<AllSyllabus />} />
         <Route path="/AllCourseFolder" element={<AllCourseFolder />} />
-
-        <Route
-          path="/SyllabusView/:Program/:Code/:id"
-          element={<SyllabusFinal />}
-        />
-        <Route
-          path="/ViewCacMemberAvailabilty"
-          element={<ViewCacAvailability />}
-        />
+        <Route path="/SyllabusView/:Program/:Code/:id" element={<SyllabusFinal />} />
+        <Route path="/ViewCacMemberAvailabilty" element={<ViewCacAvailability />} />
         <Route path="/AllSchemeofStudies" element={<AllSchemeofStudies />} />
         <Route path="/CourseFolderTheory" element={<CourseFolderTheory />} />
         <Route path="/CourseFolderLab" element={<CourseFolderLab />} />
-
         <Route path="/AllCDFs" element={<AllCDFs />} />
         <Route path="/SOSView/:id" element={<SOSFinal />} />
         <Route path="/CDFsView/:Program/:Code/:id" element={<CDFFinal />} />
-
         <Route path="/Sos" element={<Sos />} />
         <Route path="/InitCourse" element={<CourseRepo />} />
         {/*<Route path="/CdfandSyllabus">
@@ -118,16 +113,11 @@ function AdminRoutes() {
         <Route path="/BTLLevel" element={<BTLLevel />} />
         <Route path="/CloDomains" element={<CloDomains />} />
         <Route path="/BtlDictionary" element={<BtlDictionary />} />
-
         <Route path="/Tasks" element={<Tasks />} />
         <Route path="/InitializeTask" element={<InitializeTask />} />
         <Route path="/profile" element={<Profile />} />
-
         <Route path="/CreateSOS" element={<CreateSOS />} />
-        <Route
-          path="/PendingDeadlineRequests"
-          element={<PendingDeadlineRequests />}
-        />
+        <Route path="/PendingDeadlineRequests" element={<PendingDeadlineRequests />} />
         <Route path="/LateSubmissions" element={<LateSub />} />
         <Route path="/ReturnedTasks" element={<ReturnedTasks />} />
         <Route path="/CompletedTasks" element={<CompletedTasks />} />
