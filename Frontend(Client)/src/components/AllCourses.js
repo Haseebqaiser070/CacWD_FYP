@@ -193,9 +193,9 @@ export default function AllCourses() {
                 <MenuItem value={"Courses without Catalogue Description"}>
                   Courses without Catalogue Description
                 </MenuItem>
-                {/* <MenuItem value={"Available Codes for Courses"}>
+                <MenuItem value={"Available Codes for Courses"}>
                   Available Codes for Courses
-                </MenuItem> */}
+                </MenuItem>
               </Select>
               <div className="d-flex justify-content-end mb-4">
             <Button
@@ -215,6 +215,8 @@ export default function AllCourses() {
                 navigate("/Admin/Courseswithcd");
               else if (report=="Courses without Catalogue Description")
                 navigate("/Admin/Courseswithoutcd");
+              else if (report=="Available Codes for Courses")
+                navigate("/Admin/AvailableCodes");                
               else alert("Select an option")
               }}
             >

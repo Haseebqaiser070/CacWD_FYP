@@ -15,7 +15,16 @@ export default function AvailableCodes() {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  useEffect(() => {
+    getCodesAvail();
+  }, []);
+  const [Avaible,setAvaible]= useState([])
 
+  const getCodesAvail = async () => {
+    const response = await axios.get("http://localhost:4000/RepoCourse/available",{withCredentials:true});
+    setAvaible(response.data);
+  };
+  
   return (
     <>
       <div style={{ padding: 30 }}>
@@ -53,10 +62,14 @@ export default function AvailableCodes() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
-                <tr>
-                  <td className="col-1">1</td>
-                  <td className="col-11">101</td>
-                </tr>
+                {Avaible.map((i,index)=>{
+                  return(
+                    <tr>
+                      <td className="col-1">{index+1}</td>
+                      <td className="col-11">{i}</td>
+                    </tr>
+                    )
+                })}
               </tbody>
             </table>
           </div>

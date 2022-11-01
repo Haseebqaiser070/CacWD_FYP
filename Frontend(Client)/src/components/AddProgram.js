@@ -28,16 +28,24 @@ import PositionedSnackbar from "./AuxillaryComponents/DeleteSnack";
 import { muiAbtn, muibtn } from "./style";
 import FolderNavigation from "./Evaluator/Navigation";
 import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProgram() {
   const [rows, setRows] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [report, setreport] = useState("");
+  const [pres, setpres] = useState([]);
+
+  const navigate = useNavigate();
+
   const [up, setup] = useState("");
   useEffect(() => {
     getRows();
   }, []);
   const getRows = async () => {
     const res = await axios.get("http://localhost:4000/Program/show");
+    const res2 = await axios.get("http://localhost:4000/Program/showprefix");
+    setpres(res2.data)
     setRows(res.data);
   };
   const handleOpen = () => setOpen(true);
@@ -252,6 +260,36 @@ export default function AddProgram() {
           </h1>
           {/* <FolderNavigation /> */}
           <div className="d-flex justify-content-end mb-4">
+          <InputLabel id="taskType">Generate Report</InputLabel>
+              <Select
+                className="mb-4"
+                value={report}
+                label="Generate Report"
+                onChange={(e) => setreport(e.target.value)}
+              >
+                {pres.map((i)=>{
+                  return(
+                <MenuItem value={i}>
+                  {i}
+                </MenuItem>
+                )})}
+              </Select>
+
+          <Button
+              className="ms-4"
+              style={muibtn}
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={()=>{
+                if (report=="")alert("select an option")
+                else navigate(`/Admin/AddProgram/report/${report}`);
+                }}
+            >
+              <AiFillFilePdf style={{ marginRight: 10 }} />
+              Generate Report
+            </Button>
+
             <Button
               variant="contained"
               color="primary"
@@ -262,16 +300,7 @@ export default function AddProgram() {
               <AddIcon style={{ marginRight: "6px" }} />
               Add New Program
             </Button>
-            <Button
-              className="ms-4"
-              style={muibtn}
-              variant="contained"
-              color="primary"
-              size="small"
-            >
-              <AiFillFilePdf style={{ marginRight: 10 }} />
-              Generate Report
-            </Button>
+            
           </div>
 
           <Modal

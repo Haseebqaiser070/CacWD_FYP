@@ -23,6 +23,26 @@ module.exports.Add = async (req, res) => {
     console.log(err);
   }
 };
+
+module.exports.availablecodes = async (req, res) => {
+  try {
+    if (!req.user) return await res.status(401).json("Timed Out");
+    const Repos = await Repo.find({});
+    var reps =Repos.map((i)=>{
+      var nums1 = i.Code.split("-")[1]
+      return parseInt(nums1)
+    })
+    var retn=[]
+    for(var i=100;i<1000;i=i+1){
+      if(!reps.includes(i))retn.push(i)
+    }
+    console.log("all retn", retn);
+    await res.json(retn);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports.Showall = async (req, res) => {
   try {
     if (!req.user) return await res.status(401).json("Timed Out");

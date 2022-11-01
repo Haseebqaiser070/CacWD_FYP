@@ -13,6 +13,7 @@ module.exports.Add = async (req, res) => {
     console.log(err);
   }
 };
+
 module.exports.Showall = async (req, res) => {
   try {
     console.log(req.user)
@@ -21,6 +22,36 @@ module.exports.Showall = async (req, res) => {
     const program = await Program.find({});
     console.log("all programs", program);
     await res.status(200).json(program);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports.ShowallPrefix = async (req, res) => {
+  try {
+    console.log(req.user)
+    if (!req.user) return await res.status(401).json("Timed Out");
+    if(!req.user.Roles.includes("Admin")) return res.status(401).json("Unautherized");   
+    const program = await Program.find({});
+    var pre = []
+    program.forEach((e) => {
+      if(!pre.includes(e.Degree))pre.push(e.Degree)
+    });
+    console.log("all pre", pre);
+    await res.status(200).json(pre);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports.Showallwithdegree = async (req, res) => {
+  try {
+    console.log(req.user)
+    if (!req.user) return await res.status(401).json("Timed Out");
+    if(!req.user.Roles.includes("Admin")) return res.status(401).json("Unautherized");   
+    const programs = await Program.find({Degree:req.params.Degree});
+    console.log("all pre", programs);
+    await res.status(200).json(programs);
   } catch (err) {
     console.log(err);
   }

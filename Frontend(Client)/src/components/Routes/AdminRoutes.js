@@ -55,7 +55,8 @@ import CoursesNotPrereq from "../PdfTemplates/CoursesNotPrereq";
 import CoursesPrereq from "../PdfTemplates/CoursesPrereq";
 import Courseswithcd from "../PdfTemplates/Courseswithcd";
 import Courseswithoutcd from "../PdfTemplates/Courseswithoutcd";
-
+import AvailableCodes from "../PdfTemplates/AvailableCodes";
+import ProgramReport from "../PdfTemplates/ProgramReport"
 import FacultyCourseReport from "../PdfTemplates/FacultyCourseReport";
 function AdminRoutes() {
   return (
@@ -75,7 +76,7 @@ function AdminRoutes() {
         <Route path="/CoursesPrereq" element={<CoursesPrereq />} />
         <Route path="/Courseswithcd" element={<Courseswithcd />} />
         <Route path="/Courseswithoutcd" element={<Courseswithoutcd />} />
-
+        <Route path="/AvailableCodes" element={<AvailableCodes />} />
 
         <Route path="/Returned" element={<Returned />} />
         <Route path="/OngoingTasks" element={<OngoingTasks />} />
@@ -109,7 +110,10 @@ function AdminRoutes() {
         <Route path="/FacultyMembers" element={<FacultyMembers />} />
         <Route path="/Evaluators" element={<Evaluators />} />
         <Route path="/CourseFolder" element={<CourseFolder />} />
-        <Route path="/AddProgram" element={<FacultyCourseReport />} />
+
+        <Route path="/AddProgram" element={<AddProgram />} />        
+        <Route path="/AddProgram/report/:Degree" element={<ProgramReport />} />
+
         <Route path="/SO" element={<SO_Level />} />
         <Route path="/BTLLevel" element={<BTLLevel />} />
         <Route path="/CloDomains" element={<CloDomains />} />

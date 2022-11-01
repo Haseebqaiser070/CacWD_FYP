@@ -10,19 +10,32 @@ import { AiFillPrinter } from "react-icons/ai";
 
 import React, { useEffect, useState, useRef } from "react";
 import "./pdfstyles.css";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import { Box } from "@mui/system";
 
 export default function ProgramReport() {
-  const { state } = useLocation();
+  const { Degree } = useParams();
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  useEffect(async () => {
+    await getPrograms();
+  }, []);
+  const [Programs,setPrograms]= useState([])
 
+  const getPrograms = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/Program/showall/${Degree}`,{withCredentials:true});
+      setPrograms(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div style={{ padding: 30 }}>
@@ -76,11 +89,13 @@ export default function ProgramReport() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
+              {Programs.map((i,index)=>{
+                return(
                 <tr>
-                  <td className="col-1">1.</td>
-                  <td className="col-2">BS</td>
-                  <td className="col-5">Computer Science</td>
-                </tr>
+                  <td className="col-1">{index+1}</td>
+                  <td className="col-2">{i.Degree}</td>
+                  <td className="col-5">{i.Program}</td>
+                </tr>)})}
               </tbody>
             </table>
           </div>
