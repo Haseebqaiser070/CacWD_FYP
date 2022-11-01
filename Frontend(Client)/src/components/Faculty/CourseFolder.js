@@ -47,7 +47,6 @@ export default function CourseFolder() {
 
   useEffect(() => {
     getTheory();
-    
   }, []);
 
   const [Assignments1, setAssignments1] = useState([]);
@@ -138,6 +137,9 @@ export default function CourseFolder() {
   const [deadline11,setdeadline11]=useState();
   const [deadline22,setdeadline22]=useState();
   const [round1flag,setflag1]=useState(false);
+  const [deadlinereq1,setdeadreq1]=useState(false)
+  const [deadlinereq2,setdeadreq2]=useState(false)
+
   const [round2flag,setflag2]=useState(false);
   const [pressed,setpressed]=useState(false)
   const [pressed1,setpressed1]=useState(false)
@@ -146,10 +148,10 @@ export default function CourseFolder() {
   const [submittedRevision,setRevisionSubmitted]=useState(false)
 
   const [fileBase64String, setFileBase64String] = useState("");
-  useEffect(()=>{
+  const setflag=async(deadline11,deadline22)=>{
     var b=date.getMonth()+1
     var a=(date.getDate()+"/"+(b)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes())
-    console.log("date",deadline11)
+    console.log("date",deadline22)
     console.log("dsaa",date)
     
     if(date>deadline11){
@@ -159,7 +161,8 @@ export default function CourseFolder() {
 
       setflag2(true)
     }
-  },[deadline1,deadline2])
+  }
+  
 
   //----------
   const encodeFileBase64 = (file, ty) => {
@@ -235,13 +238,18 @@ export default function CourseFolder() {
   };
   useEffect(() => {
     getFolderData();
-    getDeadline()
   }, []);
+  useEffect(()=>{
+    getDeadline()
+
+  },[])
   const [Folder, setFolder] = useState({ files: [], ICEF: null, Obe: null });
 
   const getFolderData = async () => {
     const res = await axios.get(`http://localhost:4000/Folders/showOne/${id}`);
     console.log("FolderData",res.data);
+    console.log("Fusera",id);
+
     setFolder(res.data);
     setSubmitted1(res.data.Round1)
     setRevisionSubmitted(res.data.WantRevision)
@@ -251,16 +259,66 @@ export default function CourseFolder() {
   const getDeadline = async () => {
     const res = await axios.get(`http://localhost:4000/Content/ShowTheory`);
     console.log("deadlinesdata",res.data);
+    const answer=await getDeadlineRequest()
+console.log("answrarray",answer)
     var s=res.data.Round1.Deadline
     var s1=res.data.Round2.Deadline
 
     s=new Date(res.data.Round1.Deadline)
     s1=new Date(res.data.Round2.Deadline)
-    setdeadline11(s)
-    setdeadline22(s1)
-    console.log("sdc",s.getYear)
-   setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
-   setdeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
+    if(answer[0]==false){
+      console.log("sdc")
+
+      setdeadline11(s)
+      setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
+      setflag(s,deadline22)
+
+    }
+    if(answer[1]==false){
+      console.log("sdc")
+
+      setdeadline22(s1)
+      setdeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
+      setflag(deadline11,s1)
+
+    }
+
+  };
+  const getDeadlineRequest = async () => {
+    const res=await axios.get(`http://localhost:4000/Content/ShowLabReq`)
+    console.log("deadlinesdata",res?.data);
+    console.log("FolderData",userid);
+    var returnarray=[false,false]
+    var a=res.data.Theory?.find((item)=>item?.Request_id?._id==userid)
+    console.log("rerse",returnarray)
+    if(a!=undefined){
+    if(a?.pending==false){
+      if(a.Round.includes("Round1")){
+        var s=new Date(a?.DeadlineDate)
+       
+        setdeadline11(s)
+        setdeadline1(a?.Deadline)
+        setdeadreq1(true)
+        returnarray[0]=true
+        setflag(s,deadline22)
+        //console.log("a",s)
+       // setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
+      }
+      else{
+        var s=new Date(a?.DeadlineDate)
+        console.log("ads",s)
+        setdeadline22(s)
+        setdeadline2(a?.Deadline)
+        setdeadreq2(true)
+        returnarray[1]=true
+        setflag(deadline11,s)
+      }
+    }
+     
+    }
+    console.log("reds",returnarray)
+    return returnarray
+
 
   };
 
@@ -358,6 +416,7 @@ export default function CourseFolder() {
         {
           Round: "Round1",
           Deadline:deadline1,
+          DeadlineDate:deadline11,
           Type:"Theory"
 
         }
@@ -375,6 +434,7 @@ export default function CourseFolder() {
       {
         Round: "Round2",
         Deadline:deadline2,
+        DeadlineDate:deadline11,
         Type:"Theory"
 
       }
@@ -547,9 +607,9 @@ export default function CourseFolder() {
     if (Folder.Obe == null||Folder.Obe == "") {
       Round2 = false;
     }
-    if (Round1 && Round2) {
+   
       console.log("Round1", { Round1: true });
-      const res = await axios.put(
+      const ress = await axios.put(
         `http://localhost:4000/Folders/SubmitaRoundRevision/${id}`,
         {
           Revision: true,
@@ -558,9 +618,7 @@ export default function CourseFolder() {
       setRevisionSubmitted(false)
       getFolderData();
       alert("Revision Submitted")
-    } else {
-      alert("Enter all required documents for Revision");
-    }
+    
   };
 
   const SubmitR2 = async () => {
@@ -615,7 +673,7 @@ export default function CourseFolder() {
   return (
     <div class="container" style={{ height: 700, width: "100%", padding: 20 }}>
       <h1 style={{ marginBottom: 30 }}>Course Folder Maintainence</h1>
-
+      {console.log("inreturn",deadline2,round2flag)}
       <Modal
         open={open3}
         onClose={handleClose3}

@@ -15,6 +15,7 @@ import MeetingUpdateNotification from "./AvailabilityUpdateNotification";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { muibtn } from "../style";
+import { date } from "yup";
 
 const style = {
   position: "absolute",
@@ -139,6 +140,57 @@ export default function CacAvailability() {
       );
       if (data != null) {
         setflag(true);
+        var array=[]
+       times.map((item)=>{
+          var a=data.time.mon.find((it)=>it==item)
+          if(a==undefined){
+            array.push(item)
+          }
+        })
+        setAvailabilityTImeMon(array)
+        array=[]
+       times.map((item)=>{
+          var a=data.time.tue.find((it)=>it==item)
+          if(a==undefined){
+            array.push(item)
+          }
+        })
+        setAvailabilityTImeTue(array)
+
+        array=[]
+       times.map((item)=>{
+          var a=data.time.wed.find((it)=>it==item)
+          if(a==undefined){
+            array.push(item)
+          }
+        })
+        setAvailabilityTImeWed(array)
+
+        array=[]
+       times.map((item)=>{
+          var a=data.time.thur.find((it)=>it==item)
+          if(a==undefined){
+            array.push(item)
+          }
+        })
+        setAvailabilityTImeThur(array)
+
+        array=[]
+       times.map((item)=>{
+          var a=data.time.fri.find((it)=>it==item)
+          if(a==undefined){
+            array.push(item)
+          }
+        })
+        setAvailabilityTImeFri(array)
+        array=[]
+       times.map((item)=>{
+          var a=data.time.sat.find((it)=>it==item)
+          if(a==undefined){
+            array.push(item)
+          }
+        })
+        setAvailabilityTImeSat(array)
         //console.log("eroo",data)
         setAvailabilityData(data.time);
       }

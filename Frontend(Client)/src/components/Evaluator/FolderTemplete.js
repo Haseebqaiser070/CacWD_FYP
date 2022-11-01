@@ -1531,6 +1531,7 @@ export default function FolderTemplete() {
 
               <div className="row">
                 <div className="col-6">
+                  
                   {Folder.Revision==true?
                   
                   <Button

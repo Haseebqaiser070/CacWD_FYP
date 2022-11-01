@@ -56,6 +56,7 @@ import CoursesPrereq from "../PdfTemplates/CoursesPrereq";
 import Courseswithcd from "../PdfTemplates/Courseswithcd";
 import Courseswithoutcd from "../PdfTemplates/Courseswithoutcd";
 
+import FacultyCourseReport from "../PdfTemplates/FacultyCourseReport";
 function AdminRoutes() {
   return (
     <Routes>
@@ -108,7 +109,7 @@ function AdminRoutes() {
         <Route path="/FacultyMembers" element={<FacultyMembers />} />
         <Route path="/Evaluators" element={<Evaluators />} />
         <Route path="/CourseFolder" element={<CourseFolder />} />
-        <Route path="/AddProgram" element={<AddProgram />} />
+        <Route path="/AddProgram" element={<FacultyCourseReport />} />
         <Route path="/SO" element={<SO_Level />} />
         <Route path="/BTLLevel" element={<BTLLevel />} />
         <Route path="/CloDomains" element={<CloDomains />} />

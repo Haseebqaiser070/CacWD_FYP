@@ -693,7 +693,10 @@ module.exports.UpdateInside = async (req, res) => {
 
       up2.AssignMember.map((item)=>{
         console.log("fj",item)
-      Mail.TaskEdited(up2,item.Email)
+        Userdoc.findById(item).then((res)=>{
+          Mail.TaskEdited(up2,res.Email)
+
+        })
       })
     
     await res.status(201).json(Tasks);
