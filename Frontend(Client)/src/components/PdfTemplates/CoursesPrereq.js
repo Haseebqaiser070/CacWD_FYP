@@ -60,6 +60,8 @@ export default function CoursesPrereq() {
           
             
             {SOSs.map((i,index)=>{
+              var count=0
+              return(
             <div>
                <h3
                   style={{
@@ -82,24 +84,25 @@ export default function CoursesPrereq() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
-              {i.Courses.filter((e,index)=>{
-                if(e.PreRequisites.length<1)
-                  {return(
+              {i.Categories.map((j)=>{              
+              return (j.Courses.map((e)=>{
+                if(e.PreRequisites.length>=1)
+                  {count=count+1                    
+                    return(
                     <tr>
-                      <td className="col-1">{index+1}</td>
+                      <td className="col-1">{count}</td>
                       <td className="col-2">{e.Code}</td>
                       <td className="col-5">{e.Name}</td>
                       <td className="col-2">{e.Credit}({e.LectureHoursWeek},{e.LabHoursWeek})</td>
                       <td className="col-5">{i?.PreRequisites?.map((z) => z.Name)}</td>
-
                     </tr>
                   )}
-              })}                
+              }))})}                
               </tbody>
               </table>
               </div>
 
-            })}
+            )})}
             
         </div>
       </div>

@@ -16,7 +16,6 @@ import {
   Select,
 } from "@mui/material";
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
-import { muiAbtn } from "./style";
 import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 import { muiAbtn, muibtn } from "./style";
 
@@ -27,7 +26,7 @@ export default function AllCourses() {
   const navigate = useNavigate();
 
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [report, setreport] = React.useState(false);
+  const [report, setreport] = React.useState("");
 
   const handleClickOpen = () => {
     setOpenDialog(true);
