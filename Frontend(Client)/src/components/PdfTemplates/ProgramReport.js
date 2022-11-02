@@ -25,11 +25,14 @@ export default function ProgramReport() {
   useEffect(async () => {
     await getPrograms();
   }, []);
-  const [Programs,setPrograms]= useState([])
+  const [Programs, setPrograms] = useState([]);
 
   const getPrograms = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/Program/showall/${Degree}`,{withCredentials:true});
+      const response = await axios.get(
+        `http://localhost:4000/Program/showall/${Degree}`,
+        { withCredentials: true }
+      );
       setPrograms(response.data);
       console.log(response.data);
     } catch (error) {
@@ -40,33 +43,15 @@ export default function ProgramReport() {
     <>
       <div style={{ padding: 30 }}>
         <div className="d-flex justify-content-end">
-          <div className="row ">
-            <div className="col">
-              <Box sx={{ minWidth: 220 }}>
-                <FormControl fullWidth size="small">
-                  <InputLabel id="taskType">Filter By degree</InputLabel>
-                  <Select
-                    // value={Degree}
-                    label="Generate Report"
-                    // onChange={(e) => setDegree(e.target.value)}
-                  >
-                    <MenuItem value={"BS"}>BS</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </div>
-            <div className="col">
-              <Button
-                variant="contained"
-                color="primary"
-                size="medium"
-                onClick={handlePrint}
-              >
-                <AiFillPrinter style={{ marginRight: 10 }} />
-                Print
-              </Button>
-            </div>
-          </div>
+          <Button
+            variant="contained"
+            color="primary"
+            size="medium"
+            onClick={handlePrint}
+          >
+            <AiFillPrinter style={{ marginRight: 10 }} />
+            Print
+          </Button>
         </div>
         <div ref={componentRef} className="main">
           <div
@@ -89,13 +74,15 @@ export default function ProgramReport() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
-              {Programs.map((i,index)=>{
-                return(
-                <tr>
-                  <td className="col-1">{index+1}</td>
-                  <td className="col-2">{i.Degree}</td>
-                  <td className="col-5">{i.Program}</td>
-                </tr>)})}
+                {Programs.map((i, index) => {
+                  return (
+                    <tr>
+                      <td className="col-1">{index + 1}</td>
+                      <td className="col-2">{i.Degree}</td>
+                      <td className="col-5">{i.Program}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

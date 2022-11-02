@@ -32,7 +32,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function AddProgram() {
   const [rows, setRows] = useState([]);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const [report, setreport] = useState("");
   const [pres, setpres] = useState([]);
 
@@ -45,7 +45,7 @@ export default function AddProgram() {
   const getRows = async () => {
     const res = await axios.get("http://localhost:4000/Program/show");
     const res2 = await axios.get("http://localhost:4000/Program/showprefix");
-    setpres(res2.data)
+    setpres(res2.data);
     setRows(res.data);
   };
   const handleOpen = () => setOpen(true);
@@ -258,49 +258,52 @@ export default function AddProgram() {
           <h1 className="mb-4 py-4">
             <b>DEGREE PROGRAM</b>
           </h1>
-          {/* <FolderNavigation /> */}
           <div className="d-flex justify-content-end mb-4">
-          <InputLabel id="taskType">Generate Report</InputLabel>
-              <Select
-                className="mb-4"
-                value={report}
-                label="Generate Report"
-                onChange={(e) => setreport(e.target.value)}
-              >
-                {pres.map((i)=>{
-                  return(
-                <MenuItem value={i}>
-                  {i}
-                </MenuItem>
-                )})}
-              </Select>
-
-          <Button
-              className="ms-4"
-              style={muibtn}
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={()=>{
-                if (report=="")alert("select an option")
-                else navigate(`/Admin/AddProgram/report/${report}`);
-                }}
-            >
-              <AiFillFilePdf style={{ marginRight: 10 }} />
-              Generate Report
-            </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              style={muibtn}
-              onClick={handleOpen}
-            >
-              <AddIcon style={{ marginRight: "6px" }} />
-              Add New Program
-            </Button>
-            
+            <div className="row">
+              <div className="col">
+                <Box sx={{ minWidth: 220 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="taskType">Filter by Degree</InputLabel>
+                    <Select
+                      value={report}
+                      label="Filter by Degree"
+                      onChange={(e) => setreport(e.target.value)}
+                    >
+                      {pres.map((i) => {
+                        return <MenuItem value={i}>{i}</MenuItem>;
+                      })}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </div>
+              <div className="col">
+                <Button
+                  style={{ backgroundColor: "#4b2980" }}
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  onClick={() => {
+                    if (report == "") alert("select an option");
+                    else navigate(`/Admin/AddProgram/report/${report}`);
+                  }}
+                >
+                  <AiFillFilePdf style={{ marginRight: 10 }} />
+                  Generate Report
+                </Button>
+              </div>
+              <div className="col">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  style={{ backgroundColor: "#4b2980" }}
+                  onClick={handleOpen}
+                >
+                  <AddIcon style={{ marginRight: 10 }} />
+                  Add New Program
+                </Button>
+              </div>
+            </div>
           </div>
 
           <Modal

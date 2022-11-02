@@ -18,6 +18,7 @@ import {
 import { Dialog, DialogActions, DialogTitle } from "@mui/material";
 import CustomNoRowsOverlay from "./AuxillaryComponents/CustomNoRowsOverlay";
 import { muiAbtn, muibtn } from "./style";
+import { Box } from "@mui/system";
 
 export default function AllCourses() {
   const [Course, setCourse] = useState([]);
@@ -170,60 +171,61 @@ export default function AllCourses() {
         <h1 className="py-4 my-2">
           <b>ALL COURSES</b>
         </h1>
-        <div className="d-flex row justify-content-end mt-4">
-          <div className="col-4">
-            <FormControl fullWidth size="small">
-              <InputLabel id="taskType">Generate Report</InputLabel>
-              <Select
-                className="mb-4"
-                value={report}
-                label="Generate Report"
-                onChange={(e) => setreport(e.target.value)}
+        <div className="d-flex justify-content-end mt-4 mb-4">
+          <div className="row">
+            <div className="col">
+              <Box sx={{ minWidth: 180 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel id="taskType">Generate Report</InputLabel>
+                  <Select
+                    value={report}
+                    label="Generate Report"
+                    onChange={(e) => setreport(e.target.value)}
+                  >
+                    <MenuItem value={"All Courses"}>All Courses</MenuItem>
+                    <MenuItem value={"Courses with PreRequisites"}>
+                      Courses with PreRequisites
+                    </MenuItem>
+                    <MenuItem value={"Courses without PreRequisites"}>
+                      Courses without PreRequisites
+                    </MenuItem>
+                    <MenuItem value={"Courses with Catalogue Description"}>
+                      Courses with Catalogue Description
+                    </MenuItem>
+                    <MenuItem value={"Courses without Catalogue Description"}>
+                      Courses without Catalogue Description
+                    </MenuItem>
+                    <MenuItem value={"Available Codes for Courses"}>
+                      Available Codes for Courses
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </div>
+            <div className="col">
+              <Button
+                variant="contained"
+                color="primary"
+                size="medium"
+                style={{ backgroundColor: "#4b2980" }}
+                onClick={() => {
+                  if (report == "All Courses") navigate("/Admin/CourseReport");
+                  else if (report == "Courses with PreRequisites")
+                    navigate("/Admin/CoursesPrereq");
+                  else if (report == "Courses without PreRequisites")
+                    navigate("/Admin/CoursesNotPrereq");
+                  else if (report == "Courses with Catalogue Description")
+                    navigate("/Admin/Courseswithcd");
+                  else if (report == "Courses without Catalogue Description")
+                    navigate("/Admin/Courseswithoutcd");
+                  else if (report == "Available Codes for Courses")
+                    navigate("/Admin/AvailableCodes");
+                  else alert("Select an option");
+                }}
               >
-                <MenuItem value={"All Courses"}>All Courses</MenuItem>
-                <MenuItem value={"Courses with PreRequisites"}>
-                  Courses with PreRequisites
-                </MenuItem>
-                <MenuItem value={"Courses without PreRequisites"}>
-                  Courses without PreRequisites
-                </MenuItem>
-                <MenuItem value={"Courses with Catalogue Description"}>
-                  Courses with Catalogue Description
-                </MenuItem>
-                <MenuItem value={"Courses without Catalogue Description"}>
-                  Courses without Catalogue Description
-                </MenuItem>
-                <MenuItem value={"Available Codes for Courses"}>
-                  Available Codes for Courses
-                </MenuItem>
-              </Select>
-              <div className="d-flex justify-content-end mb-4">
-            <Button
-              variant="contained"
-              className="mb-2 muibtn"
-              color="primary"
-              size="small"
-              style={muibtn}
-              onClick={()=>{
-              if (report=="All Courses")
-                navigate("/Admin/CourseReport");
-              else if (report=="Courses with PreRequisites")
-                navigate("/Admin/CoursesPrereq");
-              else if (report=="Courses without PreRequisites")
-                navigate("/Admin/CoursesNotPrereq");
-              else if (report=="Courses with Catalogue Description")
-                navigate("/Admin/Courseswithcd");
-              else if (report=="Courses without Catalogue Description")
-                navigate("/Admin/Courseswithoutcd");
-              else if (report=="Available Codes for Courses")
-                navigate("/Admin/AvailableCodes");                
-              else alert("Select an option")
-              }}
-            >
-              View Report
-            </Button>
-          </div>
-            </FormControl>
+                View Report
+              </Button>
+            </div>
           </div>
         </div>
         <DataGrid

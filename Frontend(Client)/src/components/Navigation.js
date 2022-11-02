@@ -151,7 +151,7 @@ export default function Navigation() {
           >
             <div
               style={{
-                height: "calc(100vh - 56px)",
+                height: "calc(100vh - 57px)",
                 overflow: "auto",
               }}
               className="sb-sidenav-menu "
@@ -287,8 +287,8 @@ export default function Navigation() {
                       </div>
                       Course Folder Lab
                     </Link>
-                    
-                <Link
+
+                    <Link
                       class="nav-link sidenavtext "
                       to="FolderInRevisionA"
                       style={{ marginLeft: "12px", fontSize: "14px" }}
@@ -613,7 +613,7 @@ export default function Navigation() {
         <div
           style={{
             width: "100%",
-            height: "calc(100vh - 56px)",
+            height: "calc(100vh - 57px)",
             overflow: "auto",
           }}
         >
