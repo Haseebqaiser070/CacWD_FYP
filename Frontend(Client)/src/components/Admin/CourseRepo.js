@@ -320,7 +320,12 @@ export default function CourseRepo() {
                                 maxlength={4}
                                 fullWidth
                                 value={SufCode}
-                                onChange={(e) => setSufCode(e.target.value)}
+                                onChange={(e) =>{
+                                  if(e.target.value.length<4){
+                                    setSufCode(e.target.value)
+                                  }
+                                  else alert("Please Enter a three digit code")
+                                }}
                               />
                             </FormControl>
                           </div>

@@ -16,16 +16,33 @@ export default function OngoingTasks() {
     content: () => componentRef.current,
   });
   const [Rep, setRep] = useState([]);
+  const [taskType, settaskType] = useState("");
+  const [Program, setProgram] = useState("");
+  const [Person, setPerson] = useState("");  
+  const [Programs, setPrograms] = useState([]);
+  const [status, setstaus] = useState("");
+
+  const [CAC, setCAC] = useState([]);
+
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
     get();
+    getPrograms();
+    getData();
   }, []);
-
+  const getData = async () => {
+    const response = await axios.get("http://localhost:4000/User/show/CAC");
+    setCAC(response.data);
+  };
   const get = async () => {
     const res = await axios.get("http://localhost:4000/Task/ShowallReport");
     console.log(res.data);
     setRep(res.data);
+  };
+  const getPrograms = async () => {
+    const res = await axios.get("http://localhost:4000/Program/show");
+    setPrograms(res.data);
   };
   return (
     <>
@@ -37,13 +54,18 @@ export default function OngoingTasks() {
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Programs</InputLabel>
                   <Select
-                    // value={Degree}
+                    value={Program}
                     label="Filter By Programs"
-                    // onChange={(e) => setDegree(e.target.value)}
+                    onChange={(e) => setProgram(e.target.value)}
                   >
-                    <MenuItem value={"Computer Science"}>
-                      Computer Science
-                    </MenuItem>
+                    <MenuItem value={"For All"}>For All</MenuItem>
+                    {Programs.map((a) => {
+                      return (
+                        <MenuItem value={a.Degree + " " + a.Program}>
+                          {a.Degree} {a.Program}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Box>
@@ -53,11 +75,26 @@ export default function OngoingTasks() {
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Tasks</InputLabel>
                   <Select
-                    // value={Degree}
+                    value={taskType}
                     label="Filter By Tasks"
-                    // onChange={(e) => setDegree(e.target.value)}
+                    onChange={(e) => settaskType(e.target.value)}
                   >
+                    <MenuItem value={"Create Catalog Description"}>
+                      Create Catalog Description
+                    </MenuItem>
+                    <MenuItem value={"Update Catalog Description"}>
+                      Update Catalog Description
+                    </MenuItem>
+                    <MenuItem value={"Create SOS"}>Create SOS</MenuItem>
+                    <MenuItem value={"Update SOS"}>Update SOS</MenuItem>
                     <MenuItem value={"Create CDF"}>Create CDF</MenuItem>
+                    <MenuItem value={"Update CDF"}>Update CDF</MenuItem>
+                    <MenuItem value={"Create Syllabus"}>
+                      Create Syllabus
+                    </MenuItem>
+                    <MenuItem value={"Update Syllabus"}>
+                      Update Syllabus
+                    </MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -67,11 +104,17 @@ export default function OngoingTasks() {
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Faculty</InputLabel>
                   <Select
-                    // value={Degree}
+                    value={Person}
                     label="Filter By Faculty"
-                    // onChange={(e) => setDegree(e.target.value)}
-                  >
-                    <MenuItem value={"Tanveer Ahmed"}>Tanveer Ahmed</MenuItem>
+                    onChange={(e) => setPerson(e.target.value)}
+                  >                   
+                  {CAC.map((a) => {
+                      return (
+                        <MenuItem value={a}>
+                          {a.Name}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Box>
@@ -81,10 +124,12 @@ export default function OngoingTasks() {
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Status</InputLabel>
                   <Select
-                    // value={Degree}
+                    value={status}
                     label="Filter By Status"
-                    // onChange={(e) => setDegree(e.target.value)}
+                    onChange={(e) => setstaus(e.target.value)}
                   >
+                    <MenuItem value={"Assigned"}>Assigned</MenuItem>
+                    <MenuItem value={"Revision"}>Revision</MenuItem>
                     <MenuItem value={"Late"}>Late</MenuItem>
                   </Select>
                 </FormControl>
@@ -116,6 +161,10 @@ export default function OngoingTasks() {
               </div>
             </div>
             {Rep.map((e) => {
+              if((Program==""||e.Program==Program)&&(taskType==""||e.taskType==taskType)&&
+              (Person==""||e.AssignMember.some(item => item.Name == Person.Name))
+              &&(status==""||e.Task.some(item => item.Status == status))
+              ){
               return (
                 <>
                   <div style={{ marginBottom: "40px" }}>
@@ -197,7 +246,7 @@ export default function OngoingTasks() {
                     </div>
                   </div>
                 </>
-              );
+              );}
             })}
           </div>
         </div>

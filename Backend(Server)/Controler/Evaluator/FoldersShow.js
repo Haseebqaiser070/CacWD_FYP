@@ -76,13 +76,16 @@ module.exports.ShowId = async (req, res) => {
       console.log(err);
     }
   };
-  module.exports.ShowFolder = async (req, res) => {
+  module.exports.ShowEvaluatorsforReport = async (req, res) => {
     try {
       console.log(req.user)
       if (!req.user) return await res.json("Timed Out");
       try {  
-        const user = await Folder.find({}).
-        populate("Course User Evaluator")
+        const user = await Userdoc.find({}).
+        populate({path:"EvaluateFolders",model:"Eval",populate:{path:"Folder",model:"Folder",
+        populate:{path:"Course",model:"ProgramCourses"}}}).
+        populate({path:"EvaluateFolders",model:"Eval",populate:{path:"Folder",model:"Folder",
+        populate:{path:"User",model:"User"}}})
         console.log("EvaluateFolders",user)
         await res.status(200).json(user)
         } catch (err) {
@@ -93,6 +96,51 @@ module.exports.ShowId = async (req, res) => {
       console.log(err);
     }
   };
+
+  module.exports.ShowFolder = async (req, res) => {
+    try {
+      console.log(req.user)
+      if (!req.user) return await res.json("Timed Out");
+      try {  
+        const user = await Folder.find({}).
+        populate("Course").populate("User").populate("Evaluator")
+        console.log("EvaluateFolders",user)
+        await res.status(200).json(user)
+        } catch (err) {
+          console.log(err);
+          await res.status(400).json("error")    
+        }  
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  module.exports.ShowFolderforReport = async (req, res) => {
+    try {
+      console.log(req.user)
+      if (!req.user) return await res.json("Timed Out");      
+      try {  
+        const user = await Folder.find({}).
+        populate("Course").populate("User").populate("Evaluator")
+        const user2 = await Userdoc.find({})
+        var retn =user.filter((i)=>{
+          var check=false
+          user2.forEach((e) => {
+            if(e.CourseFolders.some(j=>i._id.equals(j._id)))check=true
+          });
+          if(check)return i
+        }) 
+        console.log("EvaluateFolders",retn)
+
+        await res.status(200).json(retn)
+        } catch (err) {
+          console.log(err);
+          await res.status(400).json("error")    
+        }  
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   module.exports.ShowComp = async (req, res) => {
     try {
       console.log(req.user)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams,useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -39,6 +39,8 @@ const style = {
 export default function FacultyMembers() {
   axios.defaults.withCredentials = true;
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
   const handleClose = () => {
     setOpen(false);
     setUser("");
@@ -254,6 +256,9 @@ export default function FacultyMembers() {
             variant="contained"
             color="primary"
             size="small"
+            onClick={() => {
+              navigate("/Admin/FacultyCourseReport");
+            }}
           >
             <AiFillFilePdf style={{ marginRight: 10 }} />
             Generate Report

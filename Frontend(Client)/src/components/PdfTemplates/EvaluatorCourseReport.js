@@ -16,13 +16,35 @@ import { useReactToPrint } from "react-to-print";
 import { Box } from "@mui/system";
 
 export default function EvaluatorCourseReport() {
-  const { state } = useLocation();
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
+  const [data,setdata] =useState([])
+  const [Programs,setPrograms] =useState([])
+  const [program,setprogram] =useState("")
+  const [Users,setUsers] =useState([])
+  const [user,setuser] =useState("")
+  var count = 0
+  useEffect(()=>{
+    getData()
+    getData2()
+    getRows()
+  },[])
+  const getRows = async () => {
+    const res = await axios.get("http://localhost:4000/Program/show");
+    setPrograms(res.data)
+  }
+  const getData = async () => {
+    const res = await axios.get("http://localhost:4000/EvalFolders/showforReportser");
+    setdata(res.data)
+  };
+  const getData2 = async () => {
+    const response = await axios.get("http://localhost:4000/User/show/Evaluator");
+    setUsers(response.data);
+  };
   return (
     <>
       <div style={{ padding: 30 }}>
@@ -33,13 +55,21 @@ export default function EvaluatorCourseReport() {
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Program</InputLabel>
                   <Select
-                    // value={Degree}
-                    label="Generate Report"
-                    // onChange={(e) => setDegree(e.target.value)}
-                  >
-                    <MenuItem value={"Computer Science"}>
-                      Computer Science
-                    </MenuItem>
+                   value={program}
+                   label="Generate Report"
+                   onChange={(e) =>{
+                     setprogram(e.target.value)
+                     count=0
+                   }
+                 }
+                 >
+                 {Programs.map((a) => {
+                   return (
+                     <MenuItem value={a.Degree +" "+ a.Program}>
+                       {a.Degree} {a.Program}
+                     </MenuItem>
+                   );
+                 })}
                   </Select>
                 </FormControl>
               </Box>
@@ -49,12 +79,21 @@ export default function EvaluatorCourseReport() {
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Evaluator</InputLabel>
                   <Select
-                    // value={Degree}
-                    label="Generate Report"
-                    // onChange={(e) => setDegree(e.target.value)}
-                  >
-                    <MenuItem value={"Tanveer Ahmed"}>Tanveer Ahmed</MenuItem>
-                  </Select>
+                     value={user}
+                     label="Generate Report"
+                     onChange={(e) =>{
+                        setuser(e.target.value)
+                        count=0
+                       }
+                     }
+                   > {Users.map((a) => {
+                       return (
+                         <MenuItem value={a}>
+                           {a.Name}
+                         </MenuItem>
+                       );
+                     })}
+                    </Select>
                 </FormControl>
               </Box>
             </div>
@@ -84,6 +123,23 @@ export default function EvaluatorCourseReport() {
             </div>
           </div>
           <div>
+          
+          {data.map((e)=>{
+            if(user==""||user.Name==e.Name){
+            count = count+1
+            var count2=0
+            return(            
+          <>
+          <h3
+            style={{
+            backgroundColor: "#000",
+            color: "#fff",
+            padding: 5,
+            textAlign: "left",
+            }}
+          className="head my-4">
+            {count} {e.Name}
+          </h3> 
             <table className="table table-bordered">
               <thead style={{ textAlign: "center" }}>
                 <tr>
@@ -95,15 +151,23 @@ export default function EvaluatorCourseReport() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
-                <tr>
-                  <td className="col-1">1.</td>
-                  <td className="col-4">Tanveer Ahmed</td>
-                  <td className="col-3">Computer Science</td>
-                  <td className="col-3">Numerical Computing</td>
-                  <td className="col-1">A</td>
-                </tr>
+                {e.EvaluateFolders.map((i)=>{
+                  if(program==""||i.Folder.Program==program){
+                  count2 = count2+1
+                  return(
+                    <tr>
+                      <td className="col-1">{count2}.</td>
+                      <td className="col-4">{i.Folder.User.Name}</td>
+                      <td className="col-3">{i.Folder.Program}</td>
+                      <td className="col-3">{i.Folder.Course.Name}</td>
+                      <td className="col-1">{i.Folder.Section}</td>
+                    </tr>
+                )}})}
               </tbody>
             </table>
+            </>)}
+          })}
+
           </div>
         </div>
       </div>

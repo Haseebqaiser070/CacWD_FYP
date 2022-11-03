@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -38,6 +38,8 @@ const style = {
 
 export default function Evaluators() {
   axios.defaults.withCredentials = true;
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -254,6 +256,9 @@ export default function Evaluators() {
             variant="contained"
             color="primary"
             size="small"
+            onClick={() => {
+              navigate("/Admin/EvaluatorCourseReport");
+            }}
           >
             <AiFillFilePdf style={{ marginRight: 10 }} />
             Generate Report

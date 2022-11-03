@@ -14,15 +14,36 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useReactToPrint } from "react-to-print";
 import { Box } from "@mui/system";
-
 export default function FacultyCourseReport() {
-  const { state } = useLocation();
-
+  axios.defaults.withCredentials=true
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+  var count = 0
+  const [data,setdata] =useState([])
+  const [Programs,setPrograms] =useState([])
+  const [program,setprogram] =useState("")
+  const [Users,setUsers] =useState([])
+  const [user,setuser] =useState("")
 
+  useEffect(()=>{
+    getData()
+    getData2()
+    getRows()
+  },[])
+  const getRows = async () => {
+    const res = await axios.get("http://localhost:4000/Program/show");
+    setPrograms(res.data)
+  }
+  const getData = async () => {
+    const res = await axios.get("http://localhost:4000/EvalFolders/showAllforr");
+    setdata(res.data)
+  };
+  const getData2 = async () => {
+    const response = await axios.get("http://localhost:4000/User/show/Faculty");
+    setUsers(response.data);
+  };
   return (
     <>
       <div style={{ padding: 30 }}>
@@ -32,14 +53,22 @@ export default function FacultyCourseReport() {
               <Box sx={{ minWidth: 220 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Program</InputLabel>
-                  <Select
-                    // value={Degree}
+                  <Select                  
+                    value={program}
                     label="Generate Report"
-                    // onChange={(e) => setDegree(e.target.value)}
+                    onChange={(e) =>{
+                      setprogram(e.target.value)
+                      count=0
+                    }
+                  }
                   >
-                    <MenuItem value={"Computer Science"}>
-                      Computer Science
-                    </MenuItem>
+                  {Programs.map((a) => {
+                    return (
+                      <MenuItem value={a.Degree + " " + a.Program}>
+                        {a.Degree} {a.Program}
+                      </MenuItem>
+                    );
+                  })}
                   </Select>
                 </FormControl>
               </Box>
@@ -49,11 +78,20 @@ export default function FacultyCourseReport() {
                 <FormControl fullWidth size="small">
                   <InputLabel id="taskType">Filter By Faculty</InputLabel>
                   <Select
-                    // value={Degree}
+                    value={user}
                     label="Generate Report"
-                    // onChange={(e) => setDegree(e.target.value)}
-                  >
-                    <MenuItem value={"Tanveer Ahmed"}>Tanveer Ahmed</MenuItem>
+                    onChange={(e) =>{
+                       setuser(e.target.value)
+                       count=0
+                      }
+                    }
+                  > {Users.map((a) => {
+                      return (
+                        <MenuItem value={a}>
+                          {a.Name}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Box>
@@ -82,7 +120,7 @@ export default function FacultyCourseReport() {
               <h1>Department of Computer Science</h1>
               <h2>All Programs (Degree Level)</h2>
             </div>
-          </div>
+          </div>         
           <div>
             <table className="table table-bordered">
               <thead style={{ textAlign: "center" }}>
@@ -95,16 +133,25 @@ export default function FacultyCourseReport() {
                 </tr>
               </thead>
               <tbody style={{ textAlign: "center" }}>
-                <tr>
-                  <td className="col-1">1.</td>
-                  <td className="col-4">Tanveer Ahmed</td>
-                  <td className="col-3">Computer Science</td>
-                  <td className="col-3">Numerical Computing</td>
-                  <td className="col-1">A</td>
-                </tr>
+              {data.map((i)=>{
+                if((program==""||i.Program==program)
+                &&(user==""||i.User.Name == user.Name)
+                ){
+                count=count+1
+                return(
+                  <tr>
+                    <td className="col-1">{count}.</td>
+                    <td className="col-4">{i.User.Name}</td>
+                    <td className="col-3">{i.Program}</td>
+                    <td className="col-3">{i.Course.Name}</td>
+                    <td className="col-1">{i.Section}</td>
+                  </tr>
+                  )}
+                })
+              }                
               </tbody>
             </table>
-          </div>
+          </div>          
         </div>
       </div>
     </>

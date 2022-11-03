@@ -58,6 +58,8 @@ import Courseswithoutcd from "../PdfTemplates/Courseswithoutcd";
 import AvailableCodes from "../PdfTemplates/AvailableCodes";
 import ProgramReport from "../PdfTemplates/ProgramReport"
 import FacultyCourseReport from "../PdfTemplates/FacultyCourseReport";
+import EvaluatorCourseReport from "../PdfTemplates/EvaluatorCourseReport";
+
 function AdminRoutes() {
   return (
     <Routes>
@@ -70,13 +72,15 @@ function AdminRoutes() {
         <Route path="/CourseView/:id" element={<CourseFinal />} />
         <Route path="/AllCourses" element={<AllCourses />} />
 
-
         <Route path="/CourseReport" element={<CourseReport />} />
         <Route path="/CoursesNotPrereq" element={<CoursesNotPrereq />} />
         <Route path="/CoursesPrereq" element={<CoursesPrereq />} />
         <Route path="/Courseswithcd" element={<Courseswithcd />} />
         <Route path="/Courseswithoutcd" element={<Courseswithoutcd />} />
         <Route path="/AvailableCodes" element={<AvailableCodes />} />
+
+        <Route path="/FacultyCourseReport" element={<FacultyCourseReport />} />
+        <Route path="/EvaluatorCourseReport" element={<EvaluatorCourseReport />} />
 
         <Route path="/Returned" element={<Returned />} />
         <Route path="/OngoingTasks" element={<OngoingTasks />} />
