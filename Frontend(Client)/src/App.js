@@ -21,7 +21,7 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Page404 />} />
+            <Route path="/" element={<Home />} />
             <Route path="/ViewSOS/:Program/:Year" element={<SOSfinal />} />
             <Route path="/forgotpassword" element={<Forgot />} />
             <Route path="/ResetPassword/:token" element={<ResetPassword />} />
