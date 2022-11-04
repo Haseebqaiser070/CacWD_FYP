@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   AiFillEye,
-  AiFillEdit,
+  AiFillDelete,
   AiOutlineUnorderedList,
   AiFillLock,
 } from "react-icons/ai";
@@ -27,6 +27,7 @@ const style = {
 };
 
 export default function CompletedTasks() {
+  
   const [Rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -34,6 +35,7 @@ export default function CompletedTasks() {
   useEffect(() => {
     getRows();
   }, []);
+  axios.defaults.withCredentials=true
   const getRows = async () => {
     const res = await axios.get("http://localhost:4000/Task/showFinInit", {
       withCredentials: true,
@@ -52,19 +54,50 @@ export default function CompletedTasks() {
             color="primary"
             size="small"
             style={{ backgroundColor: "#4b2980", marginLeft: 16, padding: 10 }}
+            onClick={() => {
+              navigate(`/Admin/IndiviualTask/${row._id}`);
+              // Getss(row._id);
+              // setOpen1(true);
+            }}
           >
             <AiFillEye />
           </Button>
         </Tooltip>
-        <Tooltip title="Edit" placement="top-start">
+        <Tooltip title="Delete" placement="top-start">
           <Button
             variant="contained"
             color="primary"
             size="small"
             style={{ backgroundColor: "#4b2980", marginLeft: 16, padding: 10 }}
-            // onClick={}
+            onClick={async () => {
+              await axios.delete(
+                `http://localhost:4000/Task/deleteInit/${row._id}`
+              );
+              const res = await axios.get("http://localhost:4000/Meeting/all");
+              console.log("res", res);
+              var a = [];
+              res.data.map((item) => {
+                var b = item.taskType.find((it) => it.taskType == row.taskType);
+                console.log("dse", b);
+
+                if (b != undefined) {
+                  console.log("dse", a);
+                  a.push(item._id);
+                }
+              });
+              console.log("asa", a);
+              a?.map((value) => {
+                axios
+                  .delete(`http://localhost:4000/Meeting/delete/${value}`)
+                  .then((res) => {
+                    console.log("res", res);
+                  });
+              });
+              getRows();
+            }}
+
           >
-            <AiFillEdit />
+            <AiFillDelete />
           </Button>
         </Tooltip>
       </div>

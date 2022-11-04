@@ -93,13 +93,16 @@ export default function CreateTasks(props) {
     e.preventDefault();
     console.log(obj);
     let verify = true;
+    
     obj.forEach((e) => {
       console.log("e", e);
+      var ab =new Date(e.Deadline)
+      var cc =new Date(Date.now())
+      console.log("e", e);
       if (
-        e.User == [] ||
-        e.Deadline == "" 
-        //||
-        // e.Course == ""
+        e.User.length<1 ||
+        ab<cc  ||
+        e.Status == "" 
       ) {
         verify = false;
       }
@@ -113,7 +116,7 @@ export default function CreateTasks(props) {
       setobj([]);
       props.func();
     } else {
-      alert("Empty Field");
+      alert("Empty or inccorrect Field");
     }
   };
   return (

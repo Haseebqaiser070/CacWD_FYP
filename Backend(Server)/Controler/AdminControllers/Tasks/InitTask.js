@@ -551,10 +551,16 @@ module.exports.UpdateInside = async (req, res) => {
               abc.taskType == "Create SOS" ||
               abc.taskType == "Update SOS"
             ) {
-              const up = await Userdoc.updateOne(
-                { _id: j._id },
-                { $pullAll: { SOSCreation: [{ Program: abc.Program }] } },
-                { multi: true }
+              const upuser = await Userdoc.findOne({ _id: j._id });
+              var newSOSCreation = []
+              upuser.SOSCreation.map((j)=>{
+
+                if(j.Program!=abc.Program&&!newSOSCreation.some(k=>k.Program==j.Program)){
+                 newSOSCreation.push(j)
+                }  
+              })
+              const up = await Userdoc.findOneAndUpdate(
+                { _id: j._id },{SOSCreation:[...newSOSCreation]}
               );
               console.log("\n\nup", up);
             }
@@ -621,14 +627,22 @@ module.exports.UpdateInside = async (req, res) => {
         } else if (e.taskType == "Create SOS" || e.taskType == "Update SOS") {
           e.User.map(async (i) => {
             var ind = arrays.findIndex((j) => j._id.equals(i._id));
-            arrays[ind].SOSCreation.push({ Program: e.Program });
+            arrays[ind].SOSCreation.push({Program:e.Program})
+            var newSOSCreation = []
+            arrays[ind].SOSCreation.map((j)=>{
+                if(!newSOSCreation.some(k=>k.Program==j.Program)){
+                   newSOSCreation.push(j)
+                }  
+              })
+            arrays[ind].SOSCreation=newSOSCreation
           });
         } else if (e.taskType == "Create CDF" || e.taskType == "Update CDF") {
           e.User.map(async (i) => {
             var ind = arrays.findIndex((j) => j._id.equals(i._id));
             arrays[ind].CourseCDF.push(e.Course._id);
           });
-        } else if (
+        } 
+        else if (
           e.taskType == "Create Syllabus" ||
           e.taskType == "Update Syllabus"
         ) {
@@ -663,7 +677,8 @@ module.exports.UpdateInside = async (req, res) => {
           );
           console.log(up2);
           return up2;
-        } else if (
+        } 
+        else if (
           ini.taskType == "Create Syllabus" ||
           ini.taskType == "Update Syllabus"
         ) {
@@ -673,7 +688,8 @@ module.exports.UpdateInside = async (req, res) => {
           );
           console.log(up2);
           return up2;
-        } else if (
+        } 
+        else if (
           ini.taskType == "Create SOS" ||
           ini.taskType == "Update SOS"
         ) {
@@ -786,11 +802,16 @@ module.exports.Delete = async (req, res) => {
             } else if (
               abc.taskType == "Create SOS" ||
               abc.taskType == "Update SOS"
-            ) {
-              const up = await Userdoc.updateOne(
-                { _id: j._id },
-                { $pullAll: { SOSCreation: [{ Program: abc.Program }] } },
-                { multi: true }
+            ) {              
+              const upuser = await Userdoc.findOne({ _id: j._id });
+              var newSOSCreation = []
+              upuser.SOSCreation.map((j)=>{
+                if(j.Program!=abc.Program&&!newSOSCreation.some(k=>k.Program==j.Program)){
+                 newSOSCreation.push(j)
+                }  
+              })
+              const up = await Userdoc.findOneAndUpdate(
+                { _id: j._id },{SOSCreation:[...newSOSCreation]}
               );
               console.log("\n\nup", up);
             }
@@ -816,26 +837,31 @@ module.exports.Showall = async (req, res) => {
     const InitTasks = await InitTask.find({})
       .populate("AssignMember")
       .populate("Task");
-    const retn = await Promise.all(
-      InitTasks.filter(async (i) => {
-        if (i.Task.length < 1) return i;
+    const retn =[] 
+    await Promise.all(
+      InitTasks.map(async (i) => {
+        var check = false;          
+        if (i.Task.length==0) retn.push(i);
         else {
-          var check = false;
           await Promise.all(
             i.Task.map(async (e) => {
-              if (e.Status != "Finished") {
+              if (e.Status!="Finished") {
                 const date = new Date(Date.now());
                 const date2 = new Date(e.Deadline);
                 if (e.Status != "Returned" && date2 < date) {
                   const task = await Task.findOne({ _id: e._id });
                   task.Status = "Late";
                   const newtask = await Task.findByIdAndUpdate(task._id, task);
-                }
-                check = true;
+                }             
               }
             })
           );
-          if (check) return i;
+          i.Task.forEach((e) => {
+            if (e.Status != "Finished"){
+              check = true;
+            }
+          });
+          if (check) retn.push(i);
         }
       })
     );

@@ -131,6 +131,7 @@ export default function OngoingTasks() {
                     <MenuItem value={"Assigned"}>Assigned</MenuItem>
                     <MenuItem value={"Revision"}>Revision</MenuItem>
                     <MenuItem value={"Late"}>Late</MenuItem>
+                    <MenuItem value={"Finished"}>Finished</MenuItem>                  
                   </Select>
                 </FormControl>
               </Box>
