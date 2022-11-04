@@ -27,7 +27,6 @@ const style = {
 };
 
 export default function CompletedTasks() {
-  
   const [Rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -35,7 +34,7 @@ export default function CompletedTasks() {
   useEffect(() => {
     getRows();
   }, []);
-  axios.defaults.withCredentials=true
+  axios.defaults.withCredentials = true;
   const getRows = async () => {
     const res = await axios.get("http://localhost:4000/Task/showFinInit", {
       withCredentials: true,
@@ -95,7 +94,6 @@ export default function CompletedTasks() {
               });
               getRows();
             }}
-
           >
             <AiFillDelete />
           </Button>
@@ -107,24 +105,24 @@ export default function CompletedTasks() {
     {
       field: "Program",
       headerName: "Program",
-      width: 200,
+      width: "300",
     },
 
     {
       field: "taskType",
       headerName: "Task",
-      width: 200,
+      width: "400",
     },
-    {
-      field: "User",
-      headerName: "Assigned To",
-      width: 270,
-    },
+    // {
+    //   field: "User",
+    //   headerName: "Assigned To",
+    //   width: 270,
+    // },
 
     {
       field: "Action",
       headerName: "Action",
-      width: 200,
+      width: "300",
       editable: false,
       renderCell: ActionButtons,
     },

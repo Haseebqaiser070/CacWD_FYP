@@ -13,19 +13,20 @@ import FacultyRoutes from "./components/Routes/FacultyRoutes";
 import EvaluatorRoutes from "./components/Routes/EvaluatorRoutes";
 import Profile from "./components/AuxillaryComponents/UserProfile";
 import ResetPassword from "./components/AuxillaryComponents/ResetPassword";
-import SOSfinal from "./components/DocumentsEvaluatorandFaculty/SOSfinal"
+import SOSfinal from "./components/DocumentsEvaluatorandFaculty/SOSfinal";
+import Page404 from "./components/AuxillaryComponents/404page";
 function App() {
   return (
     <React.Fragment>
       <Router>
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Page404 />} />
             <Route path="/ViewSOS/:Program/:Year" element={<SOSfinal />} />
             <Route path="/forgotpassword" element={<Forgot />} />
             <Route path="/ResetPassword/:token" element={<ResetPassword />} />
             <Route element={<PersistLogin />}>
-            <Route path="/UserProfile" element={<Profile/>} />
+              <Route path="/UserProfile" element={<Profile />} />
               <Route element={<ProtrctedRoutes allowedRoles={"Admin"} />}>
                 <Route path="/Admin/*" element={<AdminRoutes />} />
               </Route>
