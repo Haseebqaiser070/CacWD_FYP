@@ -62,6 +62,7 @@ function Login() {
         const data = response.data;
         console.log("ss", data);
         localStorage.setItem("user", JSON.stringify(response.data._id));
+
         const Roles = response?.data?.Roles;
         localStorage.setItem("role", JSON.stringify(Roles));
 

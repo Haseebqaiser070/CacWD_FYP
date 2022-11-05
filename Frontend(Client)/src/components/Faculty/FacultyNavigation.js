@@ -103,6 +103,7 @@ export default function FacultyNavigation() {
                     console.log("sda",i)
                     return (
                       <>
+                      {i.Evaluated!=true || i.WantRevision==true || ((i.Evaluated==true && i.Round1==false) ||(i.Evaluated==true && i.Round1==false))?  
                         <div
                           style={{
                             marginLeft: "12px",
@@ -137,6 +138,9 @@ export default function FacultyNavigation() {
                           {i.Course.Code} {i.Course.Name}{" "}
                           {i.LabTheory == "Lab" && "(" + i.LabTheory + ")"}
                         </div>
+                        :
+                        <></>
+                        }
                       </>
                     );
                   })}

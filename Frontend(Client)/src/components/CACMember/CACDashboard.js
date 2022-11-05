@@ -11,10 +11,46 @@ import {
 export default function CACDashboard() {
   const [Rows, setRows] = useState([]);
   const [rr, setrr] = useState("");
-
+  const [meetings, setmeetings] = useState([]);
   useEffect(() => {
     getUser();
+    getmeetings();
+
   }, []);
+  const getmeetings = async () => {
+    const res = await axios.get("http://localhost:4000/Meeting/all");
+    const user = JSON.parse(localStorage.getItem("user"));
+    var row = [];
+    var tasks = [],
+      members = [];
+    res.data.map((val, id) => {
+      console.log("sas",val._id)
+      console.log("sas",user)
+
+      if((val.teacher_id.find((item)=>item._id==user))!=undefined){
+        val.taskType.map((i) => {
+          tasks.push(i.taskType);
+        });
+        val.teacher_id.map((i) => {
+          members.push(i.Name);
+        });
+  
+        row.push( {
+          _id: val._id,
+          id: id,
+          task: tasks,
+          Cacmembers: members,
+          meetingDate: val.dateTime,
+          report: val,
+        })
+      }
+      
+
+      (tasks = []), (members = []);
+    });
+    console.log("meetings",row);
+    setmeetings(row);
+  };
   const getUser = async () => {
     const res = await axios.get(`http://localhost:4000/Task/getUser`, {
       withCredentials: true,
@@ -107,10 +143,14 @@ export default function CACDashboard() {
                   <th className="col-4">Date</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  <tr>
-                    <td>Task Title</td>
-                    <td>Time</td>
+                  {meetings.map((item)=>(
+
+                    <tr>
+                    <td>{item.task}</td>
+                    <td>{item.meetingDate}</td>
                   </tr>
+                ))}
+                  
                 </tbody>
               </table>
               <Button

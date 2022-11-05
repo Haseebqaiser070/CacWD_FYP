@@ -162,12 +162,12 @@ export default function ReturnedTasks() {
       headerName: "Task",
       width: 200,
     },
-    // {
-    //   field: "User",
-    //   headerName: "Assigned To",
-    //   valueGetter: (params) => params?.row?.User?.Name,
-    //   width: 170,
-    // },
+    {
+      field: "User",
+      headerName: "Assigned To",
+      valueGetter: (params) => params?.row?.User?.Name,
+      width: 170,
+    },
 
     {
       field: "Status",

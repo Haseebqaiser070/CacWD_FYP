@@ -31,6 +31,7 @@ export default function PendingDeadlineRequests() {
       headerName: "Course",
       flex: 1,
     },
+   
     {
       field: "Faculty",
       headerName: "Faculty Member",
@@ -70,11 +71,16 @@ export default function PendingDeadlineRequests() {
       setldeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
     
 
+
   };
   useEffect(()=>{
     getDeadline()
-    getFolders()
+
   },[])
+  useEffect(()=>{
+    getFolders()
+
+  },[ldeadline22])
   const getFolders = async () => {
     const res = await axios.get(`http://localhost:4000/Content/Folders`);
     console.log("FolderData",res.data);
@@ -82,40 +88,34 @@ export default function PendingDeadlineRequests() {
     const date=new Date(Date.now())
     var a=(date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes())
 
+    console.log("asa",date)
+    console.log("asa",ldeadline11)
 
     if(date>tdeadline11){
       res?.data.map((item)=>{
-        console.log("edh",item)
         if(item.Round1==false && item.LabTheory.includes("Theory")){
-          console.log("adah")
-          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Code+" ("+item?.LabTheory+")"+" -"+"Round1",Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
         }
       })
     }
     if(date>tdeadline22){
       res?.data.map((item)=>{
-        console.log("edh",item)
         if(item.Round2==false && item.LabTheory.includes("Theory")){
-          console.log("adah")
-          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Code+" ("+item?.LabTheory+")"+" -"+"Round2",Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
         }
       })
     }
     if(date>ldeadline11){
       res?.data.map((item)=>{
-        console.log("edh",item)
         if(item.Round1==false && item.LabTheory.includes("Lab")){
-          console.log("adah")
-          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Code+" ("+item?.LabTheory+")"+" -"+"Round1",Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
         }
       })
     }
     if(date>ldeadline22){
       res?.data.map((item)=>{
-        console.log("edh",item)
         if(item.Round2==false && item.LabTheory.includes("Lab")){
-          console.log("adah")
-          array.push({Program:item?.Course?.Program,Course:item?.Course?.Name+"-"+item?.Course?.Code,Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
+          array.push({Program:item?.Course?.Program,Course:item?.Course?.Code+" ("+item?.LabTheory+")"+" -"+"Round2",Faculty:item?.User?.Name,Evaluator:item?.Evaluator?.Name})
         }
       })
     }

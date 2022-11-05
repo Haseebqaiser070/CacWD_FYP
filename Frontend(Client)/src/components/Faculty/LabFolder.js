@@ -324,8 +324,66 @@ console.log("\nDecoded",Decoded)
       handleClose()
     }
     else{
-      alert("upload all required files")
-    }
+      if(Question=="" && Question1==""){
+        const a=folders.files.find((item)=>item.Title==Title)
+        setQuestion(a.Question.Base64)
+        setQuestion1(a.Question.Name)
+      }
+      if(Best=="" && Best1==""){
+        const a=folders.files.find((item)=>item.Title==Title)
+        setBest(a.Best.Base64)
+        setBest1(a.Best.Name)
+      }
+      if(Average=="" && Average1==""){
+        const a=folders.files.find((item)=>item.Title==Title)
+        setAverage(a.Average.Base64)
+        setAverage1(a.Average.Name)
+      }
+      if(Worst=="" && Worst1==""){
+        const a=folders.files.find((item)=>item.Title==Title)
+        setWorst(a.Worst.Base64)
+        setWorst1(a.Worst.Name)
+      }
+      if(Solution=="" && Solution1==""){
+        const a=folders.files.find((item)=>item.Title==Title)
+        setSolution(a.Solution.Base64)
+        setSolution1(a.Solution.Name)
+      }
+      if(Awardlist=="" && Awardlist1==""){
+        const a=folders.files.find((item)=>item.Title==Title)
+        setAwardlist(a.Awardlist.Base64)
+        setAwardlist1(a.Awardlist.Name)
+      }
+      const res = await axios.put(`http://localhost:4000/Folders/add/${id}`, {
+        Title,
+        Question: {
+          Name: Question1,
+          Base64: Question,
+        },
+        Best: {
+          Name: Best1,
+          Base64: Best,
+        },
+        Average: {
+          Name: Average1,
+          Base64: Average,
+        },
+        Worst: {
+          Name: Worst1,
+          Base64: Worst,
+        },
+        Solution: {
+          Name: Solution1,
+          Base64: Solution,
+        },
+        Awardlist: {
+          Name: Awardlist1,
+          Base64: Awardlist,
+        },
+      });
+      getFolderData();
+      handleClose();
+        }
   }
 
   const SubmitE1 = async () => {

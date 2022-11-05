@@ -106,7 +106,7 @@ export default function FacultyNavigation() {
                     console.log("dsds",i)
                     return (
                       <>
-                        {i.Folder.Evaluated!=true || i.Folder.Revision==true ?
+                        {i.Evaluated!=true || i.Revision==true ?
                         <div
                           style={{
                             marginLeft: "12px",

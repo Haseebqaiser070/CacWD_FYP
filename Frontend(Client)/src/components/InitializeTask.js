@@ -302,27 +302,27 @@ export default function InitializeTask() {
     {
       field: "taskType",
       headerName: "Task Type",
-      width: "230",
+      flex: 1,
     },
     {
       field: "Program",
       headerName: "Program",
-      width: "200",
+      flex: 1,
     },
-    {
-      field: "AssignMember",
-      headerName: "CAC Members Assigned",
-      renderCell: (params) =>
-        params?.row?.AssignMember.map((i) => {
-          return <>{i.Name + "  "}</>;
-        }),
-      width: "300",
-    },
+    // {
+    //   field: "AssignMember",
+    //   headerName: "CAC Members Assigned",
+    //   renderCell: (params) =>
+    //     params?.row?.AssignMember.map((i) => {
+    //       return <>{i.Name + "  "}</>;
+    //     }),
+    //   flex: 2,
+    // },
 
     {
       field: "Action",
       headerName: "Action",
-      width: "450",
+      flex: 3,
       editable: false,
       renderCell: Mbutton,
     },
@@ -667,8 +667,6 @@ export default function InitializeTask() {
 
         <div>
           <DataGrid
-            autoPageSize
-            autoWidth
             components={{
               NoRowsOverlay: CustomNoRowsOverlay,
               LoadingOverlay: LinearProgress,
