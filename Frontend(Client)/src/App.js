@@ -14,7 +14,7 @@ import EvaluatorRoutes from "./components/Routes/EvaluatorRoutes";
 import Profile from "./components/AuxillaryComponents/UserProfile";
 import ResetPassword from "./components/AuxillaryComponents/ResetPassword";
 import SOSfinal from "./components/DocumentsEvaluatorandFaculty/SOSfinal";
-import Page404 from "./components/AuxillaryComponents/404page";
+// import Page404 from "./components/AuxillaryComponents/404page";
 function App() {
   return (
     <React.Fragment>
@@ -40,6 +40,7 @@ function App() {
                 <Route path="/Evaluator/*" element={<EvaluatorRoutes />} />
               </Route>
             </Route>
+            {/* <Route path="*" element={<Page404 />} />             */}
           </Routes>
         </AuthProvider>
       </Router>

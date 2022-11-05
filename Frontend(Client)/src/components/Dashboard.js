@@ -2,7 +2,6 @@ import { Button, Card } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import "./css/styles.css";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import axios from "axios";
 import { muibtn } from "./style";
 export default function Dashboard() {
@@ -99,13 +98,13 @@ export default function Dashboard() {
                 <th className="col-4">Members</th>
               </thead>
               <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                {meetings.map((item, id) => (
+                {meetings.length>0?(meetings.map((item, id) => (
                   <tr>
                     <td>{item.task}</td>
                     <td>{item.meetingDate}</td>
                     <td>{item.Cacmembers}</td>
                   </tr>
-                ))}
+                ))):(<h4>Nothing to show</h4>)}
               </tbody>
             </table>
             <Button
@@ -140,7 +139,7 @@ export default function Dashboard() {
                   <th className="col-4">Members</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {assignTasks.map((i) => {
+                  {assignTasks.length>0?(assignTasks.map((i) => {
                     return (
                       <tr>
                         <td>{i.taskType}</td>
@@ -148,7 +147,7 @@ export default function Dashboard() {
                         <td>{i.User.map((i) => i.Name)},</td>
                       </tr>
                     );
-                  })}
+                  })):(<h4>Nothing to show</h4>)}
                 </tbody>
               </table>
               <Button
@@ -181,7 +180,7 @@ export default function Dashboard() {
                   <th className="col-4">Members</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Returned.map((i) => {
+                  {Returned.length>0?(Returned.map((i) => {
                     return (
                       <tr>
                         <td>{i.taskType}</td>
@@ -189,7 +188,7 @@ export default function Dashboard() {
                         <td>{i.User.map((i) => i.Name)},</td>
                       </tr>
                     );
-                  })}
+                  })):(<h4>Nothing to show</h4>)}
                 </tbody>
               </table>
               <Button

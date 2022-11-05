@@ -108,6 +108,9 @@ export default function CreateSOS() {
         alert("In " + cats.Category + " Number of courses is greater");
       }
     });
+    if(Year.length!=4){
+      check=false
+    }
     if (check) {
       console.log("SOS");
       // const retnSOSPage1 = await axios.post("http://localhost:4000/SOSpage1/add", {
@@ -309,7 +312,11 @@ export default function CreateSOS() {
             size="small"
             fullWidth
             value={Year}
-            onChange={(e) => setYear(e.target.value)}
+            onChange={(e) =>{
+              if(isNaN(e.target.value))alert("enter a numeric value")
+              else if(e.target.value.length>4)alert("enter a 4 digit year")
+              else setYear(e.target.value)
+            }}
           />
         </FormControl>
         <div className="row">

@@ -22,7 +22,7 @@ module.exports.showUsers = async (req, res) => {
     if (!req.user) return await res.status(401).json("Timed Out");
     const user = await Userdoc.findById(req.user._id)
     var arr2 = ["Create SOS","Update SOS"]
-    const task  = await Task.findOne({taskType:{$in:arr2},User:req.user._id,Program:req.params.Program,Course:null})
+    const task  = await Task.findOne({taskType:{$in:arr2},User:req.user._id,Program:req.params.Program,Course:null}).populate("User")
     
     const date=new Date(Date.now())
     const date2=new Date(task.Deadline)
@@ -41,10 +41,11 @@ module.exports.showUsers = async (req, res) => {
     console.log("\n\n\n\n\n\n\n\n",task,"\n\n\n\n\n\n\n\n")
     const newtask  = await Task.findByIdAndUpdate(task._id,task)
     console.log("\n\n\n\n\n\n\n\n",newtask,"\n\n\n\n\n\n\n\n")
-    
+
     await Promise.all(task.User.map(async(i)=>{
-      const newSOSCreation =  i.SOSCreation?.filter((x)=>{
-        if(x.Program!=req.params.Program) return x
+      var newSOSCreation = []
+      i.SOSCreation.map((x)=>{
+        if(x.Program!=req.params.Program){newSOSCreation.push(x)}
       })
       const newuser =  await Userdoc.findByIdAndUpdate(i._id,{SOSCreation:newSOSCreation})   
       console.log("\n\n\n\n\n\n\n\n newUser",newuser)           

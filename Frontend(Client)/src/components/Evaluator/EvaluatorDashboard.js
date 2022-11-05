@@ -75,7 +75,7 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Courses.map((i) => {
+                  {Courses.length>0?(Courses.map((i) => {
                     return (
                       <tr>
                         <td>{i.Program}</td>
@@ -99,7 +99,7 @@ export default function EvaluatorDashboard() {
                         </td>
                       </tr>
                     );
-                  })}
+                  })):(<h4>Nothing to show</h4>)}
                 </tbody>
               </table>
             </div>
@@ -124,7 +124,7 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Courses.map((i) => {
+                  {Courses.length>0?(Courses.map((i) => {
                     return (
                       <tr>
                         <td>{i.Program}</td>
@@ -148,7 +148,7 @@ export default function EvaluatorDashboard() {
                         </td>
                       </tr>
                     );
-                  })}
+                  })):(<h4>Nothing to show</h4>)}
                 </tbody>
               </table>
             </div>
@@ -170,7 +170,7 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Courses.map((i) => {
+                  {Courses.length>0?(Courses.map((i) => {
                     return (
                       <tr>
                         <td>{i.Program}</td>
@@ -194,7 +194,7 @@ export default function EvaluatorDashboard() {
                         </td>
                       </tr>
                     );
-                  })}
+                  })):(<h4>Nothing to show</h4>)}
                 </tbody>
               </table>
             </div>

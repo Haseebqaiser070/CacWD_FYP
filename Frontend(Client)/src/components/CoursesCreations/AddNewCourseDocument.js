@@ -205,7 +205,11 @@ export default function AddNewCourseDocument() {
                     size="small"
                     fullWidth
                     value={BookYear}
-                    onChange={(e) => setBookYear(e.target.value)}
+                    onChange={(e) => {                      
+                      if(isNaN(e.target.value))alert("enter a numeric value")
+                      else if(e.target.value.length>4)alert("enter a 4 digit year")
+                      else setBookYear(e.target.value) 
+                    }}
                   ></TextField>
                 </div>
                 <div>
@@ -765,7 +769,11 @@ export default function AddNewCourseDocument() {
                     size="small"
                     fullWidth
                     value={BookYear}
-                    onChange={(e) => setBookYear(e.target.value)}
+                    onChange={(e) =>{                      
+                        if(isNaN(e.target.value))alert("enter a numeric value")
+                        else if(e.target.value>4)alert("enter a 4 digit year")
+                        else setBookYear(e.target.value) 
+                      }}
                   ></TextField>
                 </div>
                 </div>

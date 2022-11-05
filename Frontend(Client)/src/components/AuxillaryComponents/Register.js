@@ -71,6 +71,11 @@ export default function Register() {
         setPhone("");
         setPassword("");
         setRoles([]);
+        setValues({
+          password: "",
+          showPassword: false,
+        });
+      
       } catch (err) {
         if ((err.response.data = "Email")) {
           alert("User with this Email already Exists");

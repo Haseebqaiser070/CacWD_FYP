@@ -140,6 +140,7 @@ export default function EvaluatorCourseReport() {
           className="head my-4">
             {count} {e.Name}
           </h3> 
+            {e.EvaluateFolders.length>=1?(
             <table className="table table-bordered">
               <thead style={{ textAlign: "center" }}>
                 <tr>
@@ -164,7 +165,14 @@ export default function EvaluatorCourseReport() {
                     </tr>
                 )}})}
               </tbody>
-            </table>
+            </table>):(<h4
+            style={{
+            padding: 5,
+            }}
+          className="head my-4">
+            No Folders Assigned
+            </h4>
+             )}
             </>)}
           })}
 

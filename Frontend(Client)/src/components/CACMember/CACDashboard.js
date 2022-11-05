@@ -4,6 +4,10 @@ import logo from "./comsats_logo.png";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Card } from "@mui/material";
+import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
+import {
+  LinearProgress,
+} from "@mui/material";
 export default function CACDashboard() {
   const [Rows, setRows] = useState([]);
   const [rr, setrr] = useState("");
@@ -129,6 +133,10 @@ export default function CACDashboard() {
             </h4>
             <div>
               <DataGrid
+              components={{
+                NoRowsOverlay: CustomNoRowsOverlay,
+                LoadingOverlay: LinearProgress,
+              }}
                 style={{ height: 400, width: "100%" }}
                 columns={columns}
                 getRowId={(Rows) => Rows._id}

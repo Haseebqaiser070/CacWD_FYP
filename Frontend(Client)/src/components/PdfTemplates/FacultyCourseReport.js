@@ -137,13 +137,13 @@ export default function FacultyCourseReport() {
                 if((program==""||i.Program==program)
                 &&(user==""||i.User.Name == user.Name)
                 ){
-                count=count+1
+                count=count+1                
                 return(
                   <tr>
                     <td className="col-1">{count}.</td>
                     <td className="col-4">{i.User.Name}</td>
                     <td className="col-3">{i.Program}</td>
-                    <td className="col-3">{i.Course.Name}</td>
+                    {i.LabTheory=="Lab"?(<td className="col-3">{i.Course.Name}(Lab)</td>):(<td className="col-3">{i.Course.Name}</td>)}
                     <td className="col-1">{i.Section}</td>
                   </tr>
                   )}
