@@ -119,14 +119,6 @@ function Login() {
                   />
                 </FormControl>
 
-                {/* <input
-                    className="form-control"
-                    id="inputPassword"
-                    type="password"
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                  /> */}
-
                 <FormControl
                   className="mb-2"
                   variant="outlined"

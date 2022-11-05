@@ -98,13 +98,17 @@ export default function Dashboard() {
                 <th className="col-4">Members</th>
               </thead>
               <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                {meetings.length>0?(meetings.map((item, id) => (
-                  <tr>
-                    <td>{item.task}</td>
-                    <td>{item.meetingDate}</td>
-                    <td>{item.Cacmembers}</td>
-                  </tr>
-                ))):(<h4>Nothing to show</h4>)}
+                {meetings.length > 0 ? (
+                  meetings.map((item, id) => (
+                    <tr>
+                      <td>{item.task}</td>
+                      <td>{item.meetingDate}</td>
+                      <td>{item.Cacmembers}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <h4>Nothing to show</h4>
+                )}
               </tbody>
             </table>
             <Button
@@ -139,15 +143,19 @@ export default function Dashboard() {
                   <th className="col-4">Members</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {assignTasks.length>0?(assignTasks.map((i) => {
-                    return (
-                      <tr>
-                        <td>{i.taskType}</td>
-                        <td>{i.Deadline}</td>
-                        <td>{i.User.map((i) => i.Name)},</td>
-                      </tr>
-                    );
-                  })):(<h4>Nothing to show</h4>)}
+                  {assignTasks.length > 0 ? (
+                    assignTasks.map((i) => {
+                      return (
+                        <tr>
+                          <td>{i.taskType}</td>
+                          <td>{i.Deadline}</td>
+                          <td>{i.User.map((i) => i.Name)},</td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <h4>Nothing to show</h4>
+                  )}
                 </tbody>
               </table>
               <Button
@@ -180,15 +188,19 @@ export default function Dashboard() {
                   <th className="col-4">Members</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Returned.length>0?(Returned.map((i) => {
-                    return (
-                      <tr>
-                        <td>{i.taskType}</td>
-                        <td>{i.Deadline}</td>
-                        <td>{i.User.map((i) => i.Name)},</td>
-                      </tr>
-                    );
-                  })):(<h4>Nothing to show</h4>)}
+                  {Returned.length > 0 ? (
+                    Returned.map((i) => {
+                      return (
+                        <tr>
+                          <td>{i.taskType}</td>
+                          <td>{i.Deadline}</td>
+                          <td>{i.User.map((i) => i.Name)},</td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <h4>Nothing to show</h4>
+                  )}
                 </tbody>
               </table>
               <Button
