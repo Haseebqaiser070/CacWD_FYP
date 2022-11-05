@@ -160,7 +160,7 @@ export default function EvaluatorCourseReport() {
                       <td className="col-1">{count2}.</td>
                       <td className="col-4">{i.Folder.User.Name}</td>
                       <td className="col-3">{i.Folder.Program}</td>
-                      <td className="col-3">{i.Folder.Course.Name}</td>
+                      {i.Folder.LabTheory=="Lab"?(<td className="col-3">{i.Folder.Course.Name}(Lab)</td>):(<td className="col-3">{i.Folder.Course.Name}</td>)}
                       <td className="col-1">{i.Folder.Section}</td>
                     </tr>
                 )}})}
