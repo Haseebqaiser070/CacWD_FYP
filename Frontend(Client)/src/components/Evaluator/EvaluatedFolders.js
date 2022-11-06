@@ -8,6 +8,19 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
 import { AiFillEye } from "react-icons/ai";
+import {
+  Autocomplete,
+  Card,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  FormControlLabel,
+  LinearProgress,
+  MenuItem,
+  Modal,
+  Switch,
+  TextField,
+} from "@mui/material";
 const columns = [
   {
     field: "Program",
@@ -71,12 +84,12 @@ export default function AllCourseFolder() {
   const getData = async () => {
     const res = await axios.get(`http://localhost:4000/EvalFolders/showfolder`);
     setPosts(res.data);
-    console.log("res",res.data)
+    console.log("res", res.data);
     var row = [];
     var index = 0;
     res.data.map((val, id) => {
-      if (val.Evaluator?._id == userid && val.WantRevision!=true) {
-        row.push( {
+      if (val.Evaluator?._id == userid && val.WantRevision != true) {
+        row.push({
           _id: val._id,
           id: id,
           Program: val.Program,
@@ -84,7 +97,7 @@ export default function AllCourseFolder() {
           Evaluator: val.Evaluator?.Name,
           Faculty: val.User.Name,
           data: val,
-        })
+        });
       }
     });
     console.log("uajh", row);

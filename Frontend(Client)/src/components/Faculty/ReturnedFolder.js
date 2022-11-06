@@ -59,28 +59,43 @@ function HandleButton(row) {
 }
 export default function ReturnedFolders() {
   const [Rows, setRows] = useState([]);
+  const [user, setUser] = useState([]);
+
   const navigate = useNavigate();
   const [Posts, setPosts] = useState([]);
-  const userid = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(async () => {
+    console.log("per");
+    const response = await axios.get("http://localhost:4000/Auth/check", {
+      withCredentials: true,
+    });
+    setUser(response.data._id);
+  }, []);
+
+  // const userid = JSON.parse(localStorage.getItem("user"));
 
   React.useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
   const getData = async () => {
     const res = await axios.get(`http://localhost:4000/EvalFolders/showfolder`);
     setPosts(res.data);
     var row = [];
     var index = 0;
     res.data.map((val, id) => {
-      if (val.Evaluated == true && val.User._id == userid && val.WantRevision==false) {
-        row.push( {
+      if (
+        val.Evaluated == true &&
+        val.User._id == user &&
+        val.WantRevision == false
+      ) {
+        row.push({
           _id: val._id,
           id: id,
           Program: val.Program,
           Course: val.Course.Name + "-" + val.LabTheory,
           Evaluator: val.Evaluator.Name,
           data: val,
-        })
+        });
       }
     });
     setRows(row);

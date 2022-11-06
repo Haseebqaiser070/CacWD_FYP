@@ -29,11 +29,7 @@ const style = {
   boxShadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
 };
 
-const cardStyle = {
-  backgroundColor: "#4b2980",
-  color: "#fff",
-  padding: 20,
-};
+const cardStyle = {};
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -140,57 +136,57 @@ export default function CacAvailability() {
       );
       if (data != null) {
         setflag(true);
-        var array=[]
-       times.map((item)=>{
-          var a=data.time.mon.find((it)=>it==item)
-          if(a==undefined){
-            array.push(item)
+        var array = [];
+        times.map((item) => {
+          var a = data.time.mon.find((it) => it == item);
+          if (a == undefined) {
+            array.push(item);
           }
-        })
-        setAvailabilityTImeMon(array)
-        array=[]
-       times.map((item)=>{
-          var a=data.time.tue.find((it)=>it==item)
-          if(a==undefined){
-            array.push(item)
+        });
+        setAvailabilityTImeMon(array);
+        array = [];
+        times.map((item) => {
+          var a = data.time.tue.find((it) => it == item);
+          if (a == undefined) {
+            array.push(item);
           }
-        })
-        setAvailabilityTImeTue(array)
+        });
+        setAvailabilityTImeTue(array);
 
-        array=[]
-       times.map((item)=>{
-          var a=data.time.wed.find((it)=>it==item)
-          if(a==undefined){
-            array.push(item)
+        array = [];
+        times.map((item) => {
+          var a = data.time.wed.find((it) => it == item);
+          if (a == undefined) {
+            array.push(item);
           }
-        })
-        setAvailabilityTImeWed(array)
+        });
+        setAvailabilityTImeWed(array);
 
-        array=[]
-       times.map((item)=>{
-          var a=data.time.thur.find((it)=>it==item)
-          if(a==undefined){
-            array.push(item)
+        array = [];
+        times.map((item) => {
+          var a = data.time.thur.find((it) => it == item);
+          if (a == undefined) {
+            array.push(item);
           }
-        })
-        setAvailabilityTImeThur(array)
+        });
+        setAvailabilityTImeThur(array);
 
-        array=[]
-       times.map((item)=>{
-          var a=data.time.fri.find((it)=>it==item)
-          if(a==undefined){
-            array.push(item)
+        array = [];
+        times.map((item) => {
+          var a = data.time.fri.find((it) => it == item);
+          if (a == undefined) {
+            array.push(item);
           }
-        })
-        setAvailabilityTImeFri(array)
-        array=[]
-       times.map((item)=>{
-          var a=data.time.sat.find((it)=>it==item)
-          if(a==undefined){
-            array.push(item)
+        });
+        setAvailabilityTImeFri(array);
+        array = [];
+        times.map((item) => {
+          var a = data.time.sat.find((it) => it == item);
+          if (a == undefined) {
+            array.push(item);
           }
-        })
-        setAvailabilityTImeSat(array)
+        });
+        setAvailabilityTImeSat(array);
         //console.log("eroo",data)
         setAvailabilityData(data.time);
       }

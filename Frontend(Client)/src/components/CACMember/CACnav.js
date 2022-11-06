@@ -44,7 +44,7 @@ export default function CACnav() {
           <nav class="sb-sidenav accordion bg" id="sidenavAccordion">
             <div
               style={{
-                height: "calc(100vh - 56px)",
+                height: "calc(100vh - 58px)",
                 overflow: "auto",
               }}
               class="sb-sidenav-menu"
@@ -111,7 +111,7 @@ export default function CACnav() {
         <div
           style={{
             width: "100%",
-            height: "calc(100vh - 56px)",
+            height: "calc(100vh - 58px)",
             overflow: "auto",
           }}
         >

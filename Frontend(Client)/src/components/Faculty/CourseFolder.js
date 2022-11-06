@@ -25,7 +25,7 @@ const style = {
 export default function CourseFolder() {
   axios.defaults.withCredentials = true;
   const { id } = useParams();
-  const userid= JSON.parse(localStorage.getItem('user'))
+  const userid = JSON.parse(localStorage.getItem("user"));
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -42,7 +42,7 @@ export default function CourseFolder() {
   const [open3, setOpen3] = useState(false);
   const handleOpen3 = () => setOpen3(true);
   const handleClose3 = () => setOpen3(false);
-  const [date,setdate]=useState(new Date(Date.now()))
+  const [date, setdate] = useState(new Date(Date.now()));
   const [folders, setfolders] = useState("");
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function CourseFolder() {
     var assignments1 = [];
     var quiz2 = [];
     var assignments2 = [];
-    console.log("setfolfers",folders)
+    console.log("setfolfers", folders);
     for (
       var i = 1;
       i <= parseInt(res.data.Round1.Quiz) + parseInt(res.data.Round2.Quiz);
@@ -132,37 +132,44 @@ export default function CourseFolder() {
   const [Solution1, setSolution1] = useState("");
   const [ICEF, setICEF] = useState("");
   const [Obe, setObe] = useState("");
-  const [deadline1,setdeadline1]=useState();
-  const [deadline2,setdeadline2]=useState();
-  const [deadline11,setdeadline11]=useState();
-  const [deadline22,setdeadline22]=useState();
-  const [round1flag,setflag1]=useState(false);
-  const [deadlinereq1,setdeadreq1]=useState(false)
-  const [deadlinereq2,setdeadreq2]=useState(false)
+  const [deadline1, setdeadline1] = useState();
+  const [deadline2, setdeadline2] = useState();
+  const [deadline11, setdeadline11] = useState();
+  const [deadline22, setdeadline22] = useState();
+  const [round1flag, setflag1] = useState(false);
+  const [deadlinereq1, setdeadreq1] = useState(false);
+  const [deadlinereq2, setdeadreq2] = useState(false);
 
-  const [round2flag,setflag2]=useState(false);
-  const [pressed,setpressed]=useState(false)
-  const [pressed1,setpressed1]=useState(false)
-  const [submitted1,setSubmitted1]=useState(false)
-  const [submitted2,setSubmitted2]=useState(false)
-  const [submittedRevision,setRevisionSubmitted]=useState(false)
+  const [round2flag, setflag2] = useState(false);
+  const [pressed, setpressed] = useState(false);
+  const [pressed1, setpressed1] = useState(false);
+  const [submitted1, setSubmitted1] = useState(false);
+  const [submitted2, setSubmitted2] = useState(false);
+  const [submittedRevision, setRevisionSubmitted] = useState(false);
 
   const [fileBase64String, setFileBase64String] = useState("");
-  const setflag=async(deadline11,deadline22)=>{
-    var b=date.getMonth()+1
-    var a=(date.getDate()+"/"+(b)+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes())
-    console.log("date",deadline22)
-    console.log("dsaa",date)
-    
-    if(date>deadline11){
-      setflag1(true)
-    }
-    if(date>deadline22){
+  const setflag = async (deadline11, deadline22) => {
+    var b = date.getMonth() + 1;
+    var a =
+      date.getDate() +
+      "/" +
+      b +
+      "/" +
+      date.getFullYear() +
+      " " +
+      date.getHours() +
+      ":" +
+      date.getMinutes();
+    console.log("date", deadline22);
+    console.log("dsaa", date);
 
-      setflag2(true)
+    if (date > deadline11) {
+      setflag1(true);
     }
-  }
-  
+    if (date > deadline22) {
+      setflag2(true);
+    }
+  };
 
   //----------
   const encodeFileBase64 = (file, ty) => {
@@ -195,8 +202,7 @@ export default function CourseFolder() {
         setICEF(Base64);
       } else if (ty == "Obe") {
         setObe(Base64);
-      }
-      else if (ty == "LectureDeliveryRecord"){
+      } else if (ty == "LectureDeliveryRecord") {
         setLectureDeliveryRecord(Base64);
       }
       setFileBase64String(Base64);
@@ -212,7 +218,6 @@ export default function CourseFolder() {
     };
   };
   const [Decoded, setDecoded] = useState("");
-  
 
   const base64toData = () => {
     const base64WithoutPrefix = fileBase64String.substring(
@@ -239,87 +244,98 @@ export default function CourseFolder() {
   useEffect(() => {
     getFolderData();
   }, []);
-  useEffect(()=>{
-    getDeadline()
-
-  },[])
+  useEffect(() => {
+    getDeadline();
+  }, []);
   const [Folder, setFolder] = useState({ files: [], ICEF: null, Obe: null });
 
   const getFolderData = async () => {
     const res = await axios.get(`http://localhost:4000/Folders/showOne/${id}`);
-    console.log("FolderData",res.data);
-    console.log("Fusera",id);
+    console.log("FolderData", res.data);
+    console.log("Fusera", id);
 
     setFolder(res.data);
-    setSubmitted1(res.data.Round1)
-    setRevisionSubmitted(res.data.WantRevision)
-    setSubmitted2(res.data.Round2)
-
+    setSubmitted1(res.data.Round1);
+    setRevisionSubmitted(res.data.WantRevision);
+    setSubmitted2(res.data.Round2);
   };
   const getDeadline = async () => {
     const res = await axios.get(`http://localhost:4000/Content/ShowTheory`);
-    console.log("deadlinesdata",res.data);
-    const answer=await getDeadlineRequest()
-console.log("answrarray",answer)
-    var s=res.data.Round1.Deadline
-    var s1=res.data.Round2.Deadline
+    console.log("deadlinesdata", res.data);
+    const answer = await getDeadlineRequest();
+    console.log("answrarray", answer);
+    var s = res.data.Round1.Deadline;
+    var s1 = res.data.Round2.Deadline;
 
-    s=new Date(res.data.Round1.Deadline)
-    s1=new Date(res.data.Round2.Deadline)
-    if(answer[0]==false){
-      console.log("sdc")
+    s = new Date(res.data.Round1.Deadline);
+    s1 = new Date(res.data.Round2.Deadline);
+    if (answer[0] == false) {
+      console.log("sdc");
 
-      setdeadline11(s)
-      setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
-      setflag(s,deadline22)
-
+      setdeadline11(s);
+      setdeadline1(
+        s.getDate() +
+          "/" +
+          (s.getMonth() + 1) +
+          "/" +
+          s.getFullYear() +
+          " " +
+          s.getHours() +
+          ":" +
+          s.getMinutes()
+      );
+      setflag(s, deadline22);
     }
-    if(answer[1]==false){
-      console.log("sdc")
+    if (answer[1] == false) {
+      console.log("sdc");
 
-      setdeadline22(s1)
-      setdeadline2(s1.getDate()+"/"+(s1.getMonth()+1)+"/"+s1.getFullYear()+" "+s1.getHours()+":"+s1.getMinutes());
-      setflag(deadline11,s1)
-
+      setdeadline22(s1);
+      setdeadline2(
+        s1.getDate() +
+          "/" +
+          (s1.getMonth() + 1) +
+          "/" +
+          s1.getFullYear() +
+          " " +
+          s1.getHours() +
+          ":" +
+          s1.getMinutes()
+      );
+      setflag(deadline11, s1);
     }
-
   };
   const getDeadlineRequest = async () => {
-    const res=await axios.get(`http://localhost:4000/Content/ShowLabReq`)
-    console.log("deadlinesdata",res?.data);
-    console.log("FolderData",userid);
-    var returnarray=[false,false]
-    var a=res.data.Theory?.find((item)=>item?.Request_id?._id==userid)
-    console.log("rerse",returnarray)
-    if(a!=undefined){
-    if(a?.pending==false){
-      if(a.Round.includes("Round1")){
-        var s=new Date(a?.DeadlineDate)
-       
-        setdeadline11(s)
-        setdeadline1(a?.Deadline)
-        setdeadreq1(true)
-        returnarray[0]=true
-        setflag(s,deadline22)
-        //console.log("a",s)
-       // setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
-      }
-      else{
-        var s=new Date(a?.DeadlineDate)
-        console.log("ads",s)
-        setdeadline22(s)
-        setdeadline2(a?.Deadline)
-        setdeadreq2(true)
-        returnarray[1]=true
-        setflag(deadline11,s)
+    const res = await axios.get(`http://localhost:4000/Content/ShowLabReq`);
+    console.log("deadlinesdata", res?.data);
+    console.log("FolderData", userid);
+    var returnarray = [false, false];
+    var a = res.data.Theory?.find((item) => item?.Request_id?._id == userid);
+    console.log("rerse", returnarray);
+    if (a != undefined) {
+      if (a?.pending == false) {
+        if (a.Round.includes("Round1")) {
+          var s = new Date(a?.DeadlineDate);
+
+          setdeadline11(s);
+          setdeadline1(a?.Deadline);
+          setdeadreq1(true);
+          returnarray[0] = true;
+          setflag(s, deadline22);
+          //console.log("a",s)
+          // setdeadline1(s.getDate()+"/"+(s.getMonth()+1)+"/"+s.getFullYear()+" "+s.getHours()+":"+s.getMinutes());
+        } else {
+          var s = new Date(a?.DeadlineDate);
+          console.log("ads", s);
+          setdeadline22(s);
+          setdeadline2(a?.Deadline);
+          setdeadreq2(true);
+          returnarray[1] = true;
+          setflag(deadline11, s);
+        }
       }
     }
-     
-    }
-    console.log("reds",returnarray)
-    return returnarray
-
-
+    console.log("reds", returnarray);
+    return returnarray;
   };
 
   const SubmitICEF = async (e) => {
@@ -327,7 +343,7 @@ console.log("answrarray",answer)
     const res = await axios.put(`http://localhost:4000/Folders/addICEF/${id}`, {
       ICEF: ICEF,
     });
-    console.log("helloinicef",res)
+    console.log("helloinicef", res);
 
     getFolderData();
     handleClose1();
@@ -337,7 +353,7 @@ console.log("answrarray",answer)
     const res = await axios.put(`http://localhost:4000/Folders/addObe/${id}`, {
       Obe: Obe,
     });
-    console.log("helloinobe",res)
+    console.log("helloinobe", res);
 
     getFolderData();
     handleClose2();
@@ -345,9 +361,9 @@ console.log("answrarray",answer)
   const SubmitLec = async (e) => {
     e.preventDefault();
     const res = await axios.put(`http://localhost:4000/Folders/addLec/${id}`, {
-      LectureDeliveryRecord : LectureDeliveryRecord,
+      LectureDeliveryRecord: LectureDeliveryRecord,
     });
-    console.log("helloinlec",res)
+    console.log("helloinlec", res);
     getFolderData();
     handleClose3();
   };
@@ -404,35 +420,35 @@ console.log("answrarray",answer)
       getFolderData();
       handleClose();
     } else {
-      if(Question=="" && Question1==""){
-        const a=folders.files.find((item)=>item.Title==Title)
-        setQuestion(a.Question.Base64)
-        setQuestion1(a.Question.Name)
+      if (Question == "" && Question1 == "") {
+        const a = folders.files.find((item) => item.Title == Title);
+        setQuestion(a.Question.Base64);
+        setQuestion1(a.Question.Name);
       }
-      if(Best=="" && Best1==""){
-        const a=folders.files.find((item)=>item.Title==Title)
-        setBest(a.Best.Base64)
-        setBest1(a.Best.Name)
+      if (Best == "" && Best1 == "") {
+        const a = folders.files.find((item) => item.Title == Title);
+        setBest(a.Best.Base64);
+        setBest1(a.Best.Name);
       }
-      if(Average=="" && Average1==""){
-        const a=folders.files.find((item)=>item.Title==Title)
-        setAverage(a.Average.Base64)
-        setAverage1(a.Average.Name)
+      if (Average == "" && Average1 == "") {
+        const a = folders.files.find((item) => item.Title == Title);
+        setAverage(a.Average.Base64);
+        setAverage1(a.Average.Name);
       }
-      if(Worst=="" && Worst1==""){
-        const a=folders.files.find((item)=>item.Title==Title)
-        setWorst(a.Worst.Base64)
-        setWorst1(a.Worst.Name)
+      if (Worst == "" && Worst1 == "") {
+        const a = folders.files.find((item) => item.Title == Title);
+        setWorst(a.Worst.Base64);
+        setWorst1(a.Worst.Name);
       }
-      if(Solution=="" && Solution1==""){
-        const a=folders.files.find((item)=>item.Title==Title)
-        setSolution(a.Solution.Base64)
-        setSolution1(a.Solution.Name)
+      if (Solution == "" && Solution1 == "") {
+        const a = folders.files.find((item) => item.Title == Title);
+        setSolution(a.Solution.Base64);
+        setSolution1(a.Solution.Name);
       }
-      if(Awardlist=="" && Awardlist1==""){
-        const a=folders.files.find((item)=>item.Title==Title)
-        setAwardlist(a.Awardlist.Base64)
-        setAwardlist1(a.Awardlist.Name)
+      if (Awardlist == "" && Awardlist1 == "") {
+        const a = folders.files.find((item) => item.Title == Title);
+        setAwardlist(a.Awardlist.Base64);
+        setAwardlist1(a.Awardlist.Name);
       }
       const res = await axios.put(`http://localhost:4000/Folders/add/${id}`, {
         Title,
@@ -466,54 +482,48 @@ console.log("answrarray",answer)
     }
   };
   const SubmitE1 = async () => {
-    setpressed(false)
+    setpressed(false);
 
-      console.log("Round1", { Round1: true });
-      const res = await axios.post(
-        `http://localhost:4000/Faculty/TheoryReq/${userid}`,
-        {
-          Round: "Round1",
-          Deadline:deadline1,
-          DeadlineDate:deadline11,
-          Type:"Theory"
-
-        }
-      );
-      //getFolderData();
-    alert("Extension Request Sent")
-    console.log("Rodwew",res );
-
+    console.log("Round1", { Round1: true });
+    const res = await axios.post(
+      `http://localhost:4000/Faculty/TheoryReq/${userid}`,
+      {
+        Round: "Round1",
+        Deadline: deadline1,
+        DeadlineDate: deadline11,
+        Type: "Theory",
+      }
+    );
+    //getFolderData();
+    alert("Extension Request Sent");
+    console.log("Rodwew", res);
   };
   const SubmitE2 = async () => {
-    setpressed1(false)
+    setpressed1(false);
     console.log("Round2", { Round1: true });
     const res = await axios.post(
       `http://localhost:4000/Faculty/TheoryReq/${userid}`,
       {
         Round: "Round2",
-        Deadline:deadline2,
-        DeadlineDate:deadline11,
-        Type:"Theory"
-
+        Deadline: deadline2,
+        DeadlineDate: deadline11,
+        Type: "Theory",
       }
     );
     //getFolderData();
-    alert("Extension Request Sent")
+    alert("Extension Request Sent");
 
-  console.log("Rodwew",res );
-
-};
+    console.log("Rodwew", res);
+  };
   const SubmitR1 = async () => {
     var Round1 = true;
-    getFolderData()
-    console.log("folders in submit r1",Folder)
+    getFolderData();
+    console.log("folders in submit r1", Folder);
     Quiz1.forEach((i) => {
-      var t = "Quiz " +i;
+      var t = "Quiz " + i;
 
-      var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
-      console.log("quizez",res)
+      var res = Folder.files.some((obj) => obj.Title == t);
+      console.log("quizez", res);
       if (!res) {
         Round1 = false;
       }
@@ -521,10 +531,8 @@ console.log("answrarray",answer)
     Assignments1.forEach((i) => {
       var t = "Assignment " + i;
 
-      var res = Folder.files.find((obj) => 
-      obj.Title==t
-      );
-      console.log("assignments",res)
+      var res = Folder.files.find((obj) => obj.Title == t);
+      console.log("assignments", res);
 
       if (!res) {
         Round1 = false;
@@ -533,10 +541,8 @@ console.log("answrarray",answer)
     if (folders.Mid == "Mid") {
       var t = "Mid";
 
-      var res = Folder.files.some((obj) => 
-        obj.Title==t
-      );
-      console.log("mid",res)
+      var res = Folder.files.some((obj) => obj.Title == t);
+      console.log("mid", res);
 
       if (!res) {
         Round1 = false;
@@ -544,22 +550,20 @@ console.log("answrarray",answer)
     } else if (folders.Mid == "Sessional") {
       var t = "Sessional 1";
 
-      var res = Folder.files.some((obj) => 
-          obj.Title==t
-      );
-      console.log("mid",res)
+      var res = Folder.files.some((obj) => obj.Title == t);
+      console.log("mid", res);
 
       if (!res) {
         Round1 = false;
       }
-      var tt = "Sessional 2";       
+      var tt = "Sessional 2";
       var res2 = Folder.files.some((obj) => {
-        obj.Title==tt
+        obj.Title == tt;
       });
-        console.log("mid",res2)
-        if (!res2) {
-          Round1 = false;
-        }
+      console.log("mid", res2);
+      if (!res2) {
+        Round1 = false;
+      }
     }
     if (Round1) {
       console.log("Round1", { Round1: true });
@@ -570,22 +574,20 @@ console.log("answrarray",answer)
         }
       );
       getFolderData();
-      alert("Submitted")
+      alert("Submitted");
     } else {
       alert("Enter all required documents for Round 1");
     }
   };
   const SubmitR1Revision = async () => {
     var Round1 = true;
-    getFolderData()
-    console.log("folders in submit r1",Folder)
+    getFolderData();
+    console.log("folders in submit r1", Folder);
     Quiz1.forEach((i) => {
-      var t = "Quiz " +i;
+      var t = "Quiz " + i;
 
-      var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
-      console.log("quizez",res)
+      var res = Folder.files.some((obj) => obj.Title == t);
+      console.log("quizez", res);
       if (!res) {
         Round1 = false;
       }
@@ -593,10 +595,8 @@ console.log("answrarray",answer)
     Assignments1.forEach((i) => {
       var t = "Assignment " + i;
 
-      var res = Folder.files.find((obj) => 
-      obj.Title==t
-      );
-      console.log("assignments",res)
+      var res = Folder.files.find((obj) => obj.Title == t);
+      console.log("assignments", res);
 
       if (!res) {
         Round1 = false;
@@ -605,10 +605,8 @@ console.log("answrarray",answer)
     if (folders.Mid == "Mid") {
       var t = "Mid";
 
-      var res = Folder.files.some((obj) => 
-        obj.Title==t
-      );
-      console.log("mid",res)
+      var res = Folder.files.some((obj) => obj.Title == t);
+      console.log("mid", res);
 
       if (!res) {
         Round1 = false;
@@ -616,100 +614,85 @@ console.log("answrarray",answer)
     } else if (folders.Mid == "Sessional") {
       var t = "Sessional 1";
 
-      var res = Folder.files.some((obj) => 
-          obj.Title==t
-      );
-      console.log("mid",res)
+      var res = Folder.files.some((obj) => obj.Title == t);
+      console.log("mid", res);
 
       if (!res) {
         Round1 = false;
       }
-      var tt = "Sessional 2";       
+      var tt = "Sessional 2";
       var res2 = Folder.files.some((obj) => {
-        obj.Title==tt
+        obj.Title == tt;
       });
-        console.log("mid",res2)
-        if (!res2) {
-          Round1 = false;
-        }
+      console.log("mid", res2);
+      if (!res2) {
+        Round1 = false;
+      }
     }
     var Round2 = true;
     Quiz2.forEach((i) => {
       var t = "Quiz " + i;
-      var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
+      var res = Folder.files.some((obj) => obj.Title == t);
       if (!res) {
         Round2 = false;
       }
     });
     Assignments2.forEach((i) => {
       var t = "Assignment " + i;
-      var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
+      var res = Folder.files.some((obj) => obj.Title == t);
       if (!res) {
         Round2 = false;
       }
-    });      
+    });
     var t = "Terminal";
-    var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
-      if (!res) {
-        Round2 = false;
-    }
-    if (Folder.ICEF == null||Folder.ICEF == "") {
+    var res = Folder.files.some((obj) => obj.Title == t);
+    if (!res) {
       Round2 = false;
     }
-    if (Folder.Obe == null||Folder.Obe == "") {
+    if (Folder.ICEF == null || Folder.ICEF == "") {
       Round2 = false;
     }
-   
-      console.log("Round1", { Round1: true });
-      const ress = await axios.put(
-        `http://localhost:4000/Folders/SubmitaRoundRevision/${id}`,
-        {
-          Revision: true,
-        }
-      );
-      setRevisionSubmitted(false)
-      getFolderData();
-      alert("Revision Submitted")
-    
+    if (Folder.Obe == null || Folder.Obe == "") {
+      Round2 = false;
+    }
+
+    console.log("Round1", { Round1: true });
+    const ress = await axios.put(
+      `http://localhost:4000/Folders/SubmitaRoundRevision/${id}`,
+      {
+        Revision: true,
+      }
+    );
+    setRevisionSubmitted(false);
+    getFolderData();
+    alert("Revision Submitted");
   };
 
   const SubmitR2 = async () => {
     var Round2 = true;
     Quiz2.forEach((i) => {
       var t = "Quiz " + i;
-      var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
+      var res = Folder.files.some((obj) => obj.Title == t);
       if (!res) {
         Round2 = false;
       }
     });
     Assignments2.forEach((i) => {
       var t = "Assignment " + i;
-      var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
+      var res = Folder.files.some((obj) => obj.Title == t);
       if (!res) {
         Round2 = false;
       }
-    });      
+    });
     var t = "Terminal";
-    var res = Folder.files.some((obj) => 
-        obj.Title==t 
-      );
-      if (!res) {
-        Round2 = false;
-    }
-    if (Folder.ICEF == null||Folder.ICEF == "") {
+    var res = Folder.files.some((obj) => obj.Title == t);
+    if (!res) {
       Round2 = false;
     }
-    if (Folder.Obe == null||Folder.Obe == "") {
+    if (Folder.ICEF == null || Folder.ICEF == "") {
+      Round2 = false;
+    }
+    if (Folder.Obe == null || Folder.Obe == "") {
       Round2 = false;
     }
 
@@ -722,7 +705,7 @@ console.log("answrarray",answer)
         }
       );
       getFolderData();
-      alert("Submitted")
+      alert("Submitted");
     } else {
       alert("Enter all required documents for Round 2");
     }
@@ -731,7 +714,7 @@ console.log("answrarray",answer)
   return (
     <div class="container" style={{ height: 700, width: "100%", padding: 20 }}>
       <h1 style={{ marginBottom: 30 }}>Course Folder Maintainence</h1>
-      {console.log("inreturn",deadline2,round2flag)}
+      {console.log("inreturn", deadline2, round2flag)}
       <Modal
         open={open3}
         onClose={handleClose3}
@@ -787,7 +770,7 @@ console.log("answrarray",answer)
                 }}
               />
             </div>
-            
+
             <div class="d-grid">
               <button
                 class="btn btn-block py-2 btn-primary"
@@ -959,86 +942,84 @@ console.log("answrarray",answer)
                 {Quiz1.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                     {submitted1==true && submittedRevision==false ?
-                      
-                        (Folder.files.find((obj) => {
+                      {submitted1 == true && submittedRevision == false ? (
+                        Folder.files.find((obj) => {
                           var t = "Quiz " + i;
                           return obj.Title == t;
                         }) ? (
                           <button
-                          class="btn btn-block py-2 btn-primary"
-                          id="quiz1"
-                          type="button"
-                          style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                        
-                          onClick={() => {
-                            alert("Round has been submited")
-                          }}
-                        >
-                           Quiz {i} (Submited)
-                        </button>
+                            class="btn btn-block py-2 btn-primary"
+                            id="quiz1"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Quiz {i} (Submited)
+                          </button>
                         ) : (
                           <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="quiz1"
-                        type="button"
-                        style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                        onClick={() => {
-                          alert("Round has been submited")
-                        }}
-                      >
-                         Quiz {i}
-                        
-                      </button>
-                        ))
-                     
-                      :
-                      (
-                        
-                        
-                        round1flag==true && submittedRevision==false? (
-                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            id="quiz1"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Quiz {i}
+                          </button>
+                        )
+                      ) : round1flag == true && submittedRevision == false ? (
+                        <button
                           class="btn btn-block py-2 btn-primary"
                           id="quiz1"
                           type="button"
-                          style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
+                          style={{
+                            backgroundColor: "lightgrey",
+                            borderColor: "lightgrey",
+                          }}
                           onClick={() => {
-                            alert("deadline passed")
+                            alert("deadline passed");
                           }}
                         >
-                           Quiz {i} (deadline passed)
+                          Quiz {i} (deadline passed)
                         </button>
-                        ) :(
-                        
-                        Folder.files.find((obj) => {
-                        var t = "Quiz " + i;
-                        return obj.Title == t;
-                      }) ? (
+                      ) : Folder.files.find((obj) => {
+                          var t = "Quiz " + i;
+                          return obj.Title == t;
+                        }) ? (
                         <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="quiz1"
-                        type="button"
-                        onClick={() => {
-                          quiztitle(i);
-                          handleOpen();
-                        }}
-                      >
-                         Quiz {i} (Submited)
-                      </button>
+                          class="btn btn-block py-2 btn-primary"
+                          id="quiz1"
+                          type="button"
+                          onClick={() => {
+                            quiztitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Quiz {i} (Submited)
+                        </button>
                       ) : (
                         <button
-                      class="btn btn-block py-2 btn-primary"
-                      id="quiz1"
-                      type="button"
-                      onClick={() => {
-                        quiztitle(i);
-                        handleOpen();
-                      }}
-                    >
-                       Quiz {i}
-                      
-                    </button>
-                      )))
-                }
+                          class="btn btn-block py-2 btn-primary"
+                          id="quiz1"
+                          type="button"
+                          onClick={() => {
+                            quiztitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Quiz {i}
+                        </button>
+                      )}
                     </td>
                   );
                 })}
@@ -1046,223 +1027,230 @@ console.log("answrarray",answer)
                 {Assignments1.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                      {submitted1==true && submittedRevision==false?
-                      
-                      (Folder.files.find((obj) => {
-                        var t = "Assignment " + i;
-                        return obj.Title == t;
-                      }) ? (
+                      {submitted1 == true && submittedRevision == false ? (
+                        Folder.files.find((obj) => {
+                          var t = "Assignment " + i;
+                          return obj.Title == t;
+                        }) ? (
+                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            id="Assignment"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Assignment {i} (Submited)
+                          </button>
+                        ) : (
+                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            id="quiz1"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Assignment {i}
+                          </button>
+                        )
+                      ) : round1flag == true && submittedRevision == false ? (
                         <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="Assignment"
-                        type="button"
-                        style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}
-                        onClick={() => {
-                          alert("Round has been submited")
-                        }}
-                      >
-                         Assignment {i} (Submited)
-                      </button>
+                          class="btn btn-block py-2 btn-primary"
+                          id="Assignment"
+                          type="button"
+                          style={{
+                            backgroundColor: "lightgrey",
+                            borderColor: "lightgrey",
+                          }}
+                          onClick={() => {
+                            alert("deadline passed");
+                          }}
+                        >
+                          Assignment {i} (deadline passed)
+                        </button>
+                      ) : Folder.files.find((obj) => {
+                          var t = "Assignment " + i;
+                          return obj.Title == t;
+                        }) ? (
+                        <button
+                          class="btn btn-block py-2 btn-primary"
+                          id="Assignment"
+                          type="button"
+                          onClick={() => {
+                            Assignmenttitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Assignment {i} (Submited)
+                        </button>
                       ) : (
                         <button
-                      class="btn btn-block py-2 btn-primary"
-                      id="quiz1"
-                      type="button"
-                      style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                     
-                      onClick={() => {
-                        alert("Round has been submited")
-                      }}
-                   >
-                       Assignment {i}
-                      
-                    </button>
-                      ))
-                   
-                    :(round1flag==true && submittedRevision==false?
-                      (
-                        <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="Assignment"
-                        type="button"
-                        style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                        onClick={() => {
-                          alert("deadline passed")
-                        }}
-                      >
-                         Assignment {i} (deadline passed)
-                      
-                      </button>
-                      ) :
-                      (Folder.files.find((obj) => {
-                      var t = "Assignment " + i;
-                      return obj.Title == t;
-                    }) ? (
-                      <button
-                      class="btn btn-block py-2 btn-primary"
-                      id="Assignment"
-                      type="button"
-                      onClick={() => {
-                        Assignmenttitle(i);
-                        handleOpen();
-                      }}
-                    >
-                       Assignment {i} (Submited)
-                    </button>
-                    ) : 
-                    (
-                      <button
-                    class="btn btn-block py-2 btn-primary"
-                    id="quiz1"
-                    type="button"
-                    onClick={() => {
-                      Assignmenttitle(i);
-                      handleOpen();
-                    }}
-                  >
-                     Assignment {i}
-                    
-                  </button>
-                    )))
-                 
-              }
-                     
+                          class="btn btn-block py-2 btn-primary"
+                          id="quiz1"
+                          type="button"
+                          onClick={() => {
+                            Assignmenttitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Assignment {i}
+                        </button>
+                      )}
                     </td>
                   );
                 })}
                 {folders != "" && folders.Mid == "Mid" ? (
-                 submitted1 ==true && submittedRevision==false? (
-                  <td className="d-grid py-2 px-2">
-                <button
-                  class="btn btn-block py-2 btn-primary"
-                  id="Mid"
-                  type="button"
-                  style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                     
-                  onClick={() => {
-                    alert("Round has been submited")
-                  }}
-                >
-                  {Folder.files.find((obj) => {
-                    var t = "Mid";
-                    return obj.Title == t;
-                  }) ? (
-                    <> Midterm Exam (Submited)</>
-                  ) : (
-                    <> Midterm Exam</>
-                  )}
-                </button>
-              </td>):(
-              
-              round1flag==true && submittedRevision==false?
-                (
-                  <button
-                  class="btn btn-block py-2 btn-primary"
-                  id="Assignment"
-                  type="button"
-                  style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                  onClick={() => {
-                    alert("deadline passed")
-                  }}
-                >
-                    Midterm Exam (deadline passed)
-                
-                </button>
-                ) :(
-              
-              <td className="d-grid py-2 px-2">
+                  submitted1 == true && submittedRevision == false ? (
+                    <td className="d-grid py-2 px-2">
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="Mid"
+                        type="button"
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
+                        onClick={() => {
+                          alert("Round has been submited");
+                        }}
+                      >
+                        {Folder.files.find((obj) => {
+                          var t = "Mid";
+                          return obj.Title == t;
+                        }) ? (
+                          <> Midterm Exam (Submited)</>
+                        ) : (
+                          <> Midterm Exam</>
+                        )}
+                      </button>
+                    </td>
+                  ) : round1flag == true && submittedRevision == false ? (
                     <button
                       class="btn btn-block py-2 btn-primary"
-                      id="Mid"
+                      id="Assignment"
                       type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
                       onClick={() => {
-                        Midtitle();
-                        handleOpen();
+                        alert("deadline passed");
                       }}
                     >
-                      {Folder.files.find((obj) => {
-                        var t = "Mid";
-                        return obj.Title == t;
-                      }) ? (
-                        <> Midterm Exam (Submited)</>
-                      ) : (
-                        <> Midterm Exam</>
-                      )}
+                      Midterm Exam (deadline passed)
                     </button>
-                  </td>))
-                                
+                  ) : (
+                    <td className="d-grid py-2 px-2">
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="Mid"
+                        type="button"
+                        onClick={() => {
+                          Midtitle();
+                          handleOpen();
+                        }}
+                      >
+                        {Folder.files.find((obj) => {
+                          var t = "Mid";
+                          return obj.Title == t;
+                        }) ? (
+                          <> Midterm Exam (Submited)</>
+                        ) : (
+                          <> Midterm Exam</>
+                        )}
+                      </button>
+                    </td>
+                  )
+                ) : submitted1 == true && submittedRevision == false ? (
+                  <>
+                    <td className="d-grid py-2 px-2">
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="Sessional1"
+                        type="button"
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
+                        onClick={() => {
+                          alert("Round has been submited");
+                        }}
+                      >
+                        {Folder.files.find((obj) => {
+                          var t = "Sessional 1";
+                          return obj.Title == t;
+                        }) ? (
+                          <> Sessional 1 (Submited)</>
+                        ) : (
+                          <> Sessional 1 </>
+                        )}
+                      </button>
+                    </td>
+                    <td className="d-grid py-2 px-2">
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="Sessional2"
+                        type="button"
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
+                        onClick={() => {
+                          alert("Round has been submited");
+                        }}
+                      >
+                        {Folder.files.find((obj) => {
+                          var t = "Sessional 1";
+                          return obj.Title == t;
+                        }) ? (
+                          <> Sessional 2 (Submited)</>
+                        ) : (
+                          <> Sessional 2</>
+                        )}
+                      </button>
+                    </td>
+                  </>
+                ) : round1flag == true && submittedRevision == false ? (
+                  <>
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      id="Assignment"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("deadline passed");
+                      }}
+                    >
+                      Sessional 1 (deadline passed)
+                    </button>
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      id="Assignment"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("deadline passed");
+                      }}
+                    >
+                      Sessional 2 (deadline passed)
+                    </button>
+                  </>
                 ) : (
-                  submitted1==true && submittedRevision==false?(
-                    <>
-                      <td className="d-grid py-2 px-2">
-                        <button
-                          class="btn btn-block py-2 btn-primary"
-                          id="Sessional1"
-                          type="button"
-                          style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                     
-                          onClick={() => {
-                            alert("Round has been submited")
-                          }}
-                        >
-                          {Folder.files.find((obj) => {
-                            var t = "Sessional 1";
-                            return obj.Title == t;
-                          }) ? (
-                            <> Sessional 1 (Submited)</>
-                          ) : (
-                            <> Sessional 1 </>
-                          )}
-                        </button>
-                      </td>
-                      <td className="d-grid py-2 px-2">
-                        <button
-                          class="btn btn-block py-2 btn-primary"
-                          id="Sessional2"
-                          type="button"
-                          style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                     
-                          onClick={() => {
-                            alert("Round has been submited")
-                          }}
-                        >
-                          {Folder.files.find((obj) => {
-                            var t = "Sessional 1";
-                            return obj.Title == t;
-                          }) ? (
-                            <> Sessional 2 (Submited)</>
-                          ) : (
-                            <> Sessional 2</>
-                          )}
-                        </button>
-                      </td>
-                    </>):(
-              
-              round1flag==true && submittedRevision==false?
-              (<>
-                <button
-                class="btn btn-block py-2 btn-primary"
-                id="Assignment"
-                type="button"
-                style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                onClick={() => {
-                  alert("deadline passed")
-                }}
-              >
-                  Sessional 1 (deadline passed)
-              
-              </button>
-              <button
-              class="btn btn-block py-2 btn-primary"
-              id="Assignment"
-              type="button"
-              style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-              onClick={() => {
-                alert("deadline passed")
-              }}
-            >
-                Sessional 2 (deadline passed)
-            
-            </button></>
-              ):
-
-                (
                   <>
                     <td className="d-grid py-2 px-2">
                       <button
@@ -1304,63 +1292,64 @@ console.log("answrarray",answer)
                         )}
                       </button>
                     </td>
-                  </>))
+                  </>
                 )}
                 <td className="d-grid py-4 px-2">
-               {submitted1==true && submittedRevision==false?  (<button
-                    class="btn btn-block py-2 btn-primary"
-                    type="button"
-                    style={{backgroundColor:"grey",borderColor:'grey'}}
-                    onClick={()=>{
-                      alert("Round 1 already submitted")
-                    }}
-
-                  >
-                    Round 1 (Submitted)
-                  </button>
-                 )  :(
-                  round1flag==true && submittedRevision==false?
-                  <>
-                  <h4
-                  
-                  style={{ color: "red", textAlign: "center", marginTop: 20 }}
-                >
-                  
-                  Submission Closed!!!
-                </h4>
-                {pressed?
-                  <button
-                  class="btn btn-block py-2 btn-primary"
-                  type="button"
-                  style={{backgroundColor:"grey",borderColor:'grey'}}
-                  onClick={SubmitE1}
-
-                >
-                  Send Extension Request
-                </button>
-                  :
+                  {submitted1 == true && submittedRevision == false ? (
                     <button
-                    class="btn btn-block py-2 btn-primary"
-                    type="button"
-                    onClick={SubmitE1}
-                  >
-                    Send Extension Request
-                  </button>
-                  }
-                  </>:
-                  (submittedRevision?
+                      class="btn btn-block py-2 btn-primary"
+                      type="button"
+                      style={{ backgroundColor: "grey", borderColor: "grey" }}
+                      onClick={() => {
+                        alert("Round 1 already submitted");
+                      }}
+                    >
+                      Round 1 (Submitted)
+                    </button>
+                  ) : round1flag == true && submittedRevision == false ? (
                     <>
-                  </>
-                    :
-                  <button
-                    class="btn btn-block py-2 btn-primary"
-                    type="button"
-                    onClick={SubmitR1}
-                  >
-                    Submit
-                  </button>
-                  )
-                )}
+                      <h4
+                        style={{
+                          color: "red",
+                          textAlign: "center",
+                          marginTop: 20,
+                        }}
+                      >
+                        Submission Closed!!!
+                      </h4>
+                      {pressed ? (
+                        <button
+                          class="btn btn-block py-2 btn-primary"
+                          type="button"
+                          style={{
+                            backgroundColor: "grey",
+                            borderColor: "grey",
+                          }}
+                          onClick={SubmitE1}
+                        >
+                          Send Extension Request
+                        </button>
+                      ) : (
+                        <button
+                          class="btn btn-block py-2 btn-primary"
+                          type="button"
+                          onClick={SubmitE1}
+                        >
+                          Send Extension Request
+                        </button>
+                      )}
+                    </>
+                  ) : submittedRevision ? (
+                    <></>
+                  ) : (
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      type="button"
+                      onClick={SubmitR1}
+                    >
+                      Submit
+                    </button>
+                  )}
                 </td>
               </tr>
             </div>
@@ -1379,220 +1368,220 @@ console.log("answrarray",answer)
                     Deadline: {deadline2}
                   </h4>
                 </th>
- 
+
                 {Quiz2.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                     {submitted2==true && submittedRevision==false?
-                      
-                        (Folder.files.find((obj) => {
+                      {submitted2 == true && submittedRevision == false ? (
+                        Folder.files.find((obj) => {
                           var t = "Quiz " + i;
                           return obj.Title == t;
                         }) ? (
                           <button
-                          class="btn btn-block py-2 btn-primary"
-                          id="quiz1"
-                          type="button"
-                          style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                        
-                          onClick={() => {
-                            alert("Round has been submited")
-                          }}
-                        >
-                           Quiz {i} (Submited)
-                        </button>
+                            class="btn btn-block py-2 btn-primary"
+                            id="quiz1"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Quiz {i} (Submited)
+                          </button>
                         ) : (
                           <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="quiz1"
-                        type="button"
-                        style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                        onClick={() => {
-                          alert("Round has been submited")
-                        }}
-                      >
-                         Quiz {i}
-                        
-                      </button>
-                        ))
-                     
-                      :
-                      (
-                        round2flag==true && submittedRevision==false? (
-                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            id="quiz1"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Quiz {i}
+                          </button>
+                        )
+                      ) : round2flag == true && submittedRevision == false ? (
+                        <button
                           class="btn btn-block py-2 btn-primary"
                           id="quiz1"
                           type="button"
-                          style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
+                          style={{
+                            backgroundColor: "lightgrey",
+                            borderColor: "lightgrey",
+                          }}
                           onClick={() => {
-                            alert("deadline passed")
+                            alert("deadline passed");
                           }}
                         >
-                           Quiz {i} (deadline passed)
+                          Quiz {i} (deadline passed)
                         </button>
-                        ) :(
-                        
-                        Folder.files.find((obj) => {
-                        var t = "Quiz " + i;
-                        return obj.Title == t;
-                      }) ? (
+                      ) : Folder.files.find((obj) => {
+                          var t = "Quiz " + i;
+                          return obj.Title == t;
+                        }) ? (
                         <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="quiz1"
-                        type="button"
-                        onClick={() => {
-                          quiztitle(i);
-                          handleOpen();
-                        }}
-                      >
-                         Quiz {i} (Submited)
-                      </button>
+                          class="btn btn-block py-2 btn-primary"
+                          id="quiz1"
+                          type="button"
+                          onClick={() => {
+                            quiztitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Quiz {i} (Submited)
+                        </button>
                       ) : (
                         <button
-                      class="btn btn-block py-2 btn-primary"
-                      id="quiz1"
-                      type="button"
-                      onClick={() => {
-                        quiztitle(i);
-                        handleOpen();
-                      }}
-                    >
-                       Quiz {i}
-                      
-                    </button>
-                      )))
-                }
+                          class="btn btn-block py-2 btn-primary"
+                          id="quiz1"
+                          type="button"
+                          onClick={() => {
+                            quiztitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Quiz {i}
+                        </button>
+                      )}
                     </td>
                   );
                 })}
 
-
-              {Assignments2.map((i) => {
+                {Assignments2.map((i) => {
                   return (
                     <td className="d-grid py-2 px-2">
-                      {submitted2==true && submittedRevision==false?
-                      
-                      (Folder.files.find((obj) => {
-                        var t = "Assignment " + i;
-                        return obj.Title == t;
-                      }) ? (
+                      {submitted2 == true && submittedRevision == false ? (
+                        Folder.files.find((obj) => {
+                          var t = "Assignment " + i;
+                          return obj.Title == t;
+                        }) ? (
+                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            id="Assignment"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Assignment {i} (Submited)
+                          </button>
+                        ) : (
+                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            id="quiz1"
+                            type="button"
+                            style={{
+                              backgroundColor: "lightgrey",
+                              borderColor: "lightgrey",
+                            }}
+                            onClick={() => {
+                              alert("Round has been submited");
+                            }}
+                          >
+                            Assignment {i}
+                          </button>
+                        )
+                      ) : round2flag == true && submittedRevision == false ? (
                         <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="Assignment"
-                        type="button"
-                        style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}
-                        onClick={() => {
-                          alert("Round has been submited")
-                        }}
-                      >
-                         Assignment {i} (Submited)
-                      </button>
+                          class="btn btn-block py-2 btn-primary"
+                          id="Assignment"
+                          type="button"
+                          style={{
+                            backgroundColor: "lightgrey",
+                            borderColor: "lightgrey",
+                          }}
+                          onClick={() => {
+                            alert("deadline passed");
+                          }}
+                        >
+                          Assignment {i} (deadline passed)
+                        </button>
+                      ) : Folder.files.find((obj) => {
+                          var t = "Assignment " + i;
+                          return obj.Title == t;
+                        }) ? (
+                        <button
+                          class="btn btn-block py-2 btn-primary"
+                          id="Assignment"
+                          type="button"
+                          onClick={() => {
+                            Assignmenttitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Assignment {i} (Submited)
+                        </button>
                       ) : (
                         <button
+                          class="btn btn-block py-2 btn-primary"
+                          id="quiz1"
+                          type="button"
+                          onClick={() => {
+                            Assignmenttitle(i);
+                            handleOpen();
+                          }}
+                        >
+                          Assignment {i}
+                        </button>
+                      )}
+                    </td>
+                  );
+                })}
+
+                {submitted2 == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
                       class="btn btn-block py-2 btn-primary"
-                      id="quiz1"
+                      id="Mid"
                       type="button"
-                      style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                     
-                      onClick={() => {
-                        alert("Round has been submited")
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
                       }}
-                   >
-                       Assignment {i}
-                      
+                      onClick={() => {
+                        alert("Round has been submited");
+                      }}
+                    >
+                      {Folder.files.find((obj) => {
+                        var t = "Terminal";
+                        return obj.Title == t;
+                      }) ? (
+                        <> Terminal Exam (Submited)</>
+                      ) : (
+                        <> Terminal Exam </>
+                      )}
                     </button>
-                      ))
-                   
-                    :(round2flag==true && submittedRevision==false?
-                      (
-                        <button
-                        class="btn btn-block py-2 btn-primary"
-                        id="Assignment"
-                        type="button"
-                        style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                        onClick={() => {
-                          alert("deadline passed")
-                        }}
-                      >
-                         Assignment {i} (deadline passed)
-                      
-                      </button>
-                      ) :
-                      (Folder.files.find((obj) => {
-                      var t = "Assignment " + i;
-                      return obj.Title == t;
-                    }) ? (
-                      <button
+                  </td>
+                ) : round2flag == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
                       class="btn btn-block py-2 btn-primary"
                       id="Assignment"
                       type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
                       onClick={() => {
-                        Assignmenttitle(i);
-                        handleOpen();
+                        alert("deadline passed");
                       }}
                     >
-                       Assignment {i} (Submited)
+                      Terminal Exam (deadline passed)
                     </button>
-                    ) : 
-                    (
-                      <button
-                    class="btn btn-block py-2 btn-primary"
-                    id="quiz1"
-                    type="button"
-                    onClick={() => {
-                      Assignmenttitle(i);
-                      handleOpen();
-                    }}
-                  >
-                     Assignment {i}
-                    
-                  </button>
-                    )))
-                 
-              }
-                     
-                    </td>
-                  );
-                })}
-
-              {submitted2==true && submittedRevision==false? (
+                  </td>
+                ) : (
                   <td className="d-grid py-2 px-2">
-                <button
-                  class="btn btn-block py-2 btn-primary"
-                  id="Mid"
-                  type="button"
-                  style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                     
-                  onClick={() => {
-                    alert("Round has been submited")
-                  }}
-                >
-                 {Folder.files.find((obj) => {
-                      var t = "Terminal";
-                      return obj.Title == t;
-                    }) ? (
-                      <> Terminal Exam (Submited)</>
-                    ) : (
-                      <> Terminal Exam </>
-                    )}
-                </button>
-              </td>):(
-              
-              round2flag==true && submittedRevision==false?
-                (<td className="d-grid py-2 px-2">
-                  <button
-                  class="btn btn-block py-2 btn-primary"
-                  id="Assignment"
-                  type="button"
-                  style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                  onClick={() => {
-                    alert("deadline passed")
-                  }}
-                >                
-                  Terminal Exam (deadline passed)
-                
-                </button>
-                </td>
-                ) :(
-              
-              <td className="d-grid py-2 px-2">
                     <button
                       class="btn btn-block py-2 btn-primary"
                       id="Mid"
@@ -1611,259 +1600,242 @@ console.log("answrarray",answer)
                         <> Terminal Exam </>
                       )}
                     </button>
-                  </td>))}
-                 
-                  {submitted2==true && submittedRevision==false? (
-                <td className="d-grid py-2 px-2">
-                <button
-                  class="btn py-2  btn-block btn-primary"
-                  id="quiz1"
-                  type="button"
-                  style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                  onClick={() => {
-                    alert("Round has been submited")
-                  }}
-                >
-                  {Folder.LectureDeliveryRecord == null ? (
-                    <>Lecture Delivery Record</>
-                  ) : (
-                    <>Lecture Delivery Record (Submited)</>
-                  )}
-                </button>
-              </td>):(
-              
-              round2flag==true && submittedRevision==false?
-                (<td className="d-grid py-2 px-2">
-                  <button
-                  class="btn btn-block py-2 btn-primary"
-                  id="Assignment"
-                  type="button"
-                  style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                  onClick={() => {
-                    alert("deadline passed")
-                  }}
-                >                
-                  Lecture Delivery Record (deadline passed)
-                
-                </button>
-                </td>
-                ) :(
-              
+                  </td>
+                )}
+
+                {submitted2 == true && submittedRevision == false ? (
                   <td className="d-grid py-2 px-2">
-                  <button
-                    class="btn py-2  btn-block btn-primary"
-                    id="quiz1"
-                    type="button"
-                    onClick={handleOpen3}
-                  >
-                    {Folder.LectureDeliveryRecord == null ? (
-                      <>Lecture Delivery Record</>
-                    ) : (
-                      <>Lecture Delivery Record (Submited)</>
-                    )}
-                  </button>
-                </td>))}
-
-                {submitted2==true && submittedRevision==false? (
-              
-               <td className="d-grid py-2 px-2">
-               <button
-                 class="btn py-2  btn-block btn-primary"
-                 id="quiz1"
-                 type="button"
-                 style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                 onClick={() => {
-                   alert("Round has been submited")
-                 }}
-               >
-                 {" "}
-                 {Folder.ICEF == null ? <>ICEF</> : <>ICEF (Submited)</>}
-               </button>
-             </td>
-              ):(
-              
-              round2flag==true && submittedRevision==false?
-                (
-                  <td className="d-grid py-2 px-2">
-                  <button
-                  class="btn btn-block py-2 btn-primary"
-                  id="Assignment"
-                  type="button"
-                  style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                  onClick={() => {
-                    alert("deadline passed")
-                  }}
-                >                
-                  ICEF (deadline passed)
-                
-                </button>
-                </td>
-                ) :(
-                  <td className="d-grid py-2 px-2">
-                  <button
-                    class="btn py-2  btn-block btn-primary"
-                    id="quiz1"
-                    type="button"
-                    onClick={handleOpen1}
-                  >
-                    {" "}
-                    {Folder.ICEF == null ? <>ICEF</> : <>ICEF (Submited)</>}
-                  </button>
-                </td>
-                ))}
-
-            {submitted2==true && submittedRevision==false? (
-            
-            <td className="d-grid py-2 px-2">
-              <button
-                class="btn py-2  btn-block btn-primary"
-                id="quiz1"
-                type="button"
-                style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                onClick={() => {
-                  alert("Round has been submited")
-                }}
-                              >
-                {Folder.Obe == null ? <>OBE</> : <>OBE (Submited)</>}
-              </button>
-            </td>
-
-             
-             ):(
-             
-             round2flag==true && submittedRevision==false?
-               (<td className="d-grid py-2 px-2">
-                 <button
-                 class="btn btn-block py-2 btn-primary"
-                 ids="Assignment"
-                 type="button"
-                 style={{backgroundColor:'lightgrey',borderColor:'lightgrey'}}                                                  
-                 onClick={() => {
-                   alert("deadline passed")
-                 }}
-               >                
-                 OBE (deadline passed)
-               
-               </button>
-               </td>
-               ) :(
-                <td className="d-grid py-2 px-2">
-                  <button
-                    class="btn py-2  btn-block btn-primary"
-                    id="quiz1"
-                    type="button"
-                    onClick={handleOpen2}
-                  >
-                    {Folder.Obe == null ? <>OBE</> : <>OBE (Submited)</>}
-                  </button>
-                </td>
-               ))}
-
-
-            {submitted2==true && submittedRevision==false?  (
-            <td className="d-grid py-2 px-2">
-              <button
-                class="btn btn-block py-2 btn-primary"
-                type="button"
-                style={{backgroundColor:"grey",borderColor:'grey'}}
-                onClick={()=>{
-                  alert("Round 2 already submitted")
-                }}
-
-              >
-                Round 2 (Submitted)
-              </button>
-              </td>
-              ) :(
-
-                <td className="d-grid py-4 px-2">
-                {
-                  round2flag==true && submittedRevision==false?
-               (<>
-                  <h4
-                  
-                  style={{ color: "red", textAlign: "center", marginTop: 20 }}
-                >
-                  
-                  Submission Closed!!!
-                </h4>
-
-                  {pressed1?
-                  <button
-                  class="btn btn-block py-2 btn-primary"
-                  type="button"
-                  style={{backgroundColor:"grey",borderColor:'grey'}}
-
-                >
-                  Send Extension Request
-                </button>
-                  :
                     <button
-                    class="btn btn-block py-2 btn-primary"
-                    type="button"
-                    onClick={SubmitE2}
-                  >
-                    Send Extension Request
-                  </button>
-                  }</>):(
-                    (submittedRevision?
+                      class="btn py-2  btn-block btn-primary"
+                      id="quiz1"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("Round has been submited");
+                      }}
+                    >
+                      {Folder.LectureDeliveryRecord == null ? (
+                        <>Lecture Delivery Record</>
+                      ) : (
+                        <>Lecture Delivery Record (Submited)</>
+                      )}
+                    </button>
+                  </td>
+                ) : round2flag == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      id="Assignment"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("deadline passed");
+                      }}
+                    >
+                      Lecture Delivery Record (deadline passed)
+                    </button>
+                  </td>
+                ) : (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn py-2  btn-block btn-primary"
+                      id="quiz1"
+                      type="button"
+                      onClick={handleOpen3}
+                    >
+                      {Folder.LectureDeliveryRecord == null ? (
+                        <>Lecture Delivery Record</>
+                      ) : (
+                        <>Lecture Delivery Record (Submited)</>
+                      )}
+                    </button>
+                  </td>
+                )}
+
+                {submitted2 == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn py-2  btn-block btn-primary"
+                      id="quiz1"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("Round has been submited");
+                      }}
+                    >
+                      {" "}
+                      {Folder.ICEF == null ? <>ICEF</> : <>ICEF (Submited)</>}
+                    </button>
+                  </td>
+                ) : round2flag == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      id="Assignment"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("deadline passed");
+                      }}
+                    >
+                      ICEF (deadline passed)
+                    </button>
+                  </td>
+                ) : (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn py-2  btn-block btn-primary"
+                      id="quiz1"
+                      type="button"
+                      onClick={handleOpen1}
+                    >
+                      {" "}
+                      {Folder.ICEF == null ? <>ICEF</> : <>ICEF (Submited)</>}
+                    </button>
+                  </td>
+                )}
+
+                {submitted2 == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn py-2  btn-block btn-primary"
+                      id="quiz1"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("Round has been submited");
+                      }}
+                    >
+                      {Folder.Obe == null ? <>OBE</> : <>OBE (Submited)</>}
+                    </button>
+                  </td>
+                ) : round2flag == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      ids="Assignment"
+                      type="button"
+                      style={{
+                        backgroundColor: "lightgrey",
+                        borderColor: "lightgrey",
+                      }}
+                      onClick={() => {
+                        alert("deadline passed");
+                      }}
+                    >
+                      OBE (deadline passed)
+                    </button>
+                  </td>
+                ) : (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn py-2  btn-block btn-primary"
+                      id="quiz1"
+                      type="button"
+                      onClick={handleOpen2}
+                    >
+                      {Folder.Obe == null ? <>OBE</> : <>OBE (Submited)</>}
+                    </button>
+                  </td>
+                )}
+
+                {submitted2 == true && submittedRevision == false ? (
+                  <td className="d-grid py-2 px-2">
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      type="button"
+                      style={{ backgroundColor: "grey", borderColor: "grey" }}
+                      onClick={() => {
+                        alert("Round 2 already submitted");
+                      }}
+                    >
+                      Round 2 (Submitted)
+                    </button>
+                  </td>
+                ) : (
+                  <td className="d-grid py-4 px-2">
+                    {round2flag == true && submittedRevision == false ? (
                       <>
-                    </>
-                      :
-                  <button
-                    class="btn btn-block py-2 btn-primary"
-                    type="button"
-                    onClick={SubmitR2}
-                  >
-                    Submit
-                  </button>))
-                }</td>)}
-                
+                        <h4
+                          style={{
+                            color: "red",
+                            textAlign: "center",
+                            marginTop: 20,
+                          }}
+                        >
+                          Submission Closed!!!
+                        </h4>
+
+                        {pressed1 ? (
+                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            type="button"
+                            style={{
+                              backgroundColor: "grey",
+                              borderColor: "grey",
+                            }}
+                          >
+                            Send Extension Request
+                          </button>
+                        ) : (
+                          <button
+                            class="btn btn-block py-2 btn-primary"
+                            type="button"
+                            onClick={SubmitE2}
+                          >
+                            Send Extension Request
+                          </button>
+                        )}
+                      </>
+                    ) : submittedRevision ? (
+                      <></>
+                    ) : (
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        type="button"
+                        onClick={SubmitR2}
+                      >
+                        Submit
+                      </button>
+                    )}
+                  </td>
+                )}
               </tr>
             </div>
           </div>
         </tbody>
       </table>
-      {submittedRevision?
-      <div style={{display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',}}>
-      <button
-      
-                    class="btn btn-block py-2 btn-primary"
-                    type="button"
-                    
-                    onClick={SubmitR1Revision}
-                  >
-                    Send Revision
-                  </button>
-      
-      </div>
-      :
-      <></>
-      }
-      {Decoded != "" ? (
-        <>
-          <div
-            style={{
-              border: "1px solid rgba(0, 0, 0, 0.3)",
-              height: "750px",
-            }}
+      {submittedRevision ? (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <button
+            class="btn btn-block py-2 btn-primary"
+            type="button"
+            onClick={SubmitR1Revision}
           >
-            {" "}
-            <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-              <Viewer fileUrl={Decoded} />
-            </Worker>
-          </div>
-          <Card sx={{ maxWidth: 824 }}>
-            <CardMedia
-              className="cardmedia"
-              component="iframe"
-              Height="1056px"
-              src={fileBase64String}
-            />
-          </Card>
-        </>
+            Send Revision
+          </button>
+        </div>
       ) : (
         <></>
       )}

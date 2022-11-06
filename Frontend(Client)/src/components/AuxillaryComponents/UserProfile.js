@@ -21,38 +21,40 @@ const style = {
 };
 
 export default function Profile() {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
     setpassword("");
   };
-  const [state, setstate] = useState({Name:"",Email:"",Roles:[],Phone:""});
-  
+  const [state, setstate] = useState({
+    Name: "",
+    Email: "",
+    Roles: [],
+    Phone: "",
+  });
+
   useEffect(async () => {
-      const response = await axios.get("http://localhost:4000/Auth/whole", {
-        withCredentials: true,
-      });
-      setstate(response.data)
+    const response = await axios.get("http://localhost:4000/Auth/whole", {
+      withCredentials: true,
+    });
+    setstate(response.data);
   }, []);
   const [password, setpassword] = useState("");
-  const Submit=async()=>{
-    const res = await axios.post(
-      `http://localhost:4000/Auth/reset-password`,
-      {
-        email:state.Email,password: password,
-      }
-
-    )
-    alert("Password Changed!!")
-    navigate(-1)
-  }
+  const Submit = async () => {
+    const res = await axios.post(`http://localhost:4000/Auth/reset-password`, {
+      email: state.Email,
+      password: password,
+    });
+    alert("Password Changed!!");
+    navigate(-1);
+  };
   return (
-    <div>
+    <div className="container">
       <div
         class="rounded-top text-white d-flex flex-row"
-        style={{ backgroundColor: "#0054a6", height: "200px" }}
+        style={{ backgroundColor: "#4b2980", height: "200px" }}
       >
         <div
           class="ms-4 mt-5 d-flex justify-content-center"
@@ -60,10 +62,9 @@ export default function Profile() {
         ></div>
         <div class="ms-3" style={{ marginTop: "130px" }}>
           <h2>{state.Name}</h2>
-          {state.Roles.map((e)=>{
-            return(<p>{e}, </p>)
+          {state.Roles.map((e) => {
+            return <p>{e}, </p>;
           })}
-          
         </div>
       </div>
       <div class="p-4 text-black" style={{ backgroundColor: "#f8f9fa" }}></div>

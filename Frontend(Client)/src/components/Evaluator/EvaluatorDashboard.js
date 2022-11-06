@@ -75,31 +75,36 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Courses.length>0?(Courses.map((i) => {
-                    return (
-                      <tr>
-                        <td>{i.Program}</td>
-                        <td>{i.Name}</td>
-                        <td>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={() => {
-                              navigate(
-                                `/Evaluator/Courses/${i.Program}/${i.Code}`,
-                                {
-                                  replace: true,
-                                }
-                              );
-                            }}
-                          >
-                            View
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })):(<h4>Nothing to show</h4>)}
+                  {Courses.length > 0 ? (
+                    Courses.map((i) => {
+                      return (
+                        <tr>
+                          <td>{i.Program}</td>
+                          <td>{i.Name}</td>
+                          <td>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              size="small"
+                              style={{ backgroundColor: "#4b2980" }}
+                              onClick={() => {
+                                navigate(
+                                  `/Evaluator/Courses/${i.Program}/${i.Code}`,
+                                  {
+                                    replace: true,
+                                  }
+                                );
+                              }}
+                            >
+                              View
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <h4>Nothing to show</h4>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -124,31 +129,36 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Courses.length>0?(Courses.map((i) => {
-                    return (
-                      <tr>
-                        <td>{i.Program}</td>
-                        <td>{i.Name}</td>
-                        <td>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={() => {
-                              navigate(
-                                `/Evaluator/CDF/${i.Program}/${i.Code}`,
-                                {
-                                  replace: true,
-                                }
-                              );
-                            }}
-                          >
-                            View
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })):(<h4>Nothing to show</h4>)}
+                  {Courses.length > 0 ? (
+                    Courses.map((i) => {
+                      return (
+                        <tr>
+                          <td>{i.Program}</td>
+                          <td>{i.Name}</td>
+                          <td>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              size="small"
+                              style={{ backgroundColor: "#4b2980" }}
+                              onClick={() => {
+                                navigate(
+                                  `/Evaluator/CDF/${i.Program}/${i.Code}`,
+                                  {
+                                    replace: true,
+                                  }
+                                );
+                              }}
+                            >
+                              View
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <h4>Nothing to show</h4>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -170,31 +180,36 @@ export default function EvaluatorDashboard() {
                   <th className="col-4">Action</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {Courses.length>0?(Courses.map((i) => {
-                    return (
-                      <tr>
-                        <td>{i.Program}</td>
-                        <td>{i.Name}</td>
-                        <td>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={() => {
-                              navigate(
-                                `/Evaluator/Syllabus/${i.Program}/${i.Code}`,
-                                {
-                                  replace: true,
-                                }
-                              );
-                            }}
-                          >
-                            View
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })):(<h4>Nothing to show</h4>)}
+                  {Courses.length > 0 ? (
+                    Courses.map((i) => {
+                      return (
+                        <tr>
+                          <td>{i.Program}</td>
+                          <td>{i.Name}</td>
+                          <td>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              size="small"
+                              style={{ backgroundColor: "#4b2980" }}
+                              onClick={() => {
+                                navigate(
+                                  `/Evaluator/Syllabus/${i.Program}/${i.Code}`,
+                                  {
+                                    replace: true,
+                                  }
+                                );
+                              }}
+                            >
+                              View
+                            </Button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <h4>Nothing to show</h4>
+                  )}
                 </tbody>
               </table>
             </div>
@@ -223,6 +238,7 @@ export default function EvaluatorDashboard() {
                         variant="contained"
                         color="primary"
                         size="small"
+                        style={{ backgroundColor: "#4b2980" }}
 
                         // onClick={handleOpen1}
                       >

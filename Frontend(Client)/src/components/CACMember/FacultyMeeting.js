@@ -90,10 +90,11 @@ export default function FacultyMeeting({ persist }) {
 
       <div>
         {meetings.map((item) => (
-          <div className="col">
+          <div>
             <Card
               style={{
-                backgroundColor: "#1565C0",
+                backgroundColor: "#4b2980",
+
                 color: "#fff",
                 padding: 25,
                 borderRadius: "10px",

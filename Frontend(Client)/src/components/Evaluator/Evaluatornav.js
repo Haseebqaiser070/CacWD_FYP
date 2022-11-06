@@ -67,7 +67,7 @@ export default function FacultyNavigation() {
           <nav class="sb-sidenav accordion bg" id="sidenavAccordion">
             <div
               style={{
-                height: "calc(100vh - 56px)",
+                height: "calc(100vh - 57px)",
                 overflow: "auto",
               }}
               class="sb-sidenav-menu"
@@ -103,51 +103,50 @@ export default function FacultyNavigation() {
                 {openFolders &&
                   Folders.length > 0 &&
                   Folders.map((i) => {
-                    console.log("dsds",i)
+                    console.log("dsds", i);
                     return (
                       <>
-                        {i.Evaluated!=true || i.Revision==true ?
-                        <div
-                          style={{
-                            marginLeft: "12px",
-                            fontSize: "14px",
-                            cursor: "pointer",
-                          }}
-                          class="nav-link sidenavtext "
-                          onClick={() => {
-                            if (i.Folder.LabTheory == "Theory" ) {
-                              navigate(
-                                `/Evaluator/FolderTemplete/${i._id}`,
-                                { state: { i } },
-                                {
-                                  replace: true,
-                                }
-                              );
-                            }
-                            if (i.Folder.LabTheory == "Lab") {
-                              navigate(
-                                `/Evaluator/FolderTemplete/${i._id}`,
-                                { state: { i } },
-                                {
-                                  replace: true,
-                                }
-                              );
-                            }
-                          }}
-                        >
-                          <div class="sb-nav-link-icon">
-                            <BsListCheck color="#fff" />
+                        {i.Evaluated != true || i.Revision == true ? (
+                          <div
+                            style={{
+                              marginLeft: "12px",
+                              fontSize: "14px",
+                              cursor: "pointer",
+                            }}
+                            class="nav-link sidenavtext "
+                            onClick={() => {
+                              if (i.Folder.LabTheory == "Theory") {
+                                navigate(
+                                  `/Evaluator/FolderTemplete/${i._id}`,
+                                  { state: { i } },
+                                  {
+                                    replace: true,
+                                  }
+                                );
+                              }
+                              if (i.Folder.LabTheory == "Lab") {
+                                navigate(
+                                  `/Evaluator/FolderTemplete/${i._id}`,
+                                  { state: { i } },
+                                  {
+                                    replace: true,
+                                  }
+                                );
+                              }
+                            }}
+                          >
+                            <div class="sb-nav-link-icon">
+                              <BsListCheck color="#fff" />
+                            </div>
+                            {i.Folder?.Course?.Code} {i.Folder?.Course?.Name}{" "}
+                            {i.Folder?.LabTheory == "Lab" &&
+                              "(" + i.Folder?.LabTheory + ")"}
                           </div>
-                          {i.Folder?.Course?.Code} {i.Folder?.Course?.Name}{" "}
-                          {i.Folder?.LabTheory == "Lab" &&
-                            "(" + i.Folder?.LabTheory + ")"}
-                        </div>
-                  :
-                  <></>
-                  }
+                        ) : (
+                          <></>
+                        )}
                       </>
                     );
-                        
                   })}
 
                 <Link class="nav-link sidenavtext " to="FoldersInRevision">
@@ -176,7 +175,7 @@ export default function FacultyNavigation() {
         <div
           style={{
             width: "100%",
-            height: "calc(100vh - 56px)",
+            height: "calc(100vh - 57px)",
             overflow: "auto",
           }}
         >

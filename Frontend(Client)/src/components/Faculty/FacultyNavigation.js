@@ -64,7 +64,7 @@ export default function FacultyNavigation() {
           <nav class="sb-sidenav accordion bg" id="sidenavAccordion">
             <div
               style={{
-                height: "calc(100vh - 56px)",
+                height: "calc(100vh - 58px)",
                 overflow: "auto",
               }}
               class="sb-sidenav-menu"
@@ -100,47 +100,50 @@ export default function FacultyNavigation() {
                 {openFolders &&
                   Folders.length > 0 &&
                   Folders.map((i) => {
-                    console.log("sda",i)
+                    console.log("sda", i);
                     return (
                       <>
-                      {i.Evaluated!=true || i.WantRevision==true || ((i.Evaluated==true && i.Round1==false) ||(i.Evaluated==true && i.Round1==false))?  
-                        <div
-                          style={{
-                            marginLeft: "12px",
-                            fontSize: "14px",
-                            cursor: "pointer",
-                          }}
-                          class="nav-link sidenavtext "
-                          onClick={() => {
-                            if (i.LabTheory == "Theory") {
-                              navigate(
-                                `/Faculty/CourseFolder/${i._id}`,
-                                { state: { i } },
-                                {
-                                  replace: true,
-                                }
-                              );
-                            }
-                            if (i.LabTheory == "Lab") {
-                              navigate(
-                                `/Faculty/LabFolder/${i._id}`,
-                                { state: { i } },
-                                {
-                                  replace: true,
-                                }
-                              );
-                            }
-                          }}
-                        >
-                          <div class="sb-nav-link-icon">
-                            <BsListCheck color="#fff" />
+                        {i.Evaluated != true ||
+                        i.WantRevision == true ||
+                        (i.Evaluated == true && i.Round1 == false) ||
+                        (i.Evaluated == true && i.Round1 == false) ? (
+                          <div
+                            style={{
+                              marginLeft: "12px",
+                              fontSize: "14px",
+                              cursor: "pointer",
+                            }}
+                            class="nav-link sidenavtext "
+                            onClick={() => {
+                              if (i.LabTheory == "Theory") {
+                                navigate(
+                                  `/Faculty/CourseFolder/${i._id}`,
+                                  { state: { i } },
+                                  {
+                                    replace: true,
+                                  }
+                                );
+                              }
+                              if (i.LabTheory == "Lab") {
+                                navigate(
+                                  `/Faculty/LabFolder/${i._id}`,
+                                  { state: { i } },
+                                  {
+                                    replace: true,
+                                  }
+                                );
+                              }
+                            }}
+                          >
+                            <div class="sb-nav-link-icon">
+                              <BsListCheck color="#fff" />
+                            </div>
+                            {i.Course.Code} {i.Course.Name}{" "}
+                            {i.LabTheory == "Lab" && "(" + i.LabTheory + ")"}
                           </div>
-                          {i.Course.Code} {i.Course.Name}{" "}
-                          {i.LabTheory == "Lab" && "(" + i.LabTheory + ")"}
-                        </div>
-                        :
-                        <></>
-                        }
+                        ) : (
+                          <></>
+                        )}
                       </>
                     );
                   })}
@@ -171,7 +174,7 @@ export default function FacultyNavigation() {
         <div
           style={{
             width: "100%",
-            height: "calc(100vh - 56px)",
+            height: "calc(100vh - 58px)",
             overflow: "auto",
           }}
         >

@@ -5,9 +5,7 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, Card } from "@mui/material";
 import CustomNoRowsOverlay from "../AuxillaryComponents/CustomNoRowsOverlay";
-import {
-  LinearProgress,
-} from "@mui/material";
+import { LinearProgress } from "@mui/material";
 export default function CACDashboard() {
   const [Rows, setRows] = useState([]);
   const [rr, setrr] = useState("");
@@ -15,7 +13,6 @@ export default function CACDashboard() {
   useEffect(() => {
     getUser();
     getmeetings();
-
   }, []);
   const getmeetings = async () => {
     const res = await axios.get("http://localhost:4000/Meeting/all");
@@ -24,31 +21,30 @@ export default function CACDashboard() {
     var tasks = [],
       members = [];
     res.data.map((val, id) => {
-      console.log("sas",val._id)
-      console.log("sas",user)
+      console.log("sas", val._id);
+      console.log("sas", user);
 
-      if((val.teacher_id.find((item)=>item._id==user))!=undefined){
+      if (val.teacher_id.find((item) => item._id == user) != undefined) {
         val.taskType.map((i) => {
           tasks.push(i.taskType);
         });
         val.teacher_id.map((i) => {
           members.push(i.Name);
         });
-  
-        row.push( {
+
+        row.push({
           _id: val._id,
           id: id,
           task: tasks,
           Cacmembers: members,
           meetingDate: val.dateTime,
           report: val,
-        })
+        });
       }
-      
 
       (tasks = []), (members = []);
     });
-    console.log("meetings",row);
+    console.log("meetings", row);
     setmeetings(row);
   };
   const getUser = async () => {
@@ -143,26 +139,14 @@ export default function CACDashboard() {
                   <th className="col-4">Date</th>
                 </thead>
                 <tbody style={{ backgroundColor: "#f5f5f5" }}>
-                  {meetings.map((item)=>(
-
+                  {meetings.map((item) => (
                     <tr>
-                    <td>{item.task}</td>
-                    <td>{item.meetingDate}</td>
-                  </tr>
-                ))}
-                  
+                      <td>{item.task}</td>
+                      <td>{item.meetingDate}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                // onClick={() => {
-                //   navigate(`/Admin/CreateNewMeeting`, { replace: true });
-                // }}
-              >
-                View All
-              </Button>
             </div>
           </Card>
         </div>
@@ -173,10 +157,10 @@ export default function CACDashboard() {
             </h4>
             <div>
               <DataGrid
-              components={{
-                NoRowsOverlay: CustomNoRowsOverlay,
-                LoadingOverlay: LinearProgress,
-              }}
+                components={{
+                  NoRowsOverlay: CustomNoRowsOverlay,
+                  LoadingOverlay: LinearProgress,
+                }}
                 style={{ height: 400, width: "100%" }}
                 columns={columns}
                 getRowId={(Rows) => Rows._id}
