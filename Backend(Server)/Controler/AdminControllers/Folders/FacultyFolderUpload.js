@@ -308,8 +308,8 @@ module.exports.editRevisionEvaluation = async (req, res) => {
       if (!req.user) return await res.json("Timed Out");
       if (!req.user.Roles.includes("Evaluator")) return await res.status(401).json("UnAutherized");        
       try {        
-        const oldd = await Folderdoc.findByIdAndUpdate(req.params.id,{Revision:false})               
-        const old = await Folderdoc.findByIdAndUpdate(req.params.id,{WantRevision:false})   
+        const oldd = await Folderdoc.findByIdAndUpdate(req.params.id,{Revision:false,Evaluated:true})               
+        const old = await Folderdoc.findByIdAndUpdate(req.params.id,{WantRevision:false,Evaluated:true})   
         const userr=await User.findById(old.User)
         const course=await Courses.findById(old.Course)
 

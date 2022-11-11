@@ -69,9 +69,9 @@ module.exports.TaskEdited = (e,email) => {
     subject: "Task Updates",
     text:
       "Updated Task Type :" +
-      e.taskType +
+      e.taskType + "\n"+
       " Course : " +
-      e.Course?.Name +
+      e.Course?.Name +"\n"+
       " Deadline: " +
       e.Deadline,
   };
@@ -92,7 +92,7 @@ module.exports.TaskReturned = (e,email) => {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Task Returned",
-    text: "Returned Task : " + e.taskType + " Status : " + e.Status,
+    text: "Returned Task : " + e.taskType +"\n"+ " Status : " + e.Status,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -110,7 +110,7 @@ module.exports.TaskLock = (e, email) => {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Task Lock",
-    text: "Task : " + e.taskType + " Status : " + e.Status,
+    text: "Task : " + e.taskType +"\n"+" Status : " + e.Status,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -130,9 +130,9 @@ module.exports.CourseAssign = (e, email) => {
     subject: "Course Assigned",
     text:
       "Assigned Course: " +
-      e.Course +
+      e.Course +"\n"+
       " Program : " +
-      e.Program +
+      e.Program +"\n"+
       " Section : " +
       e.Section,
   };
@@ -151,7 +151,7 @@ module.exports.ResetAvailability = (email) => {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Reset Availability",
-    text: "New Semester has Started. Please Set Your Availabilities",
+    text: "New Semester has Started"+"\n"+"Please Set Your Availabilities",
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -172,7 +172,7 @@ module.exports.TaskLock= (e,email) => {
     to: email,
     subject: "Task Revision",
     text:
-      "Returned Task For Revision : " + e.taskType + " Status : " + e.Status,
+      "Returned Task For Revision : " + e.taskType +"\n"+ " Status : " + e.Status,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -189,7 +189,7 @@ module.exports.MeetingDetails = (email, time, title) => {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Meeting Scheduled",
-    text: "Meeting Title :" + title + ", Meeting Time : " + time,
+    text: "Meeting Title :" + title +"\n"+ " Meeting Time : " + time,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -212,9 +212,8 @@ module.exports.AvailabilityDetails= (email,uemail,time) => {
     subject: "Availability details",
     text:
       "CAC member :" +
-      uemail +
-      ", Meeting Time : " +
-      time
+      uemail +"\n"+"Availabilities:"+"\n"+"Monday: "+time.mon+"\n"+"Tuesday: "+time.tue+"\n"+
+      "Wednesday: "+time.wed+"\n"+"Thursday: "+time.thur+"\n"+"Friday: "+time.fri+"\n"+"Saturday: "+time.sat,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -233,8 +232,8 @@ module.exports.MeetingUpdates = (email,time,title) => {
     subject: "Meeting Updated Scheduled",
     text:
       "Meeting Title :" +
-      title +
-      ", Meeting Time : " +
+      title +"\n"+
+      " Meeting Time : " +
       time
   };
 
@@ -255,8 +254,8 @@ module.exports.Meetingdeleted = (email,time,title) => {
     subject: "Meeting Scheduled Cancelled",
     text:
       "Meeting Title :" +
-      title +
-      ", Meeting Time : " +
+      title +"\n"+
+      " Meeting Time : " +
       time
   };
 
@@ -292,7 +291,7 @@ module.exports.declineMail = (email) => {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Declined Rebuttle Email",
-    text: "Your Rebuttle has been Declined by the Supervisor. Contact Office for further details",
+    text: "Your Rebuttle has been Declined by the Supervisor"+"\n"+" Contact Office for further details",
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
@@ -328,9 +327,9 @@ module.exports.CourseDeadlines= (email,type,round,time) => {
     subject: "Deadlines",
     text:
       "Folder :" +
-      type +
+      type +"\n"+
       ", Round : " +
-      round+
+      round+"\n"+
       ", Deadline : " +
       time
   };
@@ -353,9 +352,9 @@ module.exports.DeadlineExtended= (email,type,round,Name) => {
     text:
     "You have a Request fot Folder Deadline Extension "+
       "Folder :" +
-      type +
+      type +"\n"+
       ", Round : " +
-      round+
+      round+"\n"+
       " has been Made by "+
       Name
   };
@@ -376,9 +375,9 @@ module.exports.DeadlineRequest= (email,type,round,user) => {
     subject: "Deadlines Request",
     text:
     "You Got Deadline request from "+
-      user +
+      user +"\n"+
       "For Folder :" +
-      type +
+      type +"\n"+
       ", Round : " +
       round
   };
@@ -399,7 +398,7 @@ module.exports.FolderSubmit= (email,user,course) => {
     subject: "Folder Submission",
     text:
     "Folder for "+
-      course +
+      course +"\n"+
       "has been Submitted by :" +
       user 
   };
@@ -483,7 +482,7 @@ module.exports.MeetingReminder = (email, time, title) => {
     from: "cacfyp@gmail.com",
     to: email,
     subject: "Meeting Reminder",
-    text: "Meeting Title :" + title + ", Meeting Time : " + time,
+    text: "Meeting Title :" + title + "\n"+" Meeting Time : " + time,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {

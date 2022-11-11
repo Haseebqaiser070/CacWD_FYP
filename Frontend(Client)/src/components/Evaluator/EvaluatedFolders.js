@@ -41,7 +41,7 @@ const columns = [
   {
     field: "actions",
     headerName: "Actions",
-    width: "200",
+    width: "400",
     editable: false,
     renderCell: HandleButton,
   },
@@ -54,7 +54,7 @@ function HandleButton(row) {
   };
   const senddata1 = (roww) => {
     console.log("helllo", roww);
-    //navigate('/Evaluator/Edit',{state:roww.row})
+    navigate('/Evaluator/ReturnedEvaluation',{state:roww.row})
   };
   return (
     <>
@@ -70,6 +70,20 @@ function HandleButton(row) {
       >
         <AiFillEye style={{ marginRight: 10 }} />
         View Folder
+      </Button>
+
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        style={muiAbtn}
+        onClick={() => {
+          senddata1(row);
+          //navigate('/Faculty/Returned',{state:{row:row}})
+        }}
+      >
+        <AiFillEye style={{ marginRight: 10 }} />
+        View Evaluation
       </Button>
     </>
   );

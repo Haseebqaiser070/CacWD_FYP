@@ -12,6 +12,8 @@ import FolderTempleteEdit from "../Evaluator/FolderTempleteEdit";
 import EvaluatorFolderInRevision from "../Evaluator/EvaluatorFolderInRevision";
 import Courses from "../DocumentsEvaluatorandFaculty/CourseFinal"
 import CDF from "../DocumentsEvaluatorandFaculty/CDFfinal"
+import ReturnedPage from "../Faculty/ReturnedPageEvaluator";
+
 import Syllabus from "../DocumentsEvaluatorandFaculty/Syllabusfinal"
 function EvaluatorRoutes() {
   return (
@@ -24,6 +26,7 @@ function EvaluatorRoutes() {
           path="/FoldersInRevision"
           element={<EvaluatorFolderInRevision />}
         />
+        <Route path="/ReturnedEvaluation" element={<ReturnedPage />} />
 
         <Route path="/Edit" element={<FolderTempleteEdit />} />
         

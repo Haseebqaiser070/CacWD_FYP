@@ -17,6 +17,12 @@ export default function FolderNavigation(props) {
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
+
+
+  const [open5, setOpen5] = React.useState(false);
+  const [open6, setOpen6] = React.useState(false);
+  const [open7, setOpen7] = React.useState(false);
+  const [open8, setOpen8] = React.useState(false);
   console.log("props", props.data);
   const data = props.data;
   const handleClick = () => {
@@ -31,6 +37,22 @@ export default function FolderNavigation(props) {
   };
   const handleClick3 = () => {
     setOpen3(!open3);
+  };
+
+
+
+  const handleClick5 = () => {
+    setOpen5(!open5);
+  };
+  const handleClick6 = () => {
+    setOpen6(!open6);
+  };
+
+  const handleClick7 = () => {
+    setOpen7(!open7);
+  };
+  const handleClick8 = () => {
+    setOpen8(!open8);
   };
 
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -180,7 +202,7 @@ export default function FolderNavigation(props) {
                       <ListItemText primary="Award List" />
                     </ListItemButton>
                     <ListItemButton
-                      sx={{ pl: 9 }}
+                      sx={{ pl: 8 }}
                       onClick={() => {
                         props.handleClickScroll(item.Title + "Evaluation");
                         localStorage.setItem(
@@ -314,7 +336,7 @@ export default function FolderNavigation(props) {
                       <ListItemText primary="Award List" />
                     </ListItemButton>
                     <ListItemButton
-                      sx={{ pl: 9 }}
+                      sx={{ pl: 8 }}
                       onClick={() => {
                         props.handleClickScroll(item.Title + "Evaluation");
                         localStorage.setItem(
@@ -337,30 +359,276 @@ export default function FolderNavigation(props) {
           )}
         </Collapse>
 
-        <ListItemButton
-          onClick={() => {
-            props.handleClickScroll("Mid");
-            localStorage.setItem("ref", JSON.stringify("Mid"));
-          }}
-        >
+        <ListItemButton onClick={handleClick5}>
           <ListItemIcon>
-            <SendIcon />
+            <InboxIcon />
           </ListItemIcon>
-          <ListItemText primary="Midterm" />
+          <ListItemText primary="Mid" />
+          {open5 ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
+        <Collapse in={open5} timeout="auto" unmountOnExit>
+          {data?.files.map((item) =>
+            item.Title.includes("Mid") || item.Title.includes("Sessional")  ? (
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 4 }} onClick={handleClick6}>
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary={item.Title} />
+                  {open6 ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={open6} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Best");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Best")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Best" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Average");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Average")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Average" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Worst");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Worst")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Worst" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Question");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Question")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Question Paper" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Answer");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Answer")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Solution" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Award");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Award")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Award List" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Evaluation");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Evaluation")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Evaluation" />
+                    </ListItemButton>
+                  </List>
+                </Collapse>
+              </List>
+            ) : (
+              <></>
+            )
+          )}
+        </Collapse>
 
-        <ListItemButton
-          onClick={() => {
-            props.handleClickScroll("Terminal");
-            localStorage.setItem("ref", JSON.stringify("Terminal"));
-          }}
-        >
+
+        
+
+        <ListItemButton onClick={handleClick7}>
           <ListItemIcon>
-            <DraftsIcon />
+            <InboxIcon />
           </ListItemIcon>
           <ListItemText primary="Terminal" />
+          {open7 ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-
+        <Collapse in={open7} timeout="auto" unmountOnExit>
+          {data?.files.map((item) =>
+            item.Title?.includes("Terminal") ? (
+              <List component="div" disablePadding>
+                <ListItemButton sx={{ pl: 4 }} onClick={handleClick8}>
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary={item.Title} />
+                  {open8 ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={open8} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Best");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Best")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Best" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Average");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Average")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Average" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Worst");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Worst")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Worst" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Question");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Question")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Question Paper" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Answer");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Answer")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Solution" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Award");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Award")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Award List" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 8 }}
+                      onClick={() => {
+                        props.handleClickScroll(item.Title + "Evaluation");
+                        localStorage.setItem(
+                          "ref",
+                          JSON.stringify(item.Title + "Evaluation")
+                        );
+                      }}
+                    >
+                      <ListItemIcon>
+                        <StarBorder />
+                      </ListItemIcon>
+                      <ListItemText primary="Evaluation" />
+                    </ListItemButton>
+                  </List>
+                </Collapse>
+              </List>
+            ) : (
+              <></>
+            )
+          )}
+        </Collapse>
         <ListItemButton
           onClick={() => {
             props.handleClickScroll("Obe");

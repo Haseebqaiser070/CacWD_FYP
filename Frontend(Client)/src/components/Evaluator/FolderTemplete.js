@@ -31,6 +31,7 @@ export default function FolderTemplete() {
   const { id } = useParams();
   console.log("useParams", location);
   const [move, setmove] = useState("");
+  const [evaluation,setevaluation]=useState([]);
   const handleClickScroll = async (section) => {
     const mov = await JSON.parse(localStorage.getItem("ref"));
     const element = document.getElementById(mov);
@@ -107,6 +108,7 @@ export default function FolderTemplete() {
     );
     console.log(res.data);
     setFolder(res.data);
+    setevaluation(res.data?.Evaluation)
     getcdf();
   };
   const handleClick = () => {
@@ -338,7 +340,7 @@ export default function FolderTemplete() {
                         className="cardmedia"
                         component="iframe"
                         Height="1056px"
-                        src={Folder.LectureDeliveryRecord.pdf}
+                        src={Folder.LectureDeliveryRecord?.pdf}
                       />
                     </Card>
                   </div>
@@ -347,6 +349,9 @@ export default function FolderTemplete() {
               {Folder.files.length > 0 &&
                 Folder.files.map((i) => {
                   var ind;
+                  const cloobj=evaluation.find((it)=>it.title==i.Title)
+                  console.log("cloobj",cloobj)
+                  //setquiz(cloobj)
                   if (i.Title.includes("Quiz") && cdf != null) {
                     cdf.CLOs.map((val) => {
                       val.Quizzes.find((item, index) => {
@@ -386,7 +391,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Question.Base64.pdf}
+                              src={i.Question?.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -403,7 +408,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Solution.Base64.pdf}
+                              src={i.Solution.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -420,7 +425,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Best.Base64.pdf}
+                              src={i.Best.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -437,7 +442,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Average.Base64.pdf}
+                              src={i.Average.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -454,7 +459,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Worst.Base64.pdf}
+                              src={i.Worst.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -471,7 +476,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Awardlist.Base64.pdf}
+                              src={i.Awardlist.Base64?.pdf}
                             />
                           </Card>
                           <div
@@ -516,7 +521,8 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="yes"
+                                    defaultValue={cloobj?.clo_correct}
+                                    defaultChecked={cloobj?.clo_correct}
                                     name="radio-buttons-group"
                                     onChange={(e) => {
                                       setquiz((existingValues) => ({
@@ -571,8 +577,9 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="female"
                                     name="radio-buttons-group"
+                                    defaultValue={cloobj?.btl_correct}
+                                    defaultChecked={cloobj?.btl_correct}
                                     onChange={(e) => {
                                       setquiz((existingValues) => ({
                                         ...existingValues,
@@ -603,7 +610,10 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
-                                value={quiz.Comments}
+                                placeholder={cloobj?.Comments}
+                                defaultValue={cloobj?.Comments}
+
+                                value={quiz?.Comments}
                                 onChange={(e) => {
                                   setquiz((existingValues) => ({
                                     ...existingValues,
@@ -619,7 +629,10 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
-                                value={quiz.Feedback}
+                                placeholder={cloobj?.Feedback}
+                                defaultValue={cloobj?.Feedback}
+
+                                value={quiz?.Feedback}
                                 onChange={(e) => {
                                   setquiz((existingValues) => ({
                                     ...existingValues,
@@ -645,12 +658,13 @@ export default function FolderTemplete() {
                   }
                 })}
 
-              {Folder.files.length > 0 &&
-                Folder.files.map((i) => {
+              {Folder.files?.length > 0 &&
+                Folder.files?.map((i) => {
+                  const cloobj=evaluation.find((it)=>it.title==i.Title)
                   var ind;
                   if (i.Title.includes("Assignment") && cdf != null) {
                     cdf.CLOs.map((val) => {
-                      val.Assignment.find((item, index) => {
+                      val.Assignment?.find((item, index) => {
                         if (item.title == i.Title) {
                           ind = val;
                           cloa = val;
@@ -687,7 +701,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Question.Base64.pdf}
+                              src={i.Question.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -704,7 +718,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Solution.Base64.pdf}
+                              src={i.Solution.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -721,7 +735,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Best.Base64.pdf}
+                              src={i.Best.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -738,7 +752,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Average.Base64.pdf}
+                              src={i.Average.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -755,7 +769,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Worst.Base64.pdf}
+                              src={i.Worst.Base64?.pdf}
                             />
                           </Card>
                           <Card
@@ -772,7 +786,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Awardlist.Base64.pdf}
+                              src={i.Awardlist.Base64?.pdf}
                             />
                           </Card>
                           <div
@@ -817,7 +831,8 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="female"
+                                    defaultValue={cloobj?.clo_correct}
+                                    defaultChecked={cloobj?.clo_correct}
                                     name="radio-buttons-group"
                                     onChange={(e) => {
                                       setassignment((existingValues) => ({
@@ -872,8 +887,8 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="female"
-                                    name="radio-buttons-group"
+                                    defaultValue={cloobj?.btl_correct}
+                                    defaultChecked={cloobj?.btl_correct}                                    name="radio-buttons-group"
                                     onChange={(e) => {
                                       setassignment((existingValues) => ({
                                         ...existingValues,
@@ -904,7 +919,10 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
-                                value={assignment.Comments}
+                                placeholder={cloobj?.Comments}
+                                defaultValue={cloobj?.Comments}
+
+                                value={assignment?.Comments}
                                 onChange={(e) => {
                                   setassignment((existingValues) => ({
                                     ...existingValues,
@@ -920,7 +938,9 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
-                                value={assignment.Feedback}
+                                placeholder={cloobj?.Feedback}
+                                defaultValue={cloobj?.Feedback}
+                                value={assignment?.Feedback}
                                 onChange={(e) => {
                                   setassignment((existingValues) => ({
                                     ...existingValues,
@@ -946,9 +966,11 @@ export default function FolderTemplete() {
                   }
                 })}
 
-              {Folder.files.length > 0 &&
-                Folder.files.map((i) => {
+              {Folder.files?.length > 0 &&
+                Folder.files?.map((i) => {
                   var ind;
+                  const cloobj=evaluation.find((it)=>it.title==i.Title)
+
                   if (i.Title.includes("Terminal") && cdf != null) {
                     cdf.CLOs.map((val) => {
                       if (val.Final.includes("Final") && cdf != null) {
@@ -972,7 +994,8 @@ export default function FolderTemplete() {
                           >
                             <b> {i.Title} </b>
                           </h3>
-                          <Card sx={{ maxWidth: "100%", marginTop: 0 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 0 }}                            
+                          id={i.Title + "Question"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -983,10 +1006,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Question.Base64.pdf}
+                              src={i.Question.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Answer"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -997,10 +1021,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Solution.Base64.pdf}
+                              src={i.Solution.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Best"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1014,7 +1039,8 @@ export default function FolderTemplete() {
                               src={i.Best.Base64.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Average"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1025,10 +1051,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Average.Base64.pdf}
+                              src={i.Average.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Worst"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1042,7 +1069,8 @@ export default function FolderTemplete() {
                               src={i.Worst.Base64.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Award"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1053,7 +1081,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Awardlist.Base64.pdf}
+                              src={i.Awardlist.Base64?.pdf}
                             />
                           </Card>
                           <div
@@ -1064,6 +1092,7 @@ export default function FolderTemplete() {
                               padding: 35,
                               paddingBottom: 35,
                             }}
+                            id={i.Title + "Evaluation"}
                           >
                             <h2 className="my-4 py-4">{i.Title} Evalution</h2>
                             <div className="row ">
@@ -1098,7 +1127,8 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="female"
+                                    defaultValue={cloobj?.clo_correct}
+                                    defaultChecked={cloobj?.clo_correct}
                                     name="radio-buttons-group"
                                     onChange={(e) => {
                                       setfinal((existingValues) => ({
@@ -1153,7 +1183,8 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="female"
+                                    defaultValue={cloobj?.btl_correct}
+                                    defaultChecked={cloobj?.btl_correct}
                                     name="radio-buttons-group"
                                     onChange={(e) => {
                                       setfinal((existingValues) => ({
@@ -1185,7 +1216,10 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
-                                value={final.Comments}
+                                placeholder={cloobj?.Comments}
+                                defaultValue={cloobj?.Comments}
+
+                                value={final?.Comments}
                                 onChange={(e) => {
                                   setfinal((existingValues) => ({
                                     ...existingValues,
@@ -1201,7 +1235,9 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
-                                value={final.Feedback}
+                                placeholder={cloobj?.Feedback}
+                                defaultValue={cloobj?.Feedback}
+                                value={final?.Feedback}
                                 onChange={(e) => {
                                   setfinal((existingValues) => ({
                                     ...existingValues,
@@ -1233,6 +1269,8 @@ export default function FolderTemplete() {
                     i.Title.includes("Mid") ||
                     (i.Title.includes("Sessional") && cdf != null)
                   ) {
+                    const cloobj=evaluation.find((it)=>it.title==i.Title)
+
                     cdf?.CLOs?.map((val) => {
                       if (
                         val.Mid.includes("Mid") ||
@@ -1258,7 +1296,8 @@ export default function FolderTemplete() {
                           >
                             {i.Title}
                           </h3>
-                          <Card sx={{ maxWidth: "100%", marginTop: 0 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 0 }}                             
+                          id={i.Title + "Question"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1269,10 +1308,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Question.Base64.pdf}
+                              src={i.Question.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Answer"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1283,10 +1323,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Solution.Base64.pdf}
+                              src={i.Solution.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Best"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1297,10 +1338,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Best.Base64.pdf}
+                              src={i.Best.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Average"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1311,10 +1353,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Average.Base64.pdf}
+                              src={i.Average.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Worst"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1325,10 +1368,11 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Worst.Base64.pdf}
+                              src={i.Worst.Base64?.pdf}
                             />
                           </Card>
-                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}>
+                          <Card sx={{ maxWidth: "100%", marginTop: 20 }}
+                          id={i.Title + "Award"}>
                             <h2
                               className="my-4 py-4"
                               style={{ textTransform: "uppercase" }}
@@ -1339,7 +1383,7 @@ export default function FolderTemplete() {
                               className="cardmedia"
                               component="iframe"
                               Height="1056px"
-                              src={i.Awardlist.Base64.pdf}
+                              src={i.Awardlist.Base64?.pdf}
                             />
                           </Card>
                           <div
@@ -1350,8 +1394,9 @@ export default function FolderTemplete() {
                               padding: 35,
                               paddingBottom: 35,
                             }}
+                            id={i.Title + "Evaluation"}
                           >
-                            <h2 className="my-4 py-4">{i.Title} Evalution</h2>
+                            <h2 className="my-4 py-4" >{i.Title} Evalution</h2>
                             <div className="row ">
                               <div className="col">
                                 <TextField
@@ -1384,7 +1429,8 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="female"
+                                    defaultValue={cloobj?.clo_correct}
+                                    defaultChecked={cloobj?.clo_correct}
                                     name="radio-buttons-group"
                                     onChange={(e) => {
                                       setmid((existingValues) => ({
@@ -1439,7 +1485,8 @@ export default function FolderTemplete() {
                                   <RadioGroup
                                     row
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="female"
+                                    defaultValue={cloobj?.btl_correct}
+                                    defaultChecked={cloobj?.btl_correct}
                                     name="radio-buttons-group"
                                     onChange={(e) => {
                                       setmid((existingValues) => ({
@@ -1471,6 +1518,8 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
+                                defaultValue={cloobj?.Comments}
+                                placeholder={cloobj?.Comments}
                                 value={mid.Comments}
                                 onChange={(e) => {
                                   setmid((existingValues) => ({
@@ -1487,6 +1536,8 @@ export default function FolderTemplete() {
                                 variant="outlined"
                                 size="small"
                                 fullWidth
+                                defaultValue={cloobj?.Feedback}
+                                placeholder={cloobj?.Feedback}
                                 value={mid.Feedback}
                                 onChange={(e) => {
                                   setmid((existingValues) => ({
@@ -1533,7 +1584,7 @@ export default function FolderTemplete() {
                       className="cardmedia"
                       component="iframe"
                       Height="1056px"
-                      src={Folder.Obe.pdf}
+                      src={Folder.Obe?.pdf}
                     />
                   </Card>
                 )}
@@ -1547,7 +1598,7 @@ export default function FolderTemplete() {
                         className="cardmedia"
                         component="iframe"
                         Height="1056px"
-                        src={Folder.ICEF.pdf}
+                        src={Folder.ICEF?.pdf}
                       />
                     </Card>
                   )}
