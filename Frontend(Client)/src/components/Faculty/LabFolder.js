@@ -5,7 +5,7 @@ import Popup from "../AuxillaryComponents/PopupFunction";
 import { Box, Card, Modal } from "@mui/material";
 import axios from "axios";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import useAuth from "../../MyHooks/useAuth";
 import { NestCamWiredStandTwoTone } from "@mui/icons-material";
 
@@ -44,6 +44,7 @@ export default function LabFolder() {
   const userid = JSON.parse(localStorage.getItem("user"));
   console.log("persists", userid);
   const [folders, setfolders] = useState("");
+  const navigate=useNavigate()
   const [pressed, setpressed] = useState(false);
   const [pressed1, setpressed1] = useState(false);
   useEffect(() => {
@@ -361,32 +362,32 @@ export default function LabFolder() {
       handleClose();
     } else {
       if (Question == "" && Question1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setQuestion(a.Question.Base64);
         setQuestion1(a.Question.Name);
       }
       if (Best == "" && Best1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setBest(a.Best.Base64);
         setBest1(a.Best.Name);
       }
       if (Average == "" && Average1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setAverage(a.Average.Base64);
         setAverage1(a.Average.Name);
       }
       if (Worst == "" && Worst1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setWorst(a.Worst.Base64);
         setWorst1(a.Worst.Name);
       }
       if (Solution == "" && Solution1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setSolution(a.Solution.Base64);
         setSolution1(a.Solution.Name);
       }
       if (Awardlist == "" && Awardlist1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setAwardlist(a.Awardlist.Base64);
         setAwardlist1(a.Awardlist.Name);
       }
@@ -564,7 +565,9 @@ export default function LabFolder() {
     setRevisionSubmitted(false);
 
     getFolderData();
+
     alert("Revision Submitted");
+    navigate(-1)
   };
 
   const getDeadlineRequest = async () => {

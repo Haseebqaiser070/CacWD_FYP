@@ -1,4 +1,13 @@
 var Program = require("../../Models/Program");
+var Mail=require("../../helpers/mailing")
+module.exports.Reminder = async (req, res) => {
+  try {
+    Mail.MeetingReminder(req.body.email)
+    await res.status(201).json("Reminder Sent");
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 module.exports.Add = async (req, res) => {
   try {

@@ -15,7 +15,7 @@ import CourseFinal from "../Admin/CourseFinal";
 import { Route, Routes } from "react-router-dom";
 import CourseRepo from "../Admin/CourseRepo";
 import FacultyMembers from "../FacultyMember";
-
+import CourseFolderReport from '../PdfTemplates/CourseFolderReport'
 import Profile from "../AuxillaryComponents/UserProfile";
 
 import CourseReturnedView from "../Admin/CourseReturnedView";
@@ -71,6 +71,7 @@ function AdminRoutes() {
         <Route path="/AllCourses" element={<AllCourses />} />
         <Route path="/CourseView/:id" element={<CourseFinal />} />
         <Route path="/AllCourses" element={<AllCourses />} />
+        <Route path="/CourseFolderReport" element={<CourseFolderReport />} />
 
         <Route path="/CourseReport" element={<CourseReport />} />
         <Route path="/CoursesNotPrereq" element={<CoursesNotPrereq />} />

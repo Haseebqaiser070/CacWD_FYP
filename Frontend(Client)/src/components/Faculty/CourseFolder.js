@@ -421,32 +421,42 @@ export default function CourseFolder() {
       handleClose();
     } else {
       if (Question == "" && Question1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setQuestion(a.Question.Base64);
+        console.log("wqq",a)
+
         setQuestion1(a.Question.Name);
       }
       if (Best == "" && Best1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setBest(a.Best.Base64);
+        console.log("wqa",a)
+
         setBest1(a.Best.Name);
       }
       if (Average == "" && Average1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
+        console.log("wqaa",a)
         setAverage(a.Average.Base64);
         setAverage1(a.Average.Name);
       }
       if (Worst == "" && Worst1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setWorst(a.Worst.Base64);
+        console.log("wqw",a)
+
         setWorst1(a.Worst.Name);
       }
       if (Solution == "" && Solution1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
         setSolution(a.Solution.Base64);
+        console.log("wqs",a)
         setSolution1(a.Solution.Name);
       }
       if (Awardlist == "" && Awardlist1 == "") {
-        const a = folders.files.find((item) => item.Title == Title);
+        const a = Folder.files?.find((item) => item.Title == Title);
+        console.log("wqsa",a)
+
         setAwardlist(a.Awardlist.Base64);
         setAwardlist1(a.Awardlist.Name);
       }

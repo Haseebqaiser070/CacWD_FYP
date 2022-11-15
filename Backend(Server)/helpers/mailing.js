@@ -493,3 +493,19 @@ module.exports.MeetingReminder = (email, time, title) => {
     }
   });
 };
+module.exports.MeetingReminder = (email) => {
+  var mailOptions = {
+    from: "cacfyp@gmail.com",
+    to: email,
+    subject: "Submission Reminder",
+    text: "Submission Reminder to Submit your Documents before the Deadline"
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log("sdada", error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};

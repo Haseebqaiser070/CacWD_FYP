@@ -40,7 +40,6 @@ export default function FacultyMembers() {
   axios.defaults.withCredentials = true;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
   const handleClose = () => {
     setOpen(false);
     setUser("");
@@ -58,6 +57,7 @@ export default function FacultyMembers() {
   const [Courses, setCourse] = useState([[]]);
   const [Programdb, setProgramdb] = useState([]);
   const [User, setUser] = useState("");
+  const [folders,setfolders]=useState([])
   const [obj, setobj] = useState([
     {
       Program: "",
@@ -84,6 +84,7 @@ export default function FacultyMembers() {
     getPrograms();
     getData();
   }, []);
+  
   const getData = async () => {
     const response = await axios.get("http://localhost:4000/User/show/Faculty");
     setRows(response.data);
@@ -133,12 +134,12 @@ export default function FacultyMembers() {
     if (verify) {
       try {
         if (!up) {
-          await axios.post("http://localhost:4000/AssginFolders/add", {
+         const a= await axios.post("http://localhost:4000/AssginFolders/add", {
             obj,
             User,
           });
         } else {
-          await axios.post("http://localhost:4000/AssginFolders/add2", {
+         const b= await axios.post("http://localhost:4000/AssginFolders/add2", {
             obj,
             User,
           });
@@ -186,7 +187,7 @@ export default function FacultyMembers() {
     {
       field: "actions",
       headerName: "Actions",
-      width: "350",
+      width: "550",
       editable: false,
       renderCell: ({ row }) => (
         <>
@@ -204,7 +205,7 @@ export default function FacultyMembers() {
               <AiFillEdit style={{ marginRight: 10 }} />
               Assign Course
             </Button>
-          ) : (
+          ) : (<>
             <Button
               variant="contained"
               color="primary"
@@ -218,6 +219,19 @@ export default function FacultyMembers() {
               <AiFillEdit style={{ marginRight: 10 }} />
               Edit Course
             </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              style={muiAbtn}
+              onClick={() => {
+                navigate("/admin/CourseFolderReport",{state:{row:row}})
+              }}
+            >
+              <AiFillEdit style={{ marginRight: 10 }} />
+              View Course report
+            </Button>
+            </>
           )}
           <Button
             variant="contained"
@@ -460,8 +474,8 @@ export default function FacultyMembers() {
                               {obj[index]?.Course?.Name}
                             </option>
                           )}
-                          {Courses[index].map((a) => {
-                            return <MenuItem value={a}>{a.Name}</MenuItem>;
+                          {Courses[index]?.map((a) => {
+                            return <MenuItem value={a}>{a?.Name}</MenuItem>;
                           })}
                         </Select>
                       </FormControl>
