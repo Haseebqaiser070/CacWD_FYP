@@ -56,7 +56,9 @@ module.exports.Add = async (req, res) => {
     if(e.taskType=="Create Catalog Description"||e.taskType=="Update Catalog Description"){
       e.User.map(async(i)=>{
         var ind = arrays.findIndex(j=>j._id.equals(i._id))
-        arrays[ind].CourseCreation.push(e.Course._id)              
+        e.Course.forEach((j)=>{
+          arrays[ind].CourseCreation.push(j._id)
+        })                      
       })
         if(e.taskType=="Update Catalog Description"){
           const course = await coursedoc.findOne({Code:e.Course.Code}).populate('PreRequisites')
@@ -118,8 +120,11 @@ module.exports.Add = async (req, res) => {
     else if(e.taskType=="Create CDF"||e.taskType=="Update CDF"){        
       e.User.map(async(i)=>{
         var ind = arrays.findIndex(j=>j._id.equals(i._id))
-        arrays[ind].CourseCDF.push(e.Course._id)              
-        })
+        e.Course.forEach((j)=>{
+          arrays[ind].CourseCDF.push(j._id)
+        }) 
+                      
+       })
       if(e.taskType=="Update CDF"){
           const CDF = await CDFgendoc.findOne({Code:e.Course.Code}).
           populate({path:"CLOs",populate:{path:"BTL",model:"BTL"}})
@@ -136,8 +141,10 @@ module.exports.Add = async (req, res) => {
     else if(e.taskType=="Create Syllabus"||e.taskType=="Update Syllabus"){        
       e.User.map(async(i)=>{
         var ind = arrays.findIndex(j=>j._id.equals(i._id))
-        arrays[ind].CourseSyllabus.push(e.Course._id)              
-        })
+        e.Course.forEach((j)=>{
+          arrays[ind].CourseSyllabus.push(j._id)
+        })          
+      })
       if(e.taskType=="Update Syllabus"){
           const Syllabus = await Syllabusgendoc.findOne({Code:e.Course.Code})
           await VersionSyllabusdoc.create({
