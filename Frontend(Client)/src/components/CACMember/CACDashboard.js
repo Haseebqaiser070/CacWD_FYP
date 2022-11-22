@@ -80,7 +80,9 @@ export default function CACDashboard() {
     {
       field: "Course",
       headerName: "Course",
-      valueGetter: (params) => params?.row?.Course?.Name,
+      valueGetter: (params) => params?.row?.Course?.map((i)=>{
+        return i?.Name
+      }),
       width: "200",
     },
     {
