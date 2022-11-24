@@ -106,7 +106,7 @@ export default function FacultyNavigation() {
                     console.log("dsds", i);
                     return (
                       <>
-                        {(i.Folder.Round1==true && i.Folder.Evaluated != true) || (i.Folder.Round2==true && i.Folder.Evaluated != true) || i.Folder.Revision == true ||  i.Folder.Evaluated != true? (
+                        {(i.Folder.Round1==true && i.Folder.Evaluated == true) || (i.Folder.Round2==true && i.Folder.Evaluated == true) || i.Folder.Revision == true ||  i.Folder.Evaluated != true? (
                           <div
                             style={{
                               marginLeft: "12px",

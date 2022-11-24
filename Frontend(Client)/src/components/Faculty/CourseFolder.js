@@ -139,13 +139,13 @@ export default function CourseFolder() {
   const [round1flag, setflag1] = useState(false);
   const [deadlinereq1, setdeadreq1] = useState(false);
   const [deadlinereq2, setdeadreq2] = useState(false);
-
   const [round2flag, setflag2] = useState(false);
   const [pressed, setpressed] = useState(false);
   const [pressed1, setpressed1] = useState(false);
   const [submitted1, setSubmitted1] = useState(false);
   const [submitted2, setSubmitted2] = useState(false);
   const [submittedRevision, setRevisionSubmitted] = useState(false);
+  const [submittedflag, setSubmittedflag] = useState(false);
 
   const [fileBase64String, setFileBase64String] = useState("");
   const setflag = async (deadline11, deadline22) => {
@@ -420,74 +420,103 @@ export default function CourseFolder() {
       getFolderData();
       handleClose();
     } else {
-      if (Question == "" && Question1 == "") {
+     console.log("Question",Question)
+     console.log("Solution",Solution)
+     console.log("Awardlist",Awardlist)
+     console.log("Best",Best)
+     console.log("Average",Average)
+     console.log("Worst",Worst)
+     var q1=Question1,q=Question,an1=Solution1,an=Solution,aw1=Awardlist1,aw=Awardlist,b1=Best1,b=Best,av1=Average1,av=Average,w1=Worst1,w=Worst;
+     const answer=await axios.get(`http://localhost:4000/Folders/showfiles/${Folder._id}`)
+     console.log("ans",answer)
+ 
+     if (Question == "" && Question1 == "") {
         const a = Folder.files?.find((item) => item.Title == Title);
-        setQuestion(a.Question.Base64);
         console.log("wqq",a)
-
+        q1=a?.Question.Name
+        const ans=answer.data.files?.find(((item) => item.Title == Title))
+        console.log("inquestion",ans)
+        q=ans?.Question?.Base64?.pdf
+        setQuestion(ans?.Question?.Base64?.pdf);
         setQuestion1(a.Question.Name);
       }
       if (Best == "" && Best1 == "") {
         const a = Folder.files?.find((item) => item.Title == Title);
-        setBest(a.Best.Base64);
         console.log("wqa",a)
-
+        b1=a?.Best.Name
+        const ans=answer.data.files?.find(((item) => item.Title == Title))
+        b=ans?.Best?.Base64?.pdf
+        setBest(ans?.Best?.Base64?.pdf);
         setBest1(a.Best.Name);
       }
       if (Average == "" && Average1 == "") {
         const a = Folder.files?.find((item) => item.Title == Title);
         console.log("wqaa",a)
-        setAverage(a.Average.Base64);
+        av1=a?.Average.Name
+        const ans=answer.data.files?.find(((item) => item.Title == Title))
+        av=ans?.Average?.Base64?.pdf
+        setAverage(ans?.Average?.Base64?.pdf);
         setAverage1(a.Average.Name);
       }
       if (Worst == "" && Worst1 == "") {
         const a = Folder.files?.find((item) => item.Title == Title);
-        setWorst(a.Worst.Base64);
-        console.log("wqw",a)
-
+        w1=a?.Worst.Name
+        const ans=answer.data.files?.find(((item) => item.Title == Title))
+        w=ans?.Worst?.Base64?.pdf
+        setWorst(ans?.Worst?.Base64?.pdf);
         setWorst1(a.Worst.Name);
       }
       if (Solution == "" && Solution1 == "") {
         const a = Folder.files?.find((item) => item.Title == Title);
-        setSolution(a.Solution.Base64);
-        console.log("wqs",a)
+        an1=a?.Solution.Name
+        const ans=answer.data.files?.find(((item) => item.Title == Title))
+        an=ans?.Solution?.Base64?.pdf
+        setSolution(ans?.Solution?.Base64?.pdf);
         setSolution1(a.Solution.Name);
       }
       if (Awardlist == "" && Awardlist1 == "") {
         const a = Folder.files?.find((item) => item.Title == Title);
-        console.log("wqsa",a)
-
-        setAwardlist(a.Awardlist.Base64);
+        aw1=a?.Awardlist.Name
+        const ans=answer.data.files?.find(((item) => item.Title == Title))
+        aw=ans?.Awardlist?.Base64?.pdf
+        setAwardlist(ans?.Awardlist?.Base64?.pdf);
         setAwardlist1(a.Awardlist.Name);
       }
+      console.log("Question",Question)
+      console.log("Solution",Solution)
+      console.log("Awardlist",Awardlist)
+      console.log("Best",Best)
+      console.log("Average",Average)
+      console.log("Worst",Worst)
       const res = await axios.put(`http://localhost:4000/Folders/add/${id}`, {
         Title,
         Question: {
-          Name: Question1,
-          Base64: Question,
+          Name: q1,
+          Base64: q,
         },
         Best: {
-          Name: Best1,
-          Base64: Best,
+          Name: b1,
+          Base64: b,
         },
         Average: {
-          Name: Average1,
-          Base64: Average,
+          Name: av1,
+          Base64: av,
         },
         Worst: {
-          Name: Worst1,
-          Base64: Worst,
+          Name: w1,
+          Base64: w ,
         },
         Solution: {
-          Name: Solution1,
-          Base64: Solution,
+          Name: an1,
+          Base64: an,
         },
         Awardlist: {
-          Name: Awardlist1,
-          Base64: Awardlist,
+          Name:aw1,
+          Base64:aw,
         },
       });
       getFolderData();
+      
       handleClose();
     }
   };
@@ -969,7 +998,7 @@ export default function CourseFolder() {
                               alert("Round has been submited");
                             }}
                           >
-                            Quiz {i} (Submited)
+                            Quiz {i} (Submitted)
                           </button>
                         ) : (
                           <button
@@ -987,25 +1016,43 @@ export default function CourseFolder() {
                             Quiz {i}
                           </button>
                         )
-                      ) : round1flag == true && submittedRevision == false ? (
-                        <button
-                          class="btn btn-block py-2 btn-primary"
-                          id="quiz1"
-                          type="button"
-                          style={{
-                            backgroundColor: "lightgrey",
-                            borderColor: "lightgrey",
-                          }}
-                          onClick={() => {
-                            alert("deadline passed");
-                          }}
-                        >
-                          Quiz {i} (deadline passed)
-                        </button>
-                      ) : Folder.files.find((obj) => {
-                          var t = "Quiz " + i;
-                          return obj.Title == t;
-                        }) ? (
+                      ) : round2flag == true && submittedRevision == true ?  Folder.files.find((obj) => {
+                        var t = "Quiz " + i;
+                        return obj.Title == t;
+                      }) ? (
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="quiz1"
+                        type="button"
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
+                        onClick={() => {
+                          alert("Round has been submited");
+                        }}
+                      >
+                        Quiz {i} (Submited)
+                      </button>
+                    ) : (
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="quiz1"
+                        type="button"
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
+                        onClick={() => {
+                          alert("Round has been submited");
+                        }}
+                      >
+                        Quiz {i}
+                      </button>
+                    ):Folder.files.find((obj) => {
+                      var t = "Quiz " + i;
+                      return obj.Title == t;
+                    }) ?(
                         <button
                           class="btn btn-block py-2 btn-primary"
                           id="quiz1"
@@ -1015,9 +1062,10 @@ export default function CourseFolder() {
                             handleOpen();
                           }}
                         >
-                          Quiz {i} (Submited)
+                          Quiz {i} (Submitted)
                         </button>
-                      ) : (
+                      ) :
+                      (
                         <button
                           class="btn btn-block py-2 btn-primary"
                           id="quiz1"
@@ -1027,9 +1075,12 @@ export default function CourseFolder() {
                             handleOpen();
                           }}
                         >
-                          Quiz {i}
+                          Quiz {i} 
                         </button>
-                      )}
+                      )
+                      
+                      
+                      }
                     </td>
                   );
                 })}
@@ -1072,25 +1123,45 @@ export default function CourseFolder() {
                             Assignment {i}
                           </button>
                         )
-                      ) : round1flag == true && submittedRevision == false ? (
-                        <button
-                          class="btn btn-block py-2 btn-primary"
-                          id="Assignment"
-                          type="button"
-                          style={{
-                            backgroundColor: "lightgrey",
-                            borderColor: "lightgrey",
-                          }}
-                          onClick={() => {
-                            alert("deadline passed");
-                          }}
-                        >
-                          Assignment {i} (deadline passed)
-                        </button>
-                      ) : Folder.files.find((obj) => {
-                          var t = "Assignment " + i;
-                          return obj.Title == t;
-                        }) ? (
+                      ) : round2flag == true && submittedRevision == true ?  
+                      Folder.files.find((obj) => {
+                        var t = "Assignment " + i;
+                        return obj.Title == t;
+                      }) ? (
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="Assignment"
+                        type="button"
+                        
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
+                        onClick={() => {
+                          alert("Round has been Submitted");
+                        }}
+                      >
+                        Assignment {i} (Submited)
+                      </button>
+                    ) : (
+                      <button
+                        class="btn btn-block py-2 btn-primary"
+                        id="quiz1"
+                        type="button"
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
+                        onClick={() => {
+                          alert("Round has been Submitted");
+                        }}
+                      >
+                        Assignment {i}
+                      </button>
+                    ): Folder.files.find((obj) => {
+                      var t = "Assignment " + i;
+                      return obj.Title == t;
+                    }) ?(
                         <button
                           class="btn btn-block py-2 btn-primary"
                           id="Assignment"
@@ -1100,21 +1171,22 @@ export default function CourseFolder() {
                             handleOpen();
                           }}
                         >
-                          Assignment {i} (Submited)
+                          Assignment {i} (Submitted)
                         </button>
-                      ) : (
+                      ) :
+                      (
                         <button
                           class="btn btn-block py-2 btn-primary"
-                          id="quiz1"
+                          id="Assignment"
                           type="button"
                           onClick={() => {
                             Assignmenttitle(i);
                             handleOpen();
                           }}
                         >
-                          Assignment {i}
+                          Assignment {i} 
                         </button>
-                      )}
+                      ) }
                     </td>
                   );
                 })}
@@ -1143,30 +1215,18 @@ export default function CourseFolder() {
                         )}
                       </button>
                     </td>
-                  ) : round1flag == true && submittedRevision == false ? (
-                    <button
-                      class="btn btn-block py-2 btn-primary"
-                      id="Assignment"
-                      type="button"
-                      style={{
-                        backgroundColor: "lightgrey",
-                        borderColor: "lightgrey",
-                      }}
-                      onClick={() => {
-                        alert("deadline passed");
-                      }}
-                    >
-                      Midterm Exam (deadline passed)
-                    </button>
-                  ) : (
+                  ) : round2flag == true && submittedRevision == true ? (
                     <td className="d-grid py-2 px-2">
                       <button
                         class="btn btn-block py-2 btn-primary"
                         id="Mid"
                         type="button"
+                        style={{
+                          backgroundColor: "lightgrey",
+                          borderColor: "lightgrey",
+                        }}
                         onClick={() => {
-                          Midtitle();
-                          handleOpen();
+                          alert("Round has been Submitted");
                         }}
                       >
                         {Folder.files.find((obj) => {
@@ -1179,7 +1239,28 @@ export default function CourseFolder() {
                         )}
                       </button>
                     </td>
-                  )
+                  ):(
+                    <button
+                      class="btn btn-block py-2 btn-primary"
+                      id="Assignment"
+                      type="button"
+                      
+                      onClick={() => {
+                        Midtitle();
+                        handleOpen();
+                      }}
+                      
+                    >
+                      {Folder.files.find((obj) => {
+                          var t = "Mid";
+                          return obj.Title == t;
+                        }) ? (
+                          <> Midterm Exam (Submited)</>
+                        ) : (
+                          <> Midterm Exam</>
+                        )}
+                    </button>
+                  ) 
                 ) : submitted1 == true && submittedRevision == false ? (
                   <>
                     <td className="d-grid py-2 px-2">
@@ -1229,7 +1310,7 @@ export default function CourseFolder() {
                       </button>
                     </td>
                   </>
-                ) : round1flag == true && submittedRevision == false ? (
+                ) : round2flag == true && submittedRevision == false ? (
                   <>
                     <button
                       class="btn btn-block py-2 btn-primary"

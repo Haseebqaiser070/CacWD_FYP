@@ -59,6 +59,7 @@ import AvailableCodes from "../PdfTemplates/AvailableCodes";
 import ProgramReport from "../PdfTemplates/ProgramReport"
 import FacultyCourseReport from "../PdfTemplates/FacultyCourseReport";
 import EvaluatorCourseReport from "../PdfTemplates/EvaluatorCourseReport";
+import ReturnedPage from "../Faculty/ReturnedPageEvaluator";
 
 function AdminRoutes() {
   return (
@@ -72,6 +73,7 @@ function AdminRoutes() {
         <Route path="/CourseView/:id" element={<CourseFinal />} />
         <Route path="/AllCourses" element={<AllCourses />} />
         <Route path="/CourseFolderReport" element={<CourseFolderReport />} />
+        <Route path="/ReturnedEvaluation" element={<ReturnedPage />} />
 
         <Route path="/CourseReport" element={<CourseReport />} />
         <Route path="/CoursesNotPrereq" element={<CoursesNotPrereq />} />

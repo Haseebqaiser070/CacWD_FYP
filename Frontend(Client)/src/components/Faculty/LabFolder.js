@@ -361,65 +361,103 @@ export default function LabFolder() {
       getFolderData();
       handleClose();
     } else {
+      console.log("Question",Question)
+      console.log("Solution",Solution)
+      console.log("Awardlist",Awardlist)
+      console.log("Best",Best)
+      console.log("Average",Average)
+      console.log("Worst",Worst)
+      var q1=Question1,q=Question,an1=Solution1,an=Solution,aw1=Awardlist1,aw=Awardlist,b1=Best1,b=Best,av1=Average1,av=Average,w1=Worst1,w=Worst;
+      const answer=await axios.get(`http://localhost:4000/Folders/showfiles/${Folder._id}`)
+      console.log("ans",answer)
+  
       if (Question == "" && Question1 == "") {
-        const a = Folder.files?.find((item) => item.Title == Title);
-        setQuestion(a.Question.Base64);
-        setQuestion1(a.Question.Name);
-      }
-      if (Best == "" && Best1 == "") {
-        const a = Folder.files?.find((item) => item.Title == Title);
-        setBest(a.Best.Base64);
-        setBest1(a.Best.Name);
-      }
-      if (Average == "" && Average1 == "") {
-        const a = Folder.files?.find((item) => item.Title == Title);
-        setAverage(a.Average.Base64);
-        setAverage1(a.Average.Name);
-      }
-      if (Worst == "" && Worst1 == "") {
-        const a = Folder.files?.find((item) => item.Title == Title);
-        setWorst(a.Worst.Base64);
-        setWorst1(a.Worst.Name);
-      }
-      if (Solution == "" && Solution1 == "") {
-        const a = Folder.files?.find((item) => item.Title == Title);
-        setSolution(a.Solution.Base64);
-        setSolution1(a.Solution.Name);
-      }
-      if (Awardlist == "" && Awardlist1 == "") {
-        const a = Folder.files?.find((item) => item.Title == Title);
-        setAwardlist(a.Awardlist.Base64);
-        setAwardlist1(a.Awardlist.Name);
-      }
-      const res = await axios.put(`http://localhost:4000/Folders/add/${id}`, {
-        Title,
-        Question: {
-          Name: Question1,
-          Base64: Question,
-        },
-        Best: {
-          Name: Best1,
-          Base64: Best,
-        },
-        Average: {
-          Name: Average1,
-          Base64: Average,
-        },
-        Worst: {
-          Name: Worst1,
-          Base64: Worst,
-        },
-        Solution: {
-          Name: Solution1,
-          Base64: Solution,
-        },
-        Awardlist: {
-          Name: Awardlist1,
-          Base64: Awardlist,
-        },
-      });
-      getFolderData();
-      handleClose();
+         const a = Folder.files?.find((item) => item.Title == Title);
+         console.log("wqq",a)
+         q1=a?.Question.Name
+         const ans=answer.data.files?.find(((item) => item.Title == Title))
+         console.log("inquestion",ans)
+         q=ans?.Question?.Base64?.pdf
+         setQuestion(ans?.Question?.Base64?.pdf);
+         setQuestion1(a.Question.Name);
+       }
+       if (Best == "" && Best1 == "") {
+         const a = Folder.files?.find((item) => item.Title == Title);
+         console.log("wqa",a)
+         b1=a?.Best.Name
+         const ans=answer.data.files?.find(((item) => item.Title == Title))
+         b=ans?.Best?.Base64?.pdf
+         setBest(ans?.Best?.Base64?.pdf);
+         setBest1(a.Best.Name);
+       }
+       if (Average == "" && Average1 == "") {
+         const a = Folder.files?.find((item) => item.Title == Title);
+         console.log("wqaa",a)
+         av1=a?.Average.Name
+         const ans=answer.data.files?.find(((item) => item.Title == Title))
+         av=ans?.Average?.Base64?.pdf
+         setAverage(ans?.Average?.Base64?.pdf);
+         setAverage1(a.Average.Name);
+       }
+       if (Worst == "" && Worst1 == "") {
+         const a = Folder.files?.find((item) => item.Title == Title);
+         w1=a?.Worst.Name
+         const ans=answer.data.files?.find(((item) => item.Title == Title))
+         w=ans?.Worst?.Base64?.pdf
+         setWorst(ans?.Worst?.Base64?.pdf);
+         setWorst1(a.Worst.Name);
+       }
+       if (Solution == "" && Solution1 == "") {
+         const a = Folder.files?.find((item) => item.Title == Title);
+         an1=a?.Solution.Name
+         const ans=answer.data.files?.find(((item) => item.Title == Title))
+         an=ans?.Solution?.Base64?.pdf
+         setSolution(ans?.Solution?.Base64?.pdf);
+         setSolution1(a.Solution.Name);
+       }
+       if (Awardlist == "" && Awardlist1 == "") {
+         const a = Folder.files?.find((item) => item.Title == Title);
+         aw1=a?.Awardlist.Name
+         const ans=answer.data.files?.find(((item) => item.Title == Title))
+         aw=ans?.Awardlist?.Base64?.pdf
+         setAwardlist(ans?.Awardlist?.Base64?.pdf);
+         setAwardlist1(a.Awardlist.Name);
+       }
+       console.log("Question",Question)
+       console.log("Solution",Solution)
+       console.log("Awardlist",Awardlist)
+       console.log("Best",Best)
+       console.log("Average",Average)
+       console.log("Worst",Worst)
+       const res = await axios.put(`http://localhost:4000/Folders/add/${id}`, {
+         Title,
+         Question: {
+           Name: q1,
+           Base64: q,
+         },
+         Best: {
+           Name: b1,
+           Base64: b,
+         },
+         Average: {
+           Name: av1,
+           Base64: av,
+         },
+         Worst: {
+           Name: w1,
+           Base64: w ,
+         },
+         Solution: {
+           Name: an1,
+           Base64: an,
+         },
+         Awardlist: {
+           Name:aw1,
+           Base64:aw,
+         },
+       });
+       getFolderData();
+       handleClose();
     }
   };
 

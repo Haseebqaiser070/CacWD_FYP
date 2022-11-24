@@ -108,10 +108,7 @@ export default function CourseFolderReport() {
         </Button>
       </div>
 
-      {folders.length>0?
       
-      folders?.map((item)=>(
-
       
       <div ref={componentRef} className="main">
         <div
@@ -124,6 +121,14 @@ export default function CourseFolderReport() {
             <h2>Course Folder Report</h2>
           </div>
         </div>
+        {folders.length>0?
+      
+      folders?.map((item)=>(
+<>
+<br></br>
+<hr style={{width:"100%",borderWidth:2}}></hr>
+<br></br>
+
         <div className="my-4">
           <h4>
             <b>Teacher: </b>{row.Name}
@@ -286,10 +291,11 @@ export default function CourseFolderReport() {
             </thead>
           </table>
         </div>
-      </div>
-      ))
+        </>))
       :<div>No Folders </div>
       }
+      </div>
+      
     </div>
   );
 }

@@ -12,6 +12,7 @@ module.exports.Add = async (req, res) => {
         return obj.Title === req.body.Title
       })
       console.log("isalready",isalready)
+      console.log("dsds",req.body)
     if(isalready!=undefined){
         const fils =await Promise.all( old.files.map(async(x)=>{
           if(x.Title==req.body.Title){            
@@ -364,5 +365,24 @@ module.exports.showOne = async (req, res) => {
       } catch (err) {
         console.log(err);
       }    
+
+}
+
+module.exports.showfiles = async (req, res) => {
+    
+  try {
+      console.log(req.user)
+      if (!req.user) return await res.json("Timed Out");
+      try {        
+        const Folder = await Folderdoc.findById(req.params.id).populate("files.Best.Base64 files.Worst.Base64 files.Average.Base64 files.Solution.Base64 files.Question.Base64 files.Awardlist.Base64")
+        console.log("Course Folder",Folder.files)
+        await res.status(200).json(Folder)
+        } catch (err) {
+          console.log(err);
+          await res.status(400).json("error")    
+        }  
+    } catch (err) {
+      console.log(err);
+    }    
 
 }

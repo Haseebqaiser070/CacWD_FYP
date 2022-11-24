@@ -44,9 +44,12 @@ function HandleButton(row) {
     console.log("helllo", roww);
     navigate("/Admin/Returned", { state: roww.row });
   };
+  const senddata1 = (roww) => {
+    console.log("helllo", roww);
+    navigate('/Admin/ReturnedEvaluation',{state:roww.row})
+  };
   return (
     <>
-      <Tooltip title="View Folder" placement="top-start">
         <Button
           variant="contained"
           color="primary"
@@ -64,7 +67,24 @@ function HandleButton(row) {
         >
           <AiFillEye />
         </Button>
-      </Tooltip>
+        
+        <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        style={{
+          backgroundColor: "#4b2980",
+          marginLeft: 10,
+          padding: 10,
+        }}
+        onClick={() => {
+          senddata1(row);
+          //navigate('/Faculty/Returned',{state:{row:row}})
+        }}
+      >
+        <AiFillEye style={{ marginRight: 10 }} />
+        Evaluation
+      </Button>
     </>
   );
 }

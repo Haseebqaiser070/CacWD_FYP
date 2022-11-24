@@ -6,6 +6,7 @@ router.route("/add/:id").put(Folders.Add);
 router.route("/showOne/:id").get(Folders.showOne);
 router.route("/SubmitaRound/:id").put(Folders.SubmitaRound);
 router.route("/SubmitaRoundRevision/:id").put(Folders.SubmitaRoundRevision);
+router.route("/showfiles/:id").get(Folders.showfiles);
 
 router.route("/addICEF/:id").put(Folders.ICEFSubimt);
 router.route("/addObe/:id").put(Folders.ObeSubimt);
